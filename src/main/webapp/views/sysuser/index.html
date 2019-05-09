@@ -1,0 +1,149 @@
+<#assign title> 用户管理 </#assign>
+
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">用户列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">用户管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="用户名/邮箱 /手机号"> <span class="input-group-btn">
+							<button id="searchUsers" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+
+					<@shiro.hasPermission name="sysuser.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/sysuser/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbUser" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>用户名</th>
+							<th>姓名</th>
+							<th>邮箱</th>
+							<th>手机号</th>
+							<th>状态</th>
+							<th>创建时间</th> 
+							<@shiro.hasAnyPermissions
+							name="sysuser.configrole,sysuser.resetpwd,sysuser.edit,sysuser.freeze,sysuser.enable">
+							<th width="100px">操作</th> </@shiro.hasAnyPermissions>
+
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div id="responsive-modal" class="modal fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">配置角色</h4>
+			</div>
+			<div class="modal-body">
+				<form id="roleForm">
+					<h5>勾选所需的角色</h5>
+					<input name="userId" type="hidden" id="txtUserId">
+
+					<#list roles as role>
+					<div class="checkbox checkbox-info">
+						<input id="chk${role.id}" name="role" type="checkbox"
+							value="${role.id}"> <label for="chk${role.id}">${role.alias}</label>
+					</div>
+					</#list>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button"
+					class="btn btn-success waves-effect waves-light"
+					onclick="saveRole()">保存</button>
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+
+<@shiro.hasAnyPermissions name="sysuser.configrole,sysuser.resetpwd,sysuser.edit,sysuser.freeze,sysuser.enable">
+							var visible=true;
+							</@shiro.hasAnyPermissions>
+	function opt(data, type, row) {
+		var html = "";
+		
+		html += "<@shiro.hasPermission name='sysuser.configrole'><a class='button' onclick='openWin("
+				+ row.id + ","+row.roles+")'>配置角色</a></@shiro.hasPermission>&nbsp;&nbsp;";
+
+		html += "<@shiro.hasPermission name='sysuser.resetpwd'><a class='button' data-toggle='popover' data-container='body' "
+				+ "data-placement='top' data-trigger='manual' data-html='true' data-content='<h4>是否重置该用户密码？</h4>"
+				+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+				+ " onclick=\"resetPwd("
+				+ row.id
+				+ ")\">是</button><button class=\"btn btn-default btn-xs\" "
+				+ "onclick=\"clspop()\">否</button></div>'>重置密码</a></@shiro.hasPermission>&nbsp;&nbsp;";
+
+		html += "<@shiro.hasPermission name='sysuser.edit'><a class='button' onclick='redirect("
+				+ row.id + ")'>修改</a></@shiro.hasPermission>&nbsp;&nbsp;";
+
+		if (row.status == 1) {
+			html += "<@shiro.hasPermission name='sysuser.freeze'><a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否冻结该用户？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",10)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>冻结</a></@shiro.hasPermission>&nbsp;&nbsp;";
+		} else {
+			html += "<@shiro.hasPermission name='sysuser.enable'><a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>你是否启用该用户？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",1)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>启用</a></@shiro.hasPermission>&nbsp;&nbsp;";
+		}
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/sysuser/index.js"></script> </#assign>
+<#include "/layout.html" encoding="utf-8">

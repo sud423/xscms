@@ -1,0 +1,138 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">车辆信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/car/index">车辆列表</a></li>
+			<li class="active">车辆信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="col-md-12">
+	<div class="white-box">
+		<h3 class="box-title">查询条件</h3>
+		<hr style="margin-top: -6px;">
+		<div class="row">
+			<form id="formSearch">
+				<div class="col-lg-5 col-sm-5 col-xs-12">
+					<label class="col-md-12">目的地</label>
+					<div class="col-md-12">
+						<div data-toggle="distpicker">
+							<div class="col-md-6" style="padding-left: 0px;">
+								<select id="selProvince" class="form-control" name="province"></select>
+							</div>
+							<div class="col-md-6">
+								<select id="selCity" class="form-control" name="city"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-3 col-xs-12">
+					<label class="col-md-12">体积(m³)</label>
+					<div class="col-md-12">
+
+						<input id="volume" class="vertical-spin" type="text"
+							data-bts-button-down-class="btn btn-default btn-outline"
+							data-bts-button-up-class="btn btn-default btn-outline"
+							autocomplete="off" name="volume" data-toggle="validator" />
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-3 col-xs-12">
+					<label class="col-md-12">实际重量(kg)</label>
+					<div class="col-md-12">
+						<input class="vertical-spin" type="text" id="weight"
+							data-bts-button-down-class="btn btn-default btn-outline"
+							data-bts-button-up-class="btn btn-default btn-outline"
+							autocomplete="off" name="weight" />
+
+					</div>
+				</div>
+				<div class="col-lg-1 col-sm-1 col-xs-12">
+					<label class="col-md-12">&nbsp;</label>
+					<button type="button" class="btn btn-block btn-warning"
+						onclick="count()">查询</button>
+				</div>
+			</form>
+		</div>
+
+		<h3 class="box-title m-t-40">查询结果</h3>
+		<hr style="margin-top: -6px;margin-bottom:0px;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table id="tbBill" class="table table-hover table-striped" cellspacing="0"
+						width="100%">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>快递公司</th>
+								<th>结算重量(kg)</th>
+								<th>价格(元)</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.data.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.min.js"></script>
+<script type="text/javascript">
+	setMenuCls("search");// 设置导航栏样式
+
+	$(function() {
+		$(".vertical-spin").TouchSpin({
+			verticalbuttons : true,
+			verticalupclass : 'ti-plus',
+			verticaldownclass : 'ti-minus',
+			min : 0,
+			max : 99999999,
+	        step: 0.01, 
+			decimals : 2
+		});
+	});
+
+	function count() {
+		if (!$("#selPriovince").val() && $("#selPriovince").val() == "") {
+			swal("信息", "请选择省份", "error");
+			return;
+		}
+		if (!$("#selCity").val() && $("#selCity").val() == "") {
+			swal("信息", "请选择市", "error");
+			return;
+		}
+		if (!$("#volume").val()) {
+			swal("信息", "请输入体积", "error");
+			return;
+		}
+		if (!$("#weight").val()) {
+			swal("信息", "请输入体积", "error");
+			return;
+		}
+		$("#formSearch button").prop("disabled", true);
+		$.post(basePath + "/priceconfig/count", $("#formSearch").serialize(),
+				function(data, status) {
+					$("#tbBill tbody").empty();
+					$.each(data, function() {
+						$("#tbBill tbody").append("<tr><td>"+this.seqNo+"</td><td>"+this.express+"</td><td>"+this.weight+"</td><td>"+this.price+"</td></tr>")
+					})
+				}).always(function() {
+			$("#formSearch button").prop("disabled", false);
+		});
+	}
+</script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

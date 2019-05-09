@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+   http://www.springframework.org/schema/beans 
+   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-4.3.xsd   
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+   http://www.springframework.org/schema/mvc 
+   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<!-- 配置组件扫描器，使用注解方式开发,不用配置dao和service -->
+	<context:component-scan
+		base-package="com.susd.controllers,com.susd.domainservice.*,com.susd.application">
+
+		<!-- 扫描@Controller -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<!-- 控制器增强，使一个Contoller成为全局的异常处理类，类中用@ExceptionHandler方法注解的方法可以处理所有Controller发生的异常 -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+
+	</context:component-scan>
+
+
+	<!-- 加载配置属性文件 -->
+	<context:property-placeholder
+		ignore-unresolvable="true" location="classpath:xscms.properties" />
+
+	<!-- 支持Controller的AOP代理 -->
+	<aop:aspectj-autoproxy />
+
+	<mvc:annotation-driven />
+
+	<mvc:default-servlet-handler />
+
+	<!-- 配置freeMarker模板加载地址 -->
+	<!-- <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> -->
+	<bean id="freemarkerConfig"
+		class="com.susd.infrastructure.ShiroTagFreeMarkerConfigurer">
+		<!-- 视图解析器在/views/路径下扫描视图文件 -->
+		<property name="templateLoaderPaths">
+			<list>
+				<value>/views/</value>
+				<value>/views/shared/</value>
+			</list>
+		</property>
+		<!-- 设置页面中文乱码问题 -->
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 配置freeMarker视图解析器 -->
+	<bean id="freemakerViewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="requestContextAttribute" value="request" />
+		<!-- 给视图解析器配置优先級，你可以给之前jsp视图解析器的值配为2 -->
+		<property name="order" value="1" />
+	</bean>
+
+	<!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+	<!--JSP视图解析器 -->
+	<bean id="viewResolverJsp"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>5120000</value>
+		</property>
+		<property name="maxInMemorySize">
+			<value>1024</value>
+		</property>
+	</bean>
+</beans>

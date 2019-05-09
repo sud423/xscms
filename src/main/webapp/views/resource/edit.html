@@ -1,0 +1,136 @@
+
+<#assign head>
+<link
+	href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css"
+	rel="stylesheet"></link>
+
+
+</#assign>
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">资源信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/resource/index">资源列表</a></li>
+			<li class="active">资源信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="resourceForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}">
+		<input type="hidden" id="pId" name="parentId"
+			value="${(model.parentId)!'0'}">
+		<div class="form-group">
+			<label class="col-md-12">所属父节点</label>
+			<div class="col-md-12">
+				<!-- <select id="parentId" datas=datasource
+				key="id" value="${(model.parentId)!'0'}" text="name" headKey="0"
+				headValue="---根节点---"/> -->
+
+				<input type="text" id="txtTree" class="form-control"
+					autocomplete="off" onclick="showMenu(); return false;" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">资源名称</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="资源名称不能为空" name="name"
+					value="${(model.name)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">类型</label>
+			<div class="col-md-12">
+				<select class="form-control" name="type">
+					<#if (((model.type)!'')== 'menu')>
+					<option value="menu" selected="selected">菜单</option>
+					<#else>
+					<option value="menu">菜单</option></#if>
+					<#if (((model.type)!'')== 'view')>
+					<option value="view" selected="selected">视图</option>
+					<#else>
+					<option value="view">视图</option></#if>
+					<#if (((model.type)!'')== 'button')>
+					<option value="button" selected="selected">按扭</option>
+					<#else>
+					<option value="button">按扭</option></#if>
+					<#if (((model.type)!'')== 'data')>
+					<option value="data" selected="selected">数据</option>
+					<#else>
+					<option value="data">数据</option></#if>
+				</select>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">编码</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="编码不能为空" name="permission"
+					value="${(model.permission)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">排序</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" autocomplete="off"
+					name="sort" value="${(model.sort)!'99'}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea class="form-control" autocomplete="off" name="remark"><#t>${((model.remark)!'')}<#t>
+					</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/resource/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+<div id="menuContent" class="menuContent"
+	style="display: none; position: absolute;">
+	<ul id="treeDemo" class="ztree" style="margin-top: 0;"></ul>
+</div>
+</#assign>
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript">
+	var json = '${datasource}';
+	var zNodes = eval(json);
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/resource/index.js"></script> <script
+	type="text/javascript">
+		$(function() {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			var node = zTree.getNodeByParam("id", "${(model.parentId)!'0'}");
+			if (node) {
+				zTree.selectNode(node, true);//将指定ID的节点选中
+
+				$("#txtTree").val(node.name);
+			}
+		});
+	</script> </#assign>
+<#include "/layout.html" encoding="utf-8">

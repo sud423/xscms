@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.site.NewsRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->    
+    <resultMap id="newsMap" type="com.susd.domain.site.News">
+        <id column="id" property="id" />
+        <!-- <result column="title" property="title" />
+        <result column="cover" property="cover" />
+        <result column="lead" property="lead" />
+        <result column="content" property="content" />
+        <result column="author" property="author" />
+        <result column="quote_url" property="quoteUrl" />
+        <result column="add_time" property="addTime" />
+        <result column="status" property="status" />
+        <result column="clicks" property="clicks" />
+        <result column="is_top" property="isTop" />
+        <result column="is_red" property="isRed" />
+        <result column="is_hot" property="isHot" />
+        <result column="is_slide" property="isSlide" />
+        <result column="sort" property="sort" />
+        <result column="user_id" property="userId" />
+        <result column="version" property="version" /> -->
+    </resultMap>
+    <!-- 查询单条记录 -->
+    <select id="findNewsById" parameterType="int" resultMap="newsMap">
+        SELECT * FROM news WHERE Id = #{newsId}
+    </select>
+    <select id="findByKeyword" resultMap="newsMap">
+		select * from news
+		where
+		tenant_id=#{tenantId} and `status`!=20
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and title like #{keyinfo}
+		</if>
+		order by sort asc,add_time desc
+	</select>
+	<update id="update"
+		parameterType="com.susd.domain.site.News">
+		update news set
+		title=#{title},target=#{target},content=#{content},author=#{author},quote_url=#{quoteUrl},version=version+1,sort=${sort},`status`=${status}
+		where id=${id}
+	</update>
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.susd.domain.site.News">
+		insert into news
+		(tenant_id,target,title,content,author,quote_url,`status`,release_time,user_id,version,sort,add_time)
+		values(#{tenantId},#{target},#{title},#{content},#{author},#{quoteUrl},#{status},#{addTime},#{userId},#{version},#{sort},#{addTime})
+	</insert>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.site.UserRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！ -->
+	<resultMap id="usersMap" type="com.susd.domain.site.User">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="user_name" property="userName" />
+		<result column="id_number" property="idNumber" />
+		<result column="audit_reason" property="auditReason" />
+		<result column="add_time" property="addTime" />
+	</resultMap>
+
+	<resultMap id="clientMap" type="com.susd.domain.site.User">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="name" property="name" />
+		<result column="cell" property="cell" />
+		<result column="id_number" property="idNumber" />
+		<result column="status" property="status" />
+		<result column="audit_reason" property="auditReason" />
+		<result column="add_time" property="addTime" />
+		<association property="userLogin"
+			javaType="com.susd.domain.site.UserLogin" resultMap="userLoginMap" />
+
+		<collection property="attach" ofType="String">
+			<result column="path" />
+		</collection>
+	</resultMap>
+
+	<resultMap id="driverMap" type="com.susd.domain.site.User">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="name" property="name" />
+		<result column="cell" property="cell" />
+		<result column="id_number" property="idNumber" />
+		<result column="status" property="status" />
+		<result column="audit_reason" property="auditReason" />
+		<result column="add_time" property="addTime" />
+		<association property="userLogin"
+			javaType="com.susd.domain.site.UserLogin" resultMap="userLoginMap" />
+		<collection property="attach" ofType="String">
+			<result column="path" />
+		</collection>
+	</resultMap>
+
+	<resultMap id="userLoginMap"
+		type="com.susd.domain.site.UserLogin">
+		<result column="user_id" property="userId" />
+		<result column="provide" property="provide" />
+		<result column="open_id" property="openId" />
+		<result column="nick_name" property="nickName" />
+		<result column="head_img" property="headImg" />
+	</resultMap>
+
+	<!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键； keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="add" parameterType="com.susd.domain.site.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into user
+		(tenant_id,`name`,cell,id_number,status,add_time,version)
+		values
+		(#{tenantId},#{name},#{cell},#{idNumber},2,#{addTime},#{version})
+	</insert>
+	<select id="findClientByKeyword" parameterType="String"
+		resultMap="clientMap">
+		select
+		u.id,u.tenant_id,`name`,cell,id_number,`status`,u.add_time,ul.provide,ul.open_id,ul.nick_name,ul.head_img,path
+		from `user` u
+		left join user_login ul on u.id=ul.user_id
+		left join
+		attach a on a.source_id=u.id and a.source_name='user'
+		where
+		u.tenant_id=#{tenantId} and type=10
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (user_name like #{keyinfo} or cell like #{keyinfo})
+		</if>
+	</select>
+	<select id="findDriverByKeyword" parameterType="String"
+		resultMap="driverMap">
+		select
+		u.id,u.tenant_id,`name`,cell,id_number,u.`status`,u.add_time,ul.provide,
+		ul.open_id,ul.nick_name,ul.head_img,path 
+		from `user` u
+		left join user_login ul on
+		u.id=ul.user_id
+		left join attach a on a.source_id=u.id and
+		a.source_name='user' 
+		where
+		u.tenant_id=#{tenantId} and u.type=20
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (user_name like #{keyinfo} or cell like #{keyinfo})
+		</if>
+	</select>
+	<!-- 查询单条记录 -->
+	<select id="findUserById" parameterType="int"
+		resultMap="usersMap">
+		select
+		id,tenant_id,`name`,cell,id_number,`status`,add_time,version
+		from user
+		where id = #{userId}
+	</select>
+	<update id="edit" parameterType="com.susd.domain.site.User">
+		update user set
+		`name`=#{name},id_number=#{idNumber},cell=#{cell},
+		`status`=#{status},audit_reason=#{auditReason},version=version+1 where
+		id=${id}
+	</update>
+	<select id="findDriver" resultMap="usersMap">
+		select u.id,u.`name`
+		from
+		`user` u
+		where u.tenant_id=#{tenantId} and u.type=20
+		and u.`status`=1 
+		<if test="q != null and q != ''">
+			<bind name="qs" value="'%' + q + '%'" />
+			and (`name` like #{qs})
+		</if>
+	</select>
+	<select id="findClient" resultMap="usersMap">
+		select id,`name`
+		from
+		`user`
+		where tenant_id=#{tenantId} and type=10
+		and `status`=1
+		<if test="q != null and q != ''">
+			<bind name="qs" value="'%' + q + '%'" />
+			and (`name` like #{qs})
+		</if>
+	</select>
+</mapper>

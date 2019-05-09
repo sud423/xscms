@@ -1,0 +1,164 @@
+<#assign title> 客户管理 </#assign>
+<#assign head>
+<link rel="stylesheet" href="${request.getContextPath()}/assets/plugins/PhotoSwipe/photoswipe.css"> 
+<link rel="stylesheet" href="${request.getContextPath()}/assets/plugins/PhotoSwipe/default-skin/default-skin.css"> 
+</#assign>
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">客户列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">客户管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" placeholder="姓名 /手机号">
+						<span class="input-group-btn">
+							<button id="searchClients" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbUser" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>姓名</th>
+							<th>手机号</th>
+							<th>微信昵称</th>
+							<th>身份证号</th>
+							<th>附件</th>
+							<th>状态</th>
+							<th>创建时间</th> <@shiro.hasAnyPermissions
+							name="client.check,client.freeze,client.enable">
+							<th width="50px">操作</th> </@shiro.hasAnyPermissions>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div id="approval" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">审核驾驶员信息</h4>
+			</div>
+			<div class="modal-body">
+				<form id="auditForm" data-toggle="validator">
+					<input type="hidden" id="txtUserId" name="userId" />
+					<div class="form-group m-b-10">
+						<label for="message-text" class="control-label">审核结果：</label>
+						<div class="radio-list">
+							<label class="radio-inline p-0">
+								<div class="radio radio-info">
+									<input type="radio" name="status" id="pass" value="1" required>
+									<label for="pass">审核通过</label>
+								</div>
+							</label> <label class="radio-inline">
+								<div class="radio radio-info">
+									<input type="radio" name="status" id="unpass" value="30" required>
+									<label for="unpass">审核不通过</label>
+								</div>
+							</label>
+						</div>
+					</div>
+					<div class="form-group" id="reason_box" style="display:none;">
+						<label for="txtReason" class="control-label">审核不通过原因：</label>
+						<textarea class="form-control" name="auditReason"
+							id="txtReason"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" onclick="audit();"
+					class="btn btn-success waves-effect waves-light">保存</button>
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	<@shiro.hasAnyPermissions name="client.check,client.freeze,client.enable">
+	var visible = true;
+	</@shiro.hasAnyPermissions>
+
+	function opt(data, type, row) {
+		var html = "";
+		var s = row.status;
+		switch (s) {
+		case 1:
+			html += "<a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要冻结该用户？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",10)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>冻结</a>&nbsp;&nbsp;";
+			break;
+		case 2:
+			html += "<a class='button' onclick='openAuditWin(" + row.id
+					+ ")'>审核</a>&nbsp;&nbsp;";
+			break;
+		case 10:
+			html += "<a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要启用该用户？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",1)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>启用</a>&nbsp;&nbsp;";
+			break;
+		case 30:
+			html += "";
+			break;
+		default:
+			html += "";
+			break;
+		}
+		return html;
+	}
+</script> 
+<script type="text/javascript" src="${request.getContextPath()}/assets/plugins/PhotoSwipe/photoswipe.min.js"></script>
+
+<script type="text/javascript" src="${request.getContextPath()}/assets/plugins/PhotoSwipe/photoswipe-ui-default.min.js"></script>
+
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/client/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

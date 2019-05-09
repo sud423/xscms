@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.site.CourseRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！ -->
+	<resultMap id="courseMap" type="com.susd.domain.site.Course">
+		<id column="id" property="id" />
+		<result column="academy" property="academy" />
+		<result column="classify" property="classify" />
+		<result column="name" property="name" />
+		<result column="base_info" property="baseInfo" />
+		<result column="back_summary" property="backSummary" />
+		<result column="tea_summary" property="teaSummary" />
+		<result column="summary" property="summary" />
+		<result column="open_date" property="openDate" />
+		<result column="address" property="address" />
+		<result column="fee" property="fee" />
+		<result column="sort" property="sort" />
+		<result column="add_time" property="addTime" />
+		<result column="status" property="status" />
+		<result column="version" property="version" />
+	</resultMap>
+	<!-- 查询单条记录 -->
+	<select id="findCourseById" parameterType="int"
+		resultType="com.susd.domain.site.Course">
+		SELECT * FROM course WHERE Id = #{courseId}
+	</select>
+
+	<select id="findByKeyword" resultMap="courseMap">
+		select c.id,a.text academy,b.text
+		classify,c.`name`,c.open_date,c.address,c.fee,c.`status`,c.add_time from course
+		c
+		inner join dict a on c.academy=a.`value` and a.`key`='academy'
+		inner
+		join dict b on c.classify=b.`value` and b.`key`='classify'
+		where
+		tenant_id=#{tenantId} and c.`status`!=20
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (c.`name` like #{keyinfo} or a.text like #{keyinfo} or b.text like #{keyinfo})
+		</if>
+		order by c.sort asc,c.add_time desc
+	</select>
+	<update id="update" parameterType="com.susd.domain.site.Course">
+		update course set
+		academy=#{academy},classify=#{classify},`name`=#{name},base_info=#{baseInfo},
+		back_summary=#{backSummary},tea_summary=#{teaSummary},summary=#{summary},
+		open_date=#{openDate},address=#{address},fee=${fee},
+		version=version+1,sort=${sort},`status`=${status}
+		where id=${id}
+	</update>
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.susd.domain.site.Course">
+		insert into course
+		(tenant_id,academy,classify,`name`,base_info,back_summary,tea_summary,
+		summary,open_date,address,fee,`status`,user_id,version,sort,add_time)
+		values(#{tenantId},#{academy},#{classify},#{name},#{baseInfo},
+		#{backSummary},#{teaSummary},#{summary},#{openDate},#{address},#{fee},
+		#{status},#{userId},#{version},#{sort},#{addTime})
+	</insert>
+</mapper>

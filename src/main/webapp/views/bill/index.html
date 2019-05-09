@@ -1,0 +1,175 @@
+<#assign title> 账单管理 </#assign>
+
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">账单列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">账单管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="账期/客户姓名"> <span class="input-group-btn">
+							<button id="search" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+					<@shiro.hasPermission name="bill.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/bill/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbBill" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>账期</th>
+							<th>总价格</th>
+							<th>客户</th>
+							<th>状态</th>
+							 <@shiro.hasAnyPermissions
+							name="bill.push,bill.payprogress,bill.detail">
+							<th width="50px">操作</th>
+							</@shiro.hasAnyPermissions>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div id="viewPayInfo" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">支付信息查看</h4>
+			</div>
+			<div class="modal-body">
+				<form></form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="viewPackInfo" class="modal fade bs-example-modal-lg"
+	tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+	aria-hidden="true" style="display: none;">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">包裹明细</h4>
+				<input type="hidden" id="txtBillId" value="0" />
+			</div>
+			<div class="modal-body">
+				<table id="tbPack" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>客户</th>
+							<th>目的地</th>
+							<th>快递名称</th>
+							<th>总运费</th>
+							<th>创建人</th>
+							<th>创建时间</th>
+							<th width="50px">操作</th> <@shiro.hasPermission
+							name="bill.delete,bill.edit"> </@shiro.hasPermission>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	<@shiro.hasAnyPermissions
+	name="bill.push,bill.payprogress,bill.detail">
+	visible = true;
+	</@shiro.hasAnyPermissions>
+	var display = false;
+	<@shiro.hasAnyPermissions name="bill.delete,bill.edit">
+	display = true;
+	</@shiro.hasAnyPermissions>
+	function opt(data, type, row) {
+		var html = "";
+		if (row.status == 1)
+			html += "<@shiro.hasPermission name='bill.push'><a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>请先【包裹查看】核对信息，是否继续推送该客户账单？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"push("
+					+ row.id
+					+ ",20)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>推送账单</a>&nbsp;&nbsp;</@shiro.hasPermission>";
+
+		html += "<@shiro.hasPermission name='bill.detail'><a class='button' onclick='detailWin("
+				+ row.id
+				+ ","
+				+ row.status
+				+ ")'>包裹查看</a>&nbsp;&nbsp;</@shiro.hasPermission>";
+
+		//html += "<a class='button' data-toggle='modal' data-target='#viewPayInfo'>支付信息查看</a>&nbsp;&nbsp;";
+
+		return html;
+	}
+	function optCol(data, type, row) {
+		var html = "";
+		//html += "<@shiro.hasPermission name='bill.delete'><a class='button' data-toggle='popover' data-container='body' "
+		//		+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否删除该包裹项，删除后不可恢复？</h4>"
+		//		+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+		//		+ " onclick=\"delete("
+		//		+ row.id
+		//		+ ","+row.billId+")\">是</button><button class=\"btn btn-default btn-xs\" "
+		//		+ "onclick=\"clspop()\">否</button></div>'>删除</a>&nbsp;&nbsp;</@shiro.hasPermission>";
+
+		html += "<@shiro.hasPermission name='bill.edit'><a class='button'  onclick='redirect("
+				+ row.id + ")'>修改</a></@shiro.hasPermission>";
+
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/bill/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

@@ -1,0 +1,104 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">订单信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/order/index">订单列表</a></li>
+			<li class="active">订单信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+<form class="form-horizontal" id="orderForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}">
+		<input type="hidden" name="type" value="10">
+		<input type="hidden" name="version" value="${(model.version)!'1'}">
+		<div class="form-group">
+			<label class="col-md-12">客户</label>
+			<div class="col-md-12">
+				<select id="selClient"
+						class="form-control select2" tabindex="1" name="clientId"> 
+				</select>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">驾驶员</label>
+			<div class="col-md-12">
+				<select id="selDriver"
+						class="form-control select2" tabindex="1" name="driverId"> 
+				</select>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">揽件地址</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="揽件地址不能为空" name="addr"
+					value="${(model.addr)!''}">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">托寄物</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="托寄物不能为空" name="goods"
+					value="${(model.goods)!''}">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">总件数</label>
+			<div class="col-md-12">
+			<input class="vertical-spin" id="txtNum" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					autocomplete="off" name="num" required data-toggle="validator" data-error="总件数不能为空"
+					value="${((model.num)!1)?string('#')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">总重量(kg)</label>
+			<div class="col-md-12">
+			<input class="vertical-spin" id="txtWeight" required type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline"
+					autocomplete="off" name="weight" required data-toggle="validator" data-error="总重量不能为空"
+					value="${((model.weight)!1)?string('#.00')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				 <textarea class="form-control" rows="3" name="remark">${(model.remark)!''}</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/order/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+	
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/views/order/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

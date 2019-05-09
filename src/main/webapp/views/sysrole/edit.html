@@ -1,0 +1,65 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">角色信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/sysrole/index">角色列表</a></li>
+			<li class="active">角色信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+<form class="form-horizontal" id="roleForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}">
+		<input type="hidden" name="version" value="${(model.version)!'1'}">
+		<div class="form-group">
+			<label class="col-md-12">角色名称</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="角色名称不能为空" name="name"
+					value="<#if model??>${model.name!''}</#if>" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">别名</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="别名不能为空" name="alias"
+					value="<#if model??>${model.alias!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea class="form-control" autocomplete="off" name="remark"
+					><#if model??>${model.remark!''}</#if>
+					</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12"><@shiro.hasAnyPermissions name="sysrole.add,sysrole.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button></@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/sysrole/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+	
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/views/sysrole/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome =1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>欢迎登录后台管理系统</title>
+<meta content="" name="Keywords" />
+<meta name="description" content="" />
+<!-- <link rel="icon" type="image/x-icon" href="${request.getContextPath()}/assets/images/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon"
+	href="${request.getContextPath()}/assets/images/favicon.ico" /> -->
+
+<link href="${request.getContextPath()}/assets/css/bootstrap.min.css" rel="stylesheet"></link>
+<link href="${request.getContextPath()}/assets/css/font-awesome.min.css" rel="stylesheet"></link>
+<link href="${request.getContextPath()}/assets/plugins/sweetAlert/sweetalert.css" rel="stylesheet"></link>
+<link href="${request.getContextPath()}/assets/css/style.css" rel="stylesheet"></link>
+
+</head>
+<body>
+	<section id="wrapper" class="new-login-register">
+		<div class="lg-info-panel">
+			<div class="inner-panel"></div>
+		</div>
+		<div class="new-login-box">
+			<div class="white-box">
+				<h3 class="box-title m-b-0"
+					style="text-align: center; font-size: 24px;">后台管理登录</h3>
+				<small></small>
+				<form method="post" class="form-horizontal new-lg-form"
+					id="loginform" data-toggle="validator">
+					<input type="hidden" value="ViewBag.ReturnUrl" />
+					<div class="form-group  m-t-20">
+						<div class="col-xs-12">
+							<label>用户名</label> <input class="form-control" name="userName" value="susd"
+								autocomplete="off" data-toggle="validator" data-error="用户名不能为空"
+								type="text" required="required" placeholder="用户名">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-12">
+							<label>密码</label> <input class="form-control" name="password" value="sud123"
+								data-toggle="validator" data-minlength="6" data-error="密码不能为空"
+								type="password" required="required" placeholder="密码">
+							<div class="help-block with-errors"></div>
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						<div class="col-md-12">
+							<div class="checkbox checkbox-info pull-left p-t-0">
+								<input name="rememberMe" id="checkbox-signup" type="checkbox">
+								<label for="checkbox-signup"> 记住我 </label>
+							</div>
+
+						</div>
+					</div> -->
+					<div class="form-group text-center m-t-20">
+						<div class="col-xs-12">
+							<button
+								class="btn btn-info btn-lg btn-block btn-rounded text-uppercase waves-effect waves-light"
+								type="submit">登 录</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" src="${request.getContextPath()}/assets/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/assets/js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/assets/plugins/sweetAlert/sweetalert.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/assets/js/validator.js"></script>
+	<script type="text/javascript">
+	$(function () {
+        $("#loginform").validator().on('submit', function (e) {
+            if (e.isDefaultPrevented()) {
+                // 处理无效的表单...
+                //swal("信息", "用户名和密码不能为空", "error");
+                return false;
+            } else {
+                $("#wrapper").block({
+                    message: '<h4><img src="${request.getContextPath()}/assets/images/busy.gif")" />&nbsp;&nbsp;正在登录...</h4>',
+                    css: {
+                        border: '1px solid #fff'
+                    }
+                });
+                $("#loginform button").prop("disabled", true);
+                $.post("${request.getContextPath()}/login",
+                    $("#loginform").serialize(),
+                    function (data, status) {
+                		if(data.code==0){
+                			window.location.href = data.result;
+                		}
+                		else {
+                            $("#wrapper").unblock();
+                            $("#loginform button").prop("disabled", false);
+                            swal("信息", data.result, "error");
+                        }
+                    });
+                return false;
+            }
+        })
+    });
+	</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<#assign title> 资源管理 </#assign>
+
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">资源列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">资源管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="资源名称/类型"> <span class="input-group-btn">
+							<button id="btnResource" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+					<@shiro.hasPermission name='resource.add'>
+					<a class="btn btn-info"
+						href='${request.getContextPath()}/resource/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbResource" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>资源名称</th>
+							<th>类型</th>
+							<th>编码</th>
+							<th>排序</th>
+							<th>备注</th>
+							<th>状态</th>
+							<th>创建时间</th>
+					<@shiro.hasPermission name='resource.edit'>
+							<th width="28px">操作</th>
+							</@shiro.hasPermission>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</#assign>
+
+<#assign body>
+<script type="text/javascript">
+<@shiro.hasAnyPermissions name="resource.edit">
+var visible=true;
+</@shiro.hasAnyPermissions>
+function opt(data, type, row) {
+    var html = "";
+        html += "<@shiro.hasPermission name='resource.edit'><a class='button' onclick='redirect("+ row.id +")'>修改</a></@shiro.hasPermission>";
+
+    return html;
+}
+</script>
+ <script type="text/javascript"
+	src="${request.getContextPath()}/views/resource/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

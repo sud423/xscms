@@ -1,0 +1,156 @@
+
+<#assign basePath=request.getContextPath()>
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav slimscrollsidebar">
+		<div class="sidebar-head">
+			<h3>
+				<span class="fa-fw open-close"><i class="ti-menu hidden-xs"></i><i
+					class="ti-close visible-xs"></i></span> <span class="hide-menu">导航</span>
+			</h3>
+		</div>
+		<ul class="nav" id="side-menu">
+
+			<li><a href="${basePath}/dashboard" id="dashboard"
+				class="waves-effect"><i class="mdi mdi-av-timer fa-fw"
+					data-icon="v"></i> <span class="hide-menu"> 控制台 </span></a></li>
+
+			<@shiro.hasPermission name="business">
+			<li><a href="#" class="waves-effect"><i
+					class="icon-grid fa-fw"></i> <span class="hide-menu">业务管理<span
+						class="fa arrow"></span>
+				</span></a>
+				<ul class="nav nav-second-level">
+					<@shiro.hasPermission name="bill">
+					<li><a href="${basePath}/bill/index" id="bill"><i
+							data-icon="&#xe026;" class="icon-docs fa-fw"></i> <span
+							class="hide-menu">账单管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="order">
+					<li><a href="${basePath}/order/index" id="order"><i
+							data-icon="&#xe025;" class="icon-doc fa-fw"></i> <span
+							class="hide-menu">订单管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="priceconfig">
+					<li><a href="${basePath}/priceconfig/index" id="priceconfig"><i
+							class="ti-pulse fa-fw"></i> <span class="hide-menu">运费管理</span></a></li>
+					</@shiro.hasPermission> <@shiro.hasPermission name="pricesearch">
+					<li><a href="${basePath}/priceconfig/search" id="search"><i
+							data-icon="&#xe025;" class="icon-magnifier fa-fw"></i> <span
+							class="hide-menu">运费查询</span></a></li> </@shiro.hasPermission>
+				</ul></li> </@shiro.hasPermission> <@shiro.hasPermission name="car">
+			<li><a href="${basePath}/car/index" id="car"
+				class="waves-effect"><i class="ti-truck fa-fw"></i> <span
+					class="hide-menu">车辆管理 </span></a></li> </@shiro.hasPermission>
+
+			<@shiro.hasPermission name="personal">
+			<li><a href="#" class="waves-effect"><i
+					class="icon-people fa-fw"></i> <span class="hide-menu">人员管理<span
+						class="fa arrow"></span>
+				</span></a>
+				<ul class="nav nav-second-level">
+					<@shiro.hasPermission name="driver">
+					<li><a href="${basePath}/driver/index" id="driver"><i
+							data-icon="&#xe026;" class="ti-id-badge fa-fw"></i> <span
+							class="hide-menu">驾驶员管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="client">
+					<li><a href="${basePath}/client/index" id="client"><i
+							data-icon="&#xe025;" class="ti-user fa-fw"></i> <span
+							class="hide-menu">客户管理</span></a></li> </@shiro.hasPermission>
+				</ul></li> </@shiro.hasPermission>
+				<@shiro.hasPermission name="iclass">
+			<li><a href="#" class="waves-effect"><i
+					class="icon-settings fa-fw"></i> <span class="hide-menu">我爱上课<span
+						class="fa arrow"></span>
+				</span></a>
+				<ul class="nav nav-second-level">
+					<@shiro.hasPermission name="course">
+					<li><a href="${basePath}/course/index" id="course"><i
+							data-icon="&#xe026;" class="icon-user fa-fw"></i> <span
+							class="hide-menu">课程管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="activity">
+					<li><a href="${basePath}/activity/index" id="activity"><i
+							data-icon="&#xe025;" class="ti-layout-list-thumb fa-fw"></i> <span
+							class="hide-menu">活动管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="news">
+					<li><a href="${basePath}/news/index" id="news"><i
+							class="ti-lock fa-fw"></i> <span class="hide-menu">焦点事件</span></a></li>
+
+				</ul></li> </@shiro.hasPermission> </@shiro.hasPermission>
+				<@shiro.hasPermission name="training">
+				<li><a href="#" class="waves-effect"><i
+						class="icon-settings fa-fw"></i> <span class="hide-menu">企业培训<span
+							class="fa arrow"></span>
+					</span></a>
+					<ul class="nav nav-second-level">
+						<@shiro.hasPermission name="training.project">
+						<li><a href="${basePath}/project/index" id="training_project"><i
+								data-icon="&#xe026;" class="icon-user fa-fw"></i> <span
+								class="hide-menu">项目管理</span></a></li> </@shiro.hasPermission>
+						<@shiro.hasPermission name="training.cla">
+						<li><a href="${basePath}/cla/index" id="training_cla"><i
+								data-icon="&#xe025;" class="ti-layout-list-thumb fa-fw"></i> <span
+								class="hide-menu">班级管理</span></a></li> </@shiro.hasPermission>
+						<@shiro.hasPermission name="training.clus">
+						<li><a href="${basePath}/resource/index" id="training_clus"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">课程查询</span></a></li>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="training.tea">
+						<li><a href="${basePath}/resource/index" id="training_tea"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">师资查询</span></a></li>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="training.alumni">
+						<li><a href="${basePath}/resource/index" id="training_alumni"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">校友查询</span></a></li>
+						</@shiro.hasPermission>
+						
+					</ul></li>  </@shiro.hasPermission>
+					
+				<@shiro.hasPermission name="basis">
+				<li><a href="#" class="waves-effect"><i
+						class="icon-settings fa-fw"></i> <span class="hide-menu">企业培训<span
+							class="fa arrow"></span>
+					</span></a>
+					<ul class="nav nav-second-level">
+						<@shiro.hasPermission name="basis.project">
+						<li><a href="${basePath}/sysuser/index" id="basis_project"><i
+								data-icon="&#xe026;" class="icon-user fa-fw"></i> <span
+								class="hide-menu">项目管理</span></a></li> </@shiro.hasPermission>
+						<@shiro.hasPermission name="basis.cla">
+						<li><a href="${basePath}/sysrole/index" id="basis_cla"><i
+								data-icon="&#xe025;" class="ti-layout-list-thumb fa-fw"></i> <span
+								class="hide-menu">班级管理</span></a></li> </@shiro.hasPermission>
+						<@shiro.hasPermission name="basis.clus">
+						<li><a href="${basePath}/resource/index" id="basis_clus"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">课程查询</span></a></li>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="basis.tea">
+						<li><a href="${basePath}/resource/index" id="basis_tea"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">师资查询</span></a></li>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="basis.alumni">
+						<li><a href="${basePath}/resource/index" id="basis_alumni"><i
+								class="ti-lock fa-fw"></i> <span class="hide-menu">校友查询</span></a></li>
+						</@shiro.hasPermission>
+						
+					</ul></li>  </@shiro.hasPermission>
+				 <@shiro.hasPermission name="systemset">
+			<li><a href="#" class="waves-effect"><i
+					class="icon-settings fa-fw"></i> <span class="hide-menu">系统设置<span
+						class="fa arrow"></span>
+				</span></a>
+				<ul class="nav nav-second-level">
+					<@shiro.hasPermission name="sysuser">
+					<li><a href="${basePath}/sysuser/index" id="sysuser"><i
+							data-icon="&#xe026;" class="icon-user fa-fw"></i> <span
+							class="hide-menu">用户管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="sysrole">
+					<li><a href="${basePath}/sysrole/index" id="sysrole"><i
+							data-icon="&#xe025;" class="ti-layout-list-thumb fa-fw"></i> <span
+							class="hide-menu">角色管理</span></a></li> </@shiro.hasPermission>
+					<@shiro.hasPermission name="resource">
+					<li><a href="${basePath}/resource/index" id="resource"><i
+							class="ti-lock fa-fw"></i> <span class="hide-menu">资源管理</span></a></li>
+					</@shiro.hasPermission>
+				</ul></li>  </@shiro.hasPermission>
+		</ul>
+
+	</div>
+</div>

@@ -1,0 +1,136 @@
+<#assign title> 订单管理 </#assign>
+
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">订单列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">订单管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="客户姓名/驾驶员姓名/托寄物/揽件地址"> <span
+							class="input-group-btn">
+							<button id="searchOrders" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+					<@shiro.hasPermission name="order.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/order/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbOrder" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th width="50px">编号</th>
+							<th width="50px">客户姓名</th>
+							<th width="50px">驾驶员姓名</th>
+							<th width="50px">车牌号</th>
+							<th width="50px">托寄物</th>
+							<th>揽件地址</th>
+							<th width="50px">总件数</th>
+							<th width="50px">总重量(kg)</th>
+							<th width="50px">状态</th>
+							<th>备注</th>
+							<th width="50px">创建时间</th> <@shiro.hasAnyPermissions
+							name="order.setdriver,order.delete">
+							<th width="50px">操作</th> </@shiro.hasAnyPermissions>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div id="setcar" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">调度驾驶员</h4>
+			</div>
+			<div class="modal-body">
+				<form id="driverForm">
+					<input type="hidden" id="txtOrderId" name="orderId">
+					<div class="form-group">
+						<label class="control-label">选择驾驶员</label> <select
+							class="form-control select2" style="width: 100%;" tabindex="1"
+							name="driverId">
+
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">选择车牌号</label> <select
+							class="form-control select2" style="width: 100%;" tabindex="1"
+							name="carId">
+
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" onclick="saveDriver()"
+					class="btn btn-success waves-effect waves-light">保存</button>
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	<@shiro.hasAnyPermissions name="order.setdriver,order.delete">
+	visible = true;
+	</@shiro.hasAnyPermissions>
+	function opt(data, type, row) {
+		var html = "";
+
+		if (row.status == 1) {
+			html += "<a class='button' onclick='openDriverWin("+row.id+")' >调度</a>&nbsp;&nbsp;";
+
+			html += "<a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要作废该订单？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",40)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>作废</a>&nbsp;&nbsp;";
+		}
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/order/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

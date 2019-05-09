@@ -1,0 +1,95 @@
+<#assign title> 车辆管理 </#assign>
+
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">车辆列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">车辆管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="车牌 /IMEI码"> <span class="input-group-btn">
+							<button id="btnCarSearch" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+					<@shiro.hasPermission name="car.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/car/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbCar" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>车牌</th>
+							<th>车辆类型</th>
+							<th>载重量(kg)</th>
+							<th>IMEI码</th>
+							<th>状态</th>
+							<th>创建时间</th> <@shiro.hasAnyPermissions
+							name="car.config,car.delete,car.edit">
+							<th width="60px">操作</th> </@shiro.hasAnyPermissions>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	<@shiro.hasAnyPermissions name="car.config,car.delete,car.edit">
+	var visible = true;
+	</@shiro.hasAnyPermissions>
+	function opt(data, type, row) {
+		var html = "";
+
+		if (row.status == 10) {
+			
+			html += "<@shiro.hasPermission name='car.delete'><a class='button' data-toggle='popover' data-container='body' "
+					+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要删除该车辆？</h4>"
+					+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\""
+					+ " onclick=\"change("
+					+ row.id
+					+ ",20)\">是</button><button class=\"btn btn-default btn-xs\" "
+					+ "onclick=\"clspop()\">否</button></div>'>删除</a></@shiro.hasPermission>&nbsp;&nbsp;";
+			html += "<@shiro.hasPermission name='car.edit'><a class='button' onclick='redirect("
+				+ row.id + ")'>修改</a></@shiro.hasPermission>&nbsp;&nbsp;";
+		}		
+
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/car/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

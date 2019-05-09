@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.bill.BillItemRepository">
+	<resultMap id="billMap" type="com.susd.domain.bill.BillItem">
+		<id column="id" property="id" />
+		<result column="express" property="express" />
+		<result column="express_no" property="expressNo" />
+		<result column="price" property="price" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="cost" property="cost" />
+		<result column="remark" property="remark" />
+		<result column="bill_id" property="billId" />
+		<result column="add_time" property="addTime" />
+		<association property="client"
+			javaType="com.susd.domain.site.User" resultMap="clientMap" />
+		<association property="account"
+			javaType="com.susd.domain.site.User" resultMap="accountMap" />
+	</resultMap>
+	<resultMap type="com.susd.domain.site.User" id="clientMap">
+		<result column="client_name" property="name" />
+	</resultMap>
+	<resultMap type="com.susd.domain.identity.SysUser"
+		id="accountMap">
+		<result column="account_name" property="name" />
+	</resultMap>
+
+	<resultMap id="itemMap" type="com.susd.domain.bill.BillItem">
+		<id column="id" property="id" />
+		<result column="express" property="express" />
+		<result column="express_no" property="expressNo" />
+		<result column="price" property="price" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="bill_id" property="billId" />
+		<result column="cost" property="cost" />
+		<result column="remark" property="remark" />
+		<result column="user_id" property="userId" />
+		<result column="actual_weight" property="actualWeight" />
+		<result column="volume_weight" property="volumeWeight" />
+		<result column="weight" property="weight" />
+		<result column="count" property="count" />
+		<result column="version" property="version" />
+		<association property="client"
+			javaType="com.susd.domain.site.User" resultMap="clientMap" />
+		<collection property="packages"
+			ofType="com.susd.domain.bill.BillItemPackage">
+			<result column="pack_id" property="id" />
+			<result column="len" property="len" />
+			<result column="width" property="width" />
+			<result column="height" property="height" />
+			<result column="num" property="count" />
+		</collection>
+	</resultMap>
+
+	<insert id="save" parameterType="com.susd.domain.bill.BillItem"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		bill_item(tenant_id,express,express_no,user_id,price,cost,bill_id,weight,
+		actual_weight,volume_weight,count,province,city,add_time,account_id,remark)
+		values
+		(#{tenantId},#{express},#{expressNo},#{userId},#{price},#{cost},#{billId},#{weight},
+		#{actualWeight},#{volumeWeight},#{count},#{province},#{city},#{addTime},#{accountId},#{remark})
+	</insert>
+
+	<update id="update"
+		parameterType="com.susd.domain.bill.BillItem">
+		update bill_item set
+		express=#{express},express_no=#{expressNo},
+		price=#{price},cost=#{cost},
+		weight=#{weight},actual_weight=#{actualWeight},
+		volume_weight=#{volumeWeight},count=#{count},
+		province=#{province},city=#{city},remark=#{remark} 
+		where id=${id}
+	</update>
+
+	<insert id="savePack" useGeneratedKeys="false">
+		insert into
+		bill_item_package(id,bill_item_id,len,width,height,count)
+		values
+		<foreach collection="packages" item="item" index="index"
+			separator=",">
+			(${index}+1,#{itemId}, #{item.len}, #{item.width},
+			#{item.height},
+			#{item.count})
+		</foreach>
+
+	</insert>
+	<delete id="deletePack" parameterType="int">
+		delete from
+		bill_item_package where bill_item_id=#{itemId}
+	</delete>
+
+	<select id="findBillItems" parameterType="int"
+		resultMap="billMap">
+		select
+		d.text express,u.`name`
+		client_name,b.province,b.city,b.express_no,b.price,a.`name`
+		account_name,b.add_time,b.id,b.bill_id
+		from bill_item b
+		inner join dict
+		d on d.`value`=b.express and d.`key`='express'
+		inner join `user` u on
+		b.user_id=u.id and u.type=10
+		inner join `user` a on b.account_id=a.id
+		where b.bill_id=#{billId}
+	</select>
+
+
+	<select id="findById" parameterType="int" resultMap="itemMap">
+		select
+		b.id,b.bill_id,b.user_id,u.`name`
+		client_name,b.province,b.city,b.cost,b.remark,
+		b.express,b.express_no,b.actual_weight,b.volume_weight,b.weight,b.price,b.count,l.version,
+		p.id pack_id,p.len,p.width,p.height,p.count num
+		from bill_item b
+		inner join bill l on b.bill_id=l.id
+		left join
+		bill_item_package p on b.id=p.bill_item_id
+		inner join `user` u on
+		b.user_id=u.id and u.type=10
+		where b.id=#{id}
+	</select>
+</mapper>

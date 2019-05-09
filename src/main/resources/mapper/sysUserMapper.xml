@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.identity.SysUserRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！ -->
+	<resultMap id="usersMap"
+		type="com.susd.domain.identity.SysUser">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="user_name" property="userName" />
+		<result column="add_time" property="addTime" />
+	</resultMap>
+	<resultMap id="usersMaps"
+		type="com.susd.domain.identity.SysUser">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="user_name" property="userName" />
+		<result column="add_time" property="addTime" />
+		<result column="name" property="name" />
+		<result column="email" property="email" />
+		<result column="cell" property="cell" />
+		<result column="status" property="status" />
+		<collection property="roles" ofType="Integer">
+			<result column="role_id" />
+		</collection>
+	</resultMap>
+
+	<!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键； keyProperty="id"指定把获取到的主键值注入到User的id属性 -->
+	<insert id="add"
+		parameterType="com.susd.domain.identity.SysUser"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into user
+		(tenant_id,user_name,password,`name`,email,cell,status,salt,add_time,version)
+		values
+		(#{tenantId},#{userName},#{password},#{name},#{email},#{cell},#{status},#{salt},#{addTime},#{version})
+	</insert>
+	<select id="findByKeyword" parameterType="String"
+		resultMap="usersMaps">
+		select
+		id,tenant_id,user_name,`name`,cell,email,`status`,add_time,ur.role_id
+		from
+		user u
+		left join user_role ur on ur.user_id=u.id
+		where tenant_id=#{tenantId} and type=1
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (user_name like #{keyinfo} or cell like #{keyinfo} or email like
+			#{keyinfo})
+		</if>
+	</select>
+	<!-- 查询单条记录 -->
+	<select id="findUserById" parameterType="int"
+		resultMap="usersMap">
+		select
+		id,tenant_id,user_name,`password`,`name`,cell,email,`status`,salt,add_time,last_login_time,version
+		from user where id = #{userId}
+	</select>
+	<!-- 根据用户名查询用户信息 -->
+	<select id="findByUserName" parameterType="String"
+		resultMap="usersMap">
+		select
+		id,tenant_id,user_name,`password`,salt,`name`,cell,email,`status`,add_time
+		from user where user_name = #{userName};
+	</select>
+	<!-- 根据用户名查询所属角色 -->
+	<select id="findRoleByUserName" resultType="String">
+		select distinct
+		r.`name`
+		from user_role ur
+		inner join role r on ur.role_id=r.id
+		inner
+		join `user` u on r.id=ur.user_id
+		where r.tenant_id=#{tenantId} and
+		u.`user_name` = #{userName};
+	</select>
+	<!-- 根据用户名查询拥有资源权限 -->
+	<select id="findResourceByUserName" resultType="String">
+		select distinct
+		s.permission
+		from role_resource rr
+		inner join resource s on
+		s.id=rr.resource_id
+		inner join user_role ur on ur.role_id=rr.role_id
+		inner join `user` u on u.id=ur.user_id
+		where s.tenant_id=#{tenantId}
+		and u.user_name = #{userName};
+	</select>
+	<update id="update"
+		parameterType="com.susd.domain.identity.SysUser">
+		update user set
+		user_name=#{userName},`password`=#{password},`name`=#{name},email=#{email},cell=#{cell},`status`=#{status},version=version+1
+		where id=${id}
+	</update>
+	<!-- 更新最后登录时间 -->
+	<update id="updateLastLoginTime" parameterType="String">
+		update user set
+		last_login_time=now() where user_name = #{userName};
+	</update>
+	<insert id="saveRole">
+		insert into user_role (user_id,role_id)
+		values
+		<foreach collection="roles" item="item" index="index"
+			separator=",">
+			(#{userId}, #{item})
+		</foreach>
+	</insert>
+	<delete id="deleteRole">
+		delete from user_role where user_id=#{userId}
+	</delete>
+</mapper>

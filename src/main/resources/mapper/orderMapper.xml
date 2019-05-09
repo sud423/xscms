@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.site.OrderRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！ -->
+	<resultMap id="orderMap" type="com.susd.domain.site.Order">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="user_id" property="userId" />
+		<result column="driver_id" property="driverId" />
+		<result column="car_id" property="carId" />
+		<result column="add_time" property="addTime" />
+	</resultMap>
+
+	<resultMap id="orderMaps" type="com.susd.domain.site.Order">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="user_id" property="userId" />
+		<result column="driver_id" property="driverId" />
+		<result column="type" property="type" />
+		<result column="goods" property="goods" />
+		<result column="num" property="num" />
+		<result column="weight" property="weight" />
+		<result column="addr" property="addr" />
+		<result column="price" property="price" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="car_id" property="carId" />
+		<result column="add_time" property="addTime" />
+		<result column="version" property="version" />
+		<association property="client"
+			javaType="com.susd.domain.site.User" resultMap="clientMap" />
+		<association property="driver"
+			javaType="com.susd.domain.site.User" resultMap="driverMap" />
+		<association property="car"
+			javaType="com.susd.domain.complex.Car" resultMap="carMap" />
+	</resultMap>
+	<resultMap type="com.susd.domain.site.User" id="clientMap">
+		<result column="clientName" property="name" />
+	</resultMap>
+	<resultMap type="com.susd.domain.site.User" id="driverMap">
+		<result column="driverName" property="name" />
+	</resultMap>
+	<resultMap type="com.susd.domain.complex.Car" id="carMap">
+		<result column="car_number" property="carNumber" />
+	</resultMap>
+	<!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键； keyProperty="id"指定把获取到的主键值注入到Order的id属性 -->
+	<insert id="add" parameterType="com.susd.domain.site.Order"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into `order`
+		(tenant_id,user_id,type,goods,num,weight,
+		addr,price,driver_id,car_id,remark,`status`,add_time,version)
+		values
+		(#{tenantId},#{userId},#{type},#{goods},#{num},#{weight},
+		#{addr},#{price},#{driverId},#{carId},
+		#{remark},#{status},#{addTime},#{version})
+	</insert>
+	<select id="findByKeyword" parameterType="String"
+		resultMap="orderMaps">
+
+		select o.*,client.`name` as clientName,driver.`name` as driverName,c.car_number
+		from `order` as o
+		LEFT join `user` as client on o.user_id=client.id and
+		client.type=10
+		LEFT join `user` as driver on o.driver_Id=driver.id and
+		driver.type=20
+		left join car as c on c.id=o.car_id
+		where o.tenant_id=#{tenantId} and o.status!=40
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (o.goods like #{keyinfo} or o.addr like #{keyinfo} or
+			client.`name` like #{keyinfo} or
+			driver.`name` like #{keyinfo})
+		</if>
+	</select>
+	<!-- 查询单条记录 -->
+	<select id="findOrderById" parameterType="int"
+		resultMap="orderMap">
+		SELECT * from `order` where id = #{orderId}
+	</select>
+
+	<!-- 更新状态 -->
+	<update id="chgStatus">
+		update `order` set `status`=#{status} where id =
+		#{orderId};
+	</update>
+
+	<!-- 分配驾驶员 -->
+	<update id="setDriver">
+		update `order` set driver_id=#{driverId},car_id=#{carId},`status`=10
+		where id = #{orderId};
+	</update>
+</mapper>

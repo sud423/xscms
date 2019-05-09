@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.susd.domain.training.TeacherRepository">
+
+	<!-- 查询单条记录 -->
+	<select id="findPersonnelInfoById" parameterType="int"
+		resultType="com.susd.domain.training.Teacher">
+		SELECT * FROM teachers WHERE Id = #{id}
+	</select>
+	<select id="findByKeyword"
+		resultType="com.susd.domain.training.Teacher">
+		select * from teachers
+		where
+		tenant_id=#{tenantId} and
+		`status`!=2
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and title like #{keyinfo}
+		</if>
+		order by sort asc,add_time desc
+	</select>
+	<update id="update"
+		parameterType="com.susd.domain.training.Teacher">
+		update teachers set
+		`name`=#{name},`status`=#{status},sex=#{sex},cell=#{cell},fixed_phone=#{fixedPhone},email=#{email},
+		courses=#{courses},score=#{score},type=#{type},address=#{address},profiles=#{profiles},remark=#{remark},version=version+1
+		where id=${id}
+	</update>
+	<insert id="add" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.susd.domain.training.Teacher">
+		insert into teachers
+		(tenant_id,`name`,`status`,sex,cell,fixed_phone,email,courses,score,type,address,profiles,remark,user_id,version,add_time)
+		values(#{tenantId},#{name},#{status},#{sex},#{cell},#{fixedPhone},#{email},#{courses},#{score},#{type},#{address},#{profiles},#{remark},#{userId},#{version},#{addTime})
+	</insert>
+</mapper>

@@ -1,0 +1,113 @@
+<#assign head>
+<link href="${request.getContextPath()}/assets/css/daterangepicker.css"
+	rel="stylesheet"></link>
+</#assign>
+
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">活动信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/car/index">活动管理</a></li>
+			<li class="active">活动信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="activityForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}">
+		<input type="hidden" name="beginTime" value="${(model.beginTime)!''}">
+		<input type="hidden" name="endTime" value="${(model.endTime)!''}">
+		<div class="form-group">
+			<label class="col-md-12">标题</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off" maxlength="60"
+					data-toggle="validator" data-required-error="标题不能为空" name="title"
+					value="${(model.title)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">活动时间</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control input-daterange-datepicker"
+					required autocomplete="off" name="daterange"
+					value="${(model.beginTime)!''}-${(model.endTime)!''}" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-md-12">排序</label>
+			<div class="col-md-12">
+
+				<input class="vertical-spin" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					data-required-error="排序不能为空" autocomplete="off" name="sort"
+					value="${((model.sort)!99)?string('#')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">活动描述</label>
+			<div class="col-md-12">
+				<textarea class="form-control" required name="content"
+					data-toggle="validator" data-required-error="活动描述不能为空" rows="5">${(model.content)!''}</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="activity.add,activity.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/activity/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body> 
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/js/moment.min.js"></script> 
+<script
+	type="text/javascript"
+	src="${request.getContextPath()}/assets/js/daterangepicker.js"></script>
+<script
+	type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/kindeditor/kindeditor-all-min.js"></script>
+<script
+	type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/kindeditor/lang/zh-CN.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/activity/index.js"></script> 
+<script>
+        KindEditor.ready(function(K) {
+                window.editor = K.create('textarea[name="content"]',{
+                	minHeight:300
+                	,allowImageUpload: true
+                	,resizeType:1
+                	,allowPreviewEmoticons:true
+                	,filePostName:"uploadFile"
+                	,uploadJson:basePath+'/kindeditor/upload'
+                	,fileManagerJson:basePath+'/kindeditor/manager'
+                	,filterMode: true
+                	,allowFileManager: true
+                });
+        });
+</script>	
+</#assign>
+
+<#include "/layout.html" encoding="utf-8">

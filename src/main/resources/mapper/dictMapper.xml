@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.complex.DictRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <!-- <resultMap id="DictMap" type="com.susd.domain.Dict">
+        <id column="Id" property="id" />
+        <result column="Key" property="key" />
+        <result column="Value" property="value" />
+        <result column="Text" property="text" />
+        <result column="Sort" property="sort" />
+    </resultMap>
+     -->
+    <!-- 查询单条记录 -->
+    <select id="findDictById" parameterType="int" resultType="com.susd.domain.complex.Dict">
+        SELECT * FROM dict WHERE Id = #{dictId}
+    </select>
+    
+    <!-- 查询单条记录 -->
+    <select id="findDictByKey" parameterType="String" resultType="com.susd.domain.complex.Dict">
+        SELECT * FROM dict WHERE `key` = #{key}
+    </select>
+</mapper>

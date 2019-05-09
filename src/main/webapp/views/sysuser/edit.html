@@ -1,0 +1,74 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">用户信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/sysuser/index">用户列表</a></li>
+			<li class="active">用户信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+<form class="form-horizontal" id="userForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}">
+		<input type="hidden" name="version" value="${(model.version)!'1'}">
+		<div class="form-group">
+			<label class="col-md-12">用户名</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="用户名不能为空" name="userName"
+					value="<#if model??>${model.userName!''}</#if>" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">姓名</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="姓名不能为空" name="name"
+					value="<#if model??>${model.name!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">邮箱</label>
+			<div class="col-md-12">
+				<input type="email" class="form-control" autocomplete="off"
+					data-toggle="validator" data-error="邮箱格式不正确" name="email"
+					value="<#if model??>${model.email!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">手机号</label>
+			<div class="col-md-12">
+				<input type="tel" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-required-error="手机号不能为空" name="cell"
+					pattern="^0?1[3|4|5|7|8|6|9][0-9]\d{8}$" data-pattern-error="手机号格式不正确" value="<#if model??>${model.cell!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12"><@shiro.hasAnyPermissions name="sysuser.add,sysuser.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button></@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/sysuser/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+	
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/views/sysuser/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

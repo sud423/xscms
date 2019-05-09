@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.bill.BillRepository">
+	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！ -->
+	<resultMap id="bMap" type="com.susd.domain.bill.Bill">
+		<id column="id" property="id" />
+		<result column="price" property="totalPrice" />
+	</resultMap>
+
+	<resultMap id="billMap" type="com.susd.domain.bill.Bill">
+		<id column="id" property="id" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="bill_number" property="billNumber" />
+		<result column="period" property="period" />
+		<result column="user_id" property="userId" />
+		<result column="price" property="totalPrice" />
+		<result column="discount_price" property="discountPrice" />
+		<result column="amount" property="realAmount" />
+		<result column="pay_time" property="payTime" />
+		<result column="arrival_time" property="arrivalTime" />
+		<result column="status" property="status" />
+		<result column="push_time" property="pushTime" />
+		<result column="pusher_id" property="pusherId" />
+		<result column="add_time" property="addTime" />
+		<result column="remark" property="remark" />
+		<result column="version" property="version" />
+		<result column="maintain_id" property="maintainId" />
+		<association property="user"
+			javaType="com.susd.domain.site.User" resultMap="userMap" />
+	</resultMap>
+
+	<resultMap type="com.susd.domain.site.User" id="userMap">
+		<result column="name" property="name" />
+	</resultMap>
+
+	<!-- 查询单条记录 -->
+	<select id="findBillById" parameterType="int"
+		resultMap="billMap">
+		SELECT * FROM bill WHERE id = #{billId}
+	</select>
+
+	<select id="findBillByKeyword" resultMap="billMap">
+		select b.id,b.period,b.user_id,b.price,b.`status`,u.`name`
+		from bill b
+		inner
+		join `user` u on u.id=b.user_id and u.type=10
+		where
+		b.tenant_id=#{tenantId}
+		<if test="maintainId>0">
+			and maintain_id=#{maintainId}
+		</if>
+		<if test="keyword != null and keyword != ''">
+			<bind name="keyinfo" value="'%' + keyword + '%'" />
+			and (b.period like #{keyinfo} or u.`name` like #{keyinfo})
+		</if>
+		order by b.add_time desc
+	</select>
+
+	<select id="findByClient" resultMap="bMap">
+		select * from bill where
+		user_id=#{clientId} and period=#{period}
+	</select>
+	<select id="findById" parameterType="int" resultMap="bMap">
+		select *
+		from bill where id=${id}
+	</select>
+	<insert id="save" parameterType="com.susd.domain.bill.Bill"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		bill(tenant_id,bill_number,period,user_id,price,`status`,version,remark,add_time,maintain_id)
+		values
+		(#{tenantId},#{billNumber},#{period},#{userId},#{totalPrice},#{status},1,#{remark},#{addTime},#{maintainId})
+	</insert>
+	<update id="updatePrice">
+		update bill set price=#{price},version=version+1
+		where id=${billId}
+	</update>
+	<update id="push">
+		update bill set
+		`status`=10,push_time=#{pushTime},pusher_id=#{pushId},version=version+1
+		where id=${billId}
+	</update>
+</mapper>

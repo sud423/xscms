@@ -1,0 +1,288 @@
+<#include "/common/droplist.html" />
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">账单信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/bill/index">账单列表</a></li>
+			<li class="active">账单信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" data-toggle="validator" id="billForm">
+		<input type="hidden" name="billId" value="${(model.billId)!'0'}"> 
+		<input type="hidden" name="itemId" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}">
+
+		<div class="form-body">
+			<!-- row1 -->
+			<h3 class="box-title">账单信息</h3>
+			<hr style="margin-top: -6px;">
+			<!-- col1 -->
+			<div class="col-lg-4 col-sm-4 col-xs-12">
+				<div class="form-group">
+					<label class="col-md-12">客户</label>
+					<div class="col-md-12">
+						<#if (model.client)??>
+						<input type="text" class="form-control" readonly="readonly" value="${(model.client.name)!''}">
+							<input type="hidden"
+							name="userId" value="${(model.userId)!'0'}">
+						<#else>
+						<select id="selClient" required="required"
+							data-required-error="请选择客户" class="form-control select2"
+							tabindex="1" name="userId">
+						</select>
+						</#if>
+						
+					</div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-12">目的地</label>
+					<div class="col-md-12">
+						<div data-toggle="distpicker">
+							<div class="col-md-6" style="padding-left: 0px;">
+								<select id="selProvince" data-province="${(model.province)!"福建省"}" required="required" data-required-error="请目的地归属省份"
+									class="form-control" name="province"></select>
+							</div>
+							<div class="col-md-6">
+								<select id="selCity" data-city="${(model.city)!"泉州市"}" required="required" class="selectpicker form-control"
+									data-required-error="请目的地归属市" name="city"></select>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-12">其他费用(元)</label>
+					<div class="col-md-12">
+						<input id="txtFee" class="vertical-spin" id="txtFee" type="text"
+							data-bts-button-down-class="btn btn-default btn-outline"
+							data-bts-button-up-class="btn btn-default btn-outline"
+							autocomplete="off" name="cost" data-toggle="validator"
+							value="${((model.cost)!0)?string('#.00')}" />
+					</div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-12">备注</label>
+					<div class="col-md-12">
+						<textarea data-maxlength="255" class="form-control" rows="3"
+							name="remark">${(model.remark)!""}</textarea>
+					</div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+			</div>
+
+			<!-- col2 -->
+			<div class="col-lg-4 col-sm-4 col-xs-12">
+
+
+				<div class="form-group">
+					<label class="col-md-12">快递公司</label>
+					<div class="col-md-12"><@select id="express" datas=data
+						key="value" value="${(model.express)!''}" text="text"/></div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-md-12">快递单号</label>
+					<div class="col-md-12">
+						<!-- <select class="form-control" tabindex="1" name="driverId">
+							<option value="1">001</option>
+							<option value="2">002</option>
+							<option value="3">003</option>
+						</select> -->
+						<input type="text" class="form-control" required="required"
+							autocomplete="off" data-required-error="快递单号不能为空"
+							name="expressNo" value="${(model.expressNo)!''}">
+					</div>
+					<div class="col-md-12 help-block with-errors"></div>
+				</div>
+			</div>
+
+			<!-- col3 -->
+			<div class="col-lg-4 col-sm-4 col-xs-12" style="display: none;">
+				<h3 class="box-title">快递单号图片</h3>
+				<div class="col-md-12">
+					<img src="${request.getContextPath()}/assets/images/img1.jpg"
+						class="img-rounded img-responsive" />
+				</div>
+			</div>
+		</div>
+
+
+		<!-- row2 -->
+		<div class="col-lg-12">
+			<h3 class="box-title m-t-40">包裹信息</h3>
+			<hr style="margin-top: -6px;">
+			<div class="col-lg-12">
+				<div class="text-left">
+					<a href="javascript:addRow()"><span
+						class="circle circle-sm bg-success di"><i class="ti-plus"></i></span><span>&nbsp;&nbsp;添加包裹</span></a>
+				</div>
+			</div>
+
+			<div class="col-lg-12">
+				<table id="mainTable" class="table table-striped">
+					<thead>
+						<tr>
+							<th>长(cm)</th>
+							<th>宽(cm)</th>
+							<th>高(cm)</th>
+							<th>件数</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+
+							<#if (model.packages)??>
+							<#list model.packages as data>
+						<tr>
+						<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].len" data-required-error="请输入长"
+								value="${((data.len)!0)?string('#')}" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].width" data-required-error="请输入宽"
+								value="${((data.width)!0)?string('#')}" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].height" data-required-error="请输入高"
+								value="${((data.height)!0)?string('#')}" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].count" data-required-error="请输入件数"
+								value="${((data.count)!0)?string('#')}" /></td>
+							<td><a href="javascript:void(0);" onclick="removeRow(this)"><span
+									class="circle circle-sm bg-danger di"><i
+										class="ti-trash"></i></span></a></td>
+										</tr>
+						</#list>
+						<#else>
+						<tr>
+						<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].len" data-required-error="请输入长"
+								value="0" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].width" data-required-error="请输入宽"
+								value="0" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].height" data-required-error="请输入高"
+								value="0" /></td>
+							<td><input class="vertical-spin" type="text"
+								data-bts-button-down-class="btn btn-default btn-outline"
+								data-bts-button-up-class="btn btn-default btn-outline"
+								autocomplete="off" name="packageDtos[0].count" data-required-error="请输入件数"
+								value="0" /></td>
+							<td><a href="javascript:void(0);" onclick="removeRow(this)"><span
+									class="circle circle-sm bg-danger di"><i
+										class="ti-trash"></i></span></a></td>
+						</#if>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-lg-12">
+				<label>实际重量(kg)</label> <input id="txtWeight" class="vertical-spin"
+					type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline"
+					autocomplete="off" name="actualWeight" required
+					data-required-error="实际重量不能为空" value="${((model.actualWeight)!0)}" />
+				<div class=" help-block with-errors"></div>
+				<button class="btn btn-warning waves-effect waves-light m-r-10"
+					type="button" onclick="countFee()">运费计算</button>
+			</div>
+		</div>
+
+		<!-- row3 -->
+		<div class="col-lg-12">
+			<h3 class="box-title m-t-40">结算信息</h3>
+			<hr style="margin-top: -6px;">
+			<div class="row row-in">
+				<div class="col-lg-4 col-sm-6 row-in-br">
+					<ul class="col-in">
+						<li><span class="circle circle-md bg-danger"><i
+								class="fa fa-cubes"></i></span></li>
+						<li class="col-last"><h3 class="counter text-right m-t-15"
+								id="volWeight">${(model.volumeWeight)!0}</h3></li>
+						<li class="col-middle">
+							<h4>总体积重量(cm³)</h4> <input type="hidden"
+							value="${(model.volumeWeight)!0}" name="volumeWeight">
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-4 col-sm-6 row-in-br  b-r-none">
+					<ul class="col-in">
+						<li><span class="circle circle-md bg-info"><i
+								class="ti-shopping-cart"></i></span></li>
+						<li class="col-last"><h3 class="counter text-right m-t-15"
+								id="weight">${(model.weight)!0}</h3></li>
+						<li class="col-middle">
+							<h4>总结算重量(kg)</h4> <input type="hidden"
+							value="${(model.weight)!0}" name="weight">
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-4 col-sm-6">
+					<ul class="col-in">
+						<li><span class="circle circle-md bg-success"><i
+								class=" fa fa-cny"></i></span></li>
+						<li class="col-last"><h3 class="counter text-right m-t-15"
+								id="totalPrice">${(model.price)!0}</h3></li>
+						<li class="col-middle">
+							<h4>总运费(元)</h4> <input type="hidden" value="0" name="totalPrice">
+							<input type="hidden" value="${(model.totalCount)!0}"
+							name="totalCount">
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group m-b-00">
+			<div class="col-md-12  m-t-40">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/bill/index'">返 回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	var i = 1;
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.data.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/bill/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

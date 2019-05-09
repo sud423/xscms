@@ -1,0 +1,70 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">班级信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/cla/index">班级列表</a></li>
+			<li class="active">班级信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="claForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}">
+		<input type="hidden" name="channel"
+			value="${(model.channel)!'training'}">
+		<div class="form-group">
+			<label class="col-md-12">所属项目</label>
+
+			<div class="col-md-12">
+				<select class="form-control select2" required="required"
+					data-toggle="validator" data-error="所属项目不能为空" style="width: 100%;"
+					tabindex="1" name="parentId">
+
+				</select>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">班级名称</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-error="班级名称不能为空" name="name"
+					value="${(model.name)!''}">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea data-maxlength="255" class="form-control" rows="3"
+					name="remark">${(model.remark)!""}</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="training.cla.add,training.cla.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/cla/index'">返 回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/views/cla/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">

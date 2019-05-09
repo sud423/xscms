@@ -1,0 +1,134 @@
+<#assign title> 角色管理 </#assign>
+<#assign head>
+<link
+	href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css"
+	rel="stylesheet"></link>
+
+
+</#assign>
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">角色列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">角色管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtKeyword" autocomplete="off"
+							placeholder="角色名/别名"> <span class="input-group-btn">
+							<button id="searchroles" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+					<@shiro.hasPermission name="sysrole.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/sysrole/edit'>新增</a>
+					</@shiro.hasPermission>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbRole" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>角色名</th>
+							<th>别名</th>
+							<th>备注</th>
+							<th>状态</th>
+							<th>创建时间</th> <@shiro.hasAnyPermissions
+							name="sysrole.edit,sysrole.warrant">
+							<th width="50px">操作</th> </@shiro.hasAnyPermissions>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div id="responsive-modal" class="modal fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">配置权限</h4>
+			</div>
+			<div class="modal-body">
+				<form id="permissionForm">
+					<h5 id="lblTitle">勾选授予的权限</h5>
+					<input name="roleId" type="hidden" id="txtRoleId"> <input
+						name="permissionId" type="hidden" id="txtPermissionIds">
+
+					<div class="zTreeDemoBackground left">
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button"
+					class="btn btn-success waves-effect waves-light"
+					onclick="savePermission()">保存</button>
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+	<@shiro.hasAnyPermissions name="sysrole.edit,sysrole.warrant">
+	var visible = true;
+	</@shiro.hasAnyPermissions>
+
+	var json = '${datasource}';
+	var zNodes = eval(json);
+	function opt(data, type, row) {
+		var html = "";
+
+		html += "<@shiro.hasPermission name='sysrole.edit'><a class='button' onclick='redirect("
+				+ row.id + ")'>修改</a></@shiro.hasPermission>&nbsp;&nbsp;";
+
+		html += "<@shiro.hasPermission name='sysrole.warrant'><a class='button' onclick='openPermissWin("
+				+ row.id
+				+ ",\""
+				+ row.name
+				+ "\","+row.resources+")'>授权</a></@shiro.hasPermission>&nbsp;&nbsp;";
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/sysrole/index.js"></script> <script
+	type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.excheck.min.js"></script>
+</#assign>
+
+<#include "/layout.html" encoding="utf-8">

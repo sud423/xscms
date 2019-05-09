@@ -1,0 +1,142 @@
+
+<#include "/common/droplist.html" />
+<#assign head>
+<link rel="stylesheet" href="${request.getContextPath()}/assets/plugins/bootstrap-select/css/bootstrap-select.min.css"/> 
+</#assign>
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">运费信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/price/index">运费列表</a></li>
+			<li class="active">运费信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="priceForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}">
+		<div class="form-group">
+			<label class="col-md-12">所属快递公司</label>
+			<div class="col-md-12"><@select id="express" datas=data
+				key="value" value="${(model.express)!''}" text="text"/></div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">区域</label>
+			<div class="col-md-12">
+				<!-- <select class="form-control" tabindex="1" name="addr.province">
+					<option value="福建">福建</option>
+					<option value="上海">上海</option>
+					<option value="北京">北京</option>
+				</select> -->
+
+				<div data-toggle="distpicker">
+					<div class="col-md-6" style="padding-left:0px;">
+						<select id="selProvince" required="required" class="form-control"
+							name="addr.province"></select>
+					</div>
+					<div class="col-md-6">
+						<select required="required" multiple class="selectpicker form-control"
+							name="addr.city"></select>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">抛重比</label>
+			<div class="col-md-12">
+
+				<input id="coefficient" class="vertical-spin" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
+					autocomplete="off" name="coefficient"
+					value="${((model.coefficient)!0)?string('#')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">最低收费(元)</label>
+			<div class="col-md-12">
+				<input class="vertical-spin" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					autocomplete="off" name="lowestPrice"
+					value="${((model.lowestPrice)!0)?string('#.00')}" />
+
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">货重价格(元/kg)</label>
+			<div class="col-md-12">
+
+				<input class="vertical-spin" required type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					autocomplete="off" name="standardPrice"
+					value="${((model.standardPrice)!0)?string('#.00')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">其它费用(元)</label>
+			<div class="col-md-12">
+
+				<input id="expenses" class="vertical-spin" required type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					autocomplete="off" name="expenses"
+					value="${((model.expenses)!0)?string('#.00')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="priceconfig.edit,priceconfig.add">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/priceconfig/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.data.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/city/distpicker.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/priceconfig/index.js"></script>
+<script type="text/javascript">
+$(function () {
+	//$("#selProvince").distpicker({
+	//    province: '${(model.addr.province)!""}'
+	//  });
+	$("#selProvince").val("${(model.addr.province)!"福建省"}").trigger('change');
+	var citys="${(model.addr.city)!""}"
+	var arr=citys.split(",");
+	$('.selectpicker').selectpicker("val",arr);
+});
+</script>
+
+</#assign>
+
+<#include "/layout.html" encoding="utf-8">
