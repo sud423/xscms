@@ -49,8 +49,7 @@ public class PriceConfigController {
 	 * 
 	 * @param request 当前HTTP请求
 	 * @param keyword 关键字
-	 * @param page    索引页，下标从1开始
-	 * @param size    当前显示几条记录
+	 * @param param   查询参数
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -69,7 +68,7 @@ public class PriceConfigController {
 			map.put("model", priceConfig);
 		}
 
-		List<Dict> dataSource = dictRepository.findDictByKey("express");
+		List<Dict> dataSource = dictRepository.findDictByKey("express", SessionManager.getTenantId());
 		map.put("data", dataSource);
 
 		return "priceconfig/edit";

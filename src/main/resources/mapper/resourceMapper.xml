@@ -26,7 +26,7 @@
 		resource where tenant_id=#{tenantId}
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
-			and (`name` like #{keyinfo} or type like #{keyinfo})
+			and (`name` like #{keyinfo} or type like #{keyinfo} or `permission` like #{keyinfo})
 		</if>
 		order by sort asc
 	</select>

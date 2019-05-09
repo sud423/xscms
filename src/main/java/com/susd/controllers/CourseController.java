@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.susd.domainservice.identity.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,9 +55,9 @@ public class CourseController {
 			Course course = courseRepository.findCourseById(id);
 			map.put("model", course);
 		}
-		List<Dict> academys = dictRepository.findDictByKey("academy");
+		List<Dict> academys = dictRepository.findDictByKey("academy", SessionManager.getTenantId());
 		map.put("academys", academys);
-		List<Dict> classifys = dictRepository.findDictByKey("classify");
+		List<Dict> classifys = dictRepository.findDictByKey("classify", SessionManager.getTenantId());
 		map.put("classifys", classifys);
 		return "course/edit";
 	}

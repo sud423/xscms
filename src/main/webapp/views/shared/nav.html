@@ -100,9 +100,9 @@
 						<li><a href="${basePath}/resource/index" id="training_alumni"><i
 								class="ti-lock fa-fw"></i> <span class="hide-menu">校友查询</span></a></li>
 						</@shiro.hasPermission>
-						
+
 					</ul></li>  </@shiro.hasPermission>
-					
+
 				<@shiro.hasPermission name="basis">
 				<li><a href="#" class="waves-effect"><i
 						class="icon-settings fa-fw"></i> <span class="hide-menu">企业培训<span
@@ -129,7 +129,7 @@
 						<li><a href="${basePath}/resource/index" id="basis_alumni"><i
 								class="ti-lock fa-fw"></i> <span class="hide-menu">校友查询</span></a></li>
 						</@shiro.hasPermission>
-						
+
 					</ul></li>  </@shiro.hasPermission>
 				 <@shiro.hasPermission name="systemset">
 			<li><a href="#" class="waves-effect"><i
@@ -149,6 +149,10 @@
 					<li><a href="${basePath}/resource/index" id="resource"><i
 							class="ti-lock fa-fw"></i> <span class="hide-menu">资源管理</span></a></li>
 					</@shiro.hasPermission>
+                    <@shiro.hasPermission name="resource">
+                    <li><a href="${basePath}/express/index" id="express"><i
+                            class="ti-lock fa-fw"></i> <span class="hide-menu">物流管理</span></a></li>
+                    </@shiro.hasPermission>
 				</ul></li>  </@shiro.hasPermission>
 		</ul>
 

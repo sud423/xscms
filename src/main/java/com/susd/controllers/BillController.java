@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.susd.domainservice.identity.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,7 +71,7 @@ public class BillController {
 			map.put("model",bill);
 		}
 		
-		List<Dict> dataSource=dictRepository.findDictByKey("express");
+		List<Dict> dataSource=dictRepository.findDictByKey("express", SessionManager.getTenantId());
 		map.put("data",dataSource);
 		
 		return "bill/edit";

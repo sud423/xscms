@@ -58,11 +58,6 @@ public class UserBase {
 	private String salt;
 
 	/**
-	 * 最后登录时间
-	 */
-	private Date lastLoginTime;
-
-	/**
 	 * 添加时间
 	 */
 	private Date addTime;
@@ -142,14 +137,6 @@ public class UserBase {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
-	}
-
-	public Date getLastLoginTime() {
-		return this.lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
 	}
 
 	public String getAddTime() {

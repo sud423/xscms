@@ -17,15 +17,15 @@
 	<!-- 查询单条记录 -->
 	<select id="findClaById" parameterType="int"
 		resultType="com.susd.domain.training.Cla">
-		SELECT * FROM classies WHERE Id = #{claId}
+		SELECT * FROM classes WHERE Id = #{claId}
 	</select>
 	<select id="findByKeyword"
 		resultMap="claMap">
 		select
 		a.id,a.tenant_id,a.`name`,a.channel,a.parent_id,a.`status`,c.`name`
-		summary,a.remark,a.user_id,a.add_time,a.version from classies a
+		summary,a.remark,a.user_id,a.add_time,a.version from classes a
 		inner
-		join classies c on a.parent_id=c.id
+		join classes c on a.parent_id=c.id
 		where
 		a.tenant_id=#{tenantId} and
 		a.`status`!=2
@@ -35,13 +35,13 @@
 		</if>
 	</select>
 	<update id="update" parameterType="com.susd.domain.training.Cla">
-		update classies set
+		update classes set
 		`name`=#{name},`status`=#{status},parent_id=#{parentId},remark=#{remark},version=version+1
 		where id=${id}
 	</update>
 	<insert id="add" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.susd.domain.training.Cla">
-		insert into classies
+		insert into classes
 		(tenant_id,`name`,channel,`status`,parent_id,remark,user_id,version,add_time)
 		values(#{tenantId},#{name},#{channel},#{status},#{parentId},#{remark},#{userId},#{version},#{addTime})
 	</insert>
