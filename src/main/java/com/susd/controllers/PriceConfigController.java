@@ -68,7 +68,7 @@ public class PriceConfigController {
 			map.put("model", priceConfig);
 		}
 
-		List<Dict> dataSource = dictRepository.findDictByKey("express", SessionManager.getTenantId());
+		List<Dict> dataSource = dictRepository.findDictByKey("express","", SessionManager.getTenantId());
 		map.put("data", dataSource);
 
 		return "priceconfig/edit";

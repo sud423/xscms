@@ -30,9 +30,10 @@ public interface DictRepository {
 	/**
 	 * 根据字段键查询 字典列表
 	 * @param key 字典键
+	 * @param keyword 关键字查询
 	 * @param tenantId 所属租户
 	 * @return
 	 */
-	List<Dict> findDictByKey(@Param("key") String key,@Param("tenantId") int tenantId);
+	List<Dict> findDictByKey(@Param("key") String key,@Param("keyword") String keyword,@Param("tenantId") int tenantId);
 	
 }

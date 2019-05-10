@@ -7,13 +7,13 @@
 <#assign contentBody>
 <div class="row bg-title">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<h4 class="page-title">事件信息编辑</h4>
+		<h4 class="page-title">课程信息编辑</h4>
 	</div>
 	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 		<ol class="breadcrumb">
 			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
-			<li><a href="${request.getContextPath()}/car/index">焦点事件</a></li>
-			<li class="active">事件信息编辑</li>
+			<li><a href="${request.getContextPath()}/car/index">课程事件</a></li>
+			<li class="active">课程信息编辑</li>
 		</ol>
 	</div>
 	<!-- /.col-lg-12 -->
@@ -38,7 +38,7 @@
 			<label class="col-md-12">课程名称</label>
 			<div class="col-md-12">
 				<input type="text" class="form-control" required autocomplete="off"
-					maxlength="60" data-toggle="validator" data-required-error="课程名称为空"
+					maxlength="60" data-toggle="validator" data-required-error="课程名称不能为空"
 					name="name" value="${(model.name)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
@@ -118,14 +118,14 @@
 		</div>
 		<div class="form-group m-b-0">
 			<div class="col-md-12">
-				<@shiro.hasAnyPermissions name="activity.add,activity.edit">
+				<@shiro.hasAnyPermissions name="course.add,course.edit">
 				<button type="submit"
 					class="btn btn-success waves-effect waves-light m-r-10">保
 					存</button>
 				</@shiro.hasAnyPermissions>
 				<button type="button"
 					class="btn btn-inverse waves-effect waves-light m-r-10"
-					onclick="window.location.href=basePath+'/activity/index'">返
+					onclick="window.location.href=basePath+'/course/index'">返
 					回</button>
 			</div>
 		</div>

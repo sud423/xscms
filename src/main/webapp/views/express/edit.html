@@ -1,0 +1,73 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">物流信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/car/index">物流管理</a></li>
+			<li class="active">物流信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="expressForm">
+		<input type="hidden" name="id" value="${(model.id)!'0'}"> <input
+			type="hidden" name="version" value="${(model.version)!'1'}"><input
+			type="hidden" name="key" value="${(model.key)!'express'}">
+
+		<div class="form-group">
+			<label class="col-md-12">物流名称</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					maxlength="60" data-toggle="validator" data-required-error="物流名称不能为空"
+					name="text" value="${(model.text)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">物流编码</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"  data-required-error="物流编码不能为空"
+					   maxlength="255" name="value" value="${(model.value)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">排序</label>
+			<div class="col-md-12">
+
+				<input class="vertical-spin" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required
+					data-required-error="排序不能为空" autocomplete="off" name="sort"
+					value="${((model.sort)!99)?string('#')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="express.add,express.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/express/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body>
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/express/index.js"></script>
+</#assign>
+
+<#include "/layout.html" encoding="utf-8">

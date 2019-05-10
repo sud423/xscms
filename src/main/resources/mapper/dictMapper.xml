@@ -17,14 +17,14 @@
 
     <!-- 查询单条记录 -->
     <select id="findDictByKey" parameterType="String" resultType="com.susd.domain.complex.Dict">
-        SELECT * FROM dict WHERE `key` = #{key} and tenant_id=${tenantId}
+        SELECT * FROM dict WHERE `key` = #{key} and tenant_id=${tenantId} and `status`=1
     </select>
 
     <insert id="add" parameterType="com.susd.domain.complex.Dict" useGeneratedKeys="true" keyProperty="id">
-        insert into dict (`key`,`value`,`text`,`sort`,`status`,`version`,add_time) values(#{key},#{value},#{text},#{sort},#{status},#{version},#{addTime})
+        insert into dict (tenant_id,`key`,`value`,`text`,`sort`,`status`,`version`,add_time) values(#{tenantId},#{key},#{value},#{text},#{sort},#{status},#{version},#{addTime})
     </insert>
 
     <update id="update" parameterType="com.susd.domain.complex.Dict">
-        update dict set `key`=#{key},`value`=#{value},`text`=#{text},`sort`#{sort},`status`=#{status},`version`=`version`+1 where id=${id})
+        update dict set `key`=#{key},`value`=#{value},`text`=#{text},`sort`=#{sort},`status`=#{status},`version`=`version`+1 where id=${id}
     </update>
 </mapper>

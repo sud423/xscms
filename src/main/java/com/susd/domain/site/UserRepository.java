@@ -14,14 +14,14 @@ public interface UserRepository {
 	int add(User user);
 	
 	/**
-	 * 根据关键字查询客户列表
+	 * 根据关键字查询客户列表 TODO sql查询语句需要修改，统计记录数不对
 	 * @param keyword 关键字
 	 * @return 返回获取结果集
 	 */
 	List<User> findClientByKeyword(@Param("keyword") String keyword, @Param("tenantId") int tenantId);
 	
 	/**
-	 * 根据关键字查询驾驶员列表
+	 * 根据关键字查询驾驶员列表 TODO sql查询语句需要修改，统计记录数不对
 	 * @param keyword 关键字
 	 * @return 返回获取结果集
 	 */

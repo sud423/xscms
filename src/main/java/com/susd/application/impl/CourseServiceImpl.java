@@ -30,14 +30,15 @@ public class CourseServiceImpl implements CourseService  {
 		List<Course> courses=courseRepository.findByKeyword(keyword, SessionManager.getTenantId());
 		
 		PageInfo<Course> pageInfo= new PageInfo<Course>(courses);
-		return new DatatableResult<Course>(pageInfo,param.getDraw());
+		return new DatatableResult<>(pageInfo, param.getDraw());
 	}
 
 	@Override
 	public OptResult delete(int id) {
 		Course course=courseRepository.findCourseById(id);
-		if(course==null || course.getId()==0)
+		if(!(course != null) || course.getId()==0) {
 			return OptResult.Failed("待删除的信息不存在");
+		}
 		course.setStatus((byte)20);
 		int result=courseRepository.update(course);
 		
@@ -51,7 +52,7 @@ public class CourseServiceImpl implements CourseService  {
 	public OptResult save(Course course) {
 		if (Validate.isValid(course)) {
 
-			int res = 0;
+			int res;
 			course.setStatus((byte)1);
 			if (course.getId() == 0) {
 				course.setUserId(SessionManager.getUserId());

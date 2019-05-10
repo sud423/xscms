@@ -229,7 +229,6 @@ public class BillServiceImpl implements BillService {
 
 	@Override
 	public OptResult push(int billId) {
-		// TODO Auto-generated method stub
 		int result = billRepository.push(billId, SessionManager.getUserId(), new Date());
 		if (result == 0)
 			return OptResult.Failed("推送失败，请检查账单是否存在");

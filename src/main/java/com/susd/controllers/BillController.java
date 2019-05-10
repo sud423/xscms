@@ -71,7 +71,7 @@ public class BillController {
 			map.put("model",bill);
 		}
 		
-		List<Dict> dataSource=dictRepository.findDictByKey("express", SessionManager.getTenantId());
+		List<Dict> dataSource=dictRepository.findDictByKey("express","", SessionManager.getTenantId());
 		map.put("data",dataSource);
 		
 		return "bill/edit";

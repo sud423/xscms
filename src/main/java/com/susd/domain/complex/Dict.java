@@ -30,6 +30,11 @@ public class Dict implements Entity<Dict> {
      */
     private int sort;
 
+    /**
+     * 状态 1：有效 0：移除
+     */
+    private byte status;
+
     private Date addTime;
 
     private int version;
@@ -82,6 +87,13 @@ public class Dict implements Entity<Dict> {
         this.sort = sort;
     }
 
+    public byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(byte status) {
+        this.status = status;
+    }
 
     public Date getAddTime() {
         return addTime;

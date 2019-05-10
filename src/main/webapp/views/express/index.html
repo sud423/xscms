@@ -1,15 +1,15 @@
-<#assign title> 课程管理 </#assign>
+<#assign title> 物流管理 </#assign>
 
 <#assign contentBody>
 <div class="row bg-title">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<h4 class="page-title">课程列表</h4>
+		<h4 class="page-title">物流列表</h4>
 	</div>
 	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 		<ol class="breadcrumb">
 			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
 
-			<li class="active">课程管理</li>
+			<li class="active">物流管理</li>
 		</ol>
 	</div>
 	<!-- /.col-lg-12 -->
@@ -24,16 +24,16 @@
 
 					<div class="input-group">
 						<input class="form-control" id="txtKeyword" autocomplete="off"
-							placeholder="标题"> <span class="input-group-btn">
-							<button id="btnCourseSearch" class="btn btn-warning" type="button">
+							placeholder="物流名称"> <span class="input-group-btn">
+							<button id="btnExpressSearch" class="btn btn-warning" type="button">
 								<i class="ti-search"></i>
 							</button>
 						</span>
 					</div>
 				</div>
 				<div class="col-sm-9" style="padding: 2px 0;">
-					<@shiro.hasPermission name="course.add"> <a class="btn btn-info"
-						href='${request.getContextPath()}/course/edit'>新增</a>
+					<@shiro.hasPermission name="express.add"> <a class="btn btn-info"
+						href='${request.getContextPath()}/express/edit'>新增</a>
 					</@shiro.hasPermission>
 				</div>
 			</form>
@@ -42,18 +42,15 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive">
-				<table id="tbCourse" class="display nowrap" cellspacing="0"
+				<table id="tbExpress" class="display nowrap" cellspacing="0"
 					width="100%">
 					<thead>
 						<tr>
 							<th width="50">编号</th>
-							<th width="50">院校</th>
-							<th width="50">分类</th>
+							<th width="50">代码</th>
 							<th>名称</th>
-							<th width="50">费用</th>
-							<th width="50">上课地址</th>
-							<th width="50">开课时间</th> <@shiro.hasAnyPermissions
-							name="course.delete,course.edit">
+							 <@shiro.hasAnyPermissions
+							name="express.delete,express.edit">
 							<th width="50px">操作</th> </@shiro.hasAnyPermissions>
 						</tr>
 					</thead>
@@ -66,20 +63,20 @@
 </#assign>
 
 <#assign body> <script type="text/javascript">
-	<@shiro.hasAnyPermissions name="course.delete,course.edit">
+	<@shiro.hasAnyPermissions name="express.delete,express.edit">
 	var visible = true;
 	</@shiro.hasAnyPermissions>
 	function opt(data, type, row) {
 		var html = "";
 
-		html += "<@shiro.hasPermission name='course.delete'><a class='button' data-toggle='popover' data-container='body' "
-				+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要删除该课程？</h4>"
+		html += "<@shiro.hasPermission name='express.delete'><a class='button' data-toggle='popover' data-container='body' "
+				+ "data-placement='left' data-trigger='manual' data-html='true' data-content='<h4>是否要删除该物流？</h4>"
 				+ "<div class=\"text-right m-t-10\"><button class=\"btn btn-success btn-xs m-r-10\"" + " onclick=\"change(" + row.id
 				+ ")\">是</button><button class=\"btn btn-default btn-xs\" " + "onclick=\"clspop()\">否</button></div>'>删除</a></@shiro.hasPermission>&nbsp;&nbsp;";
-		html += "<@shiro.hasPermission name='course.edit'><a class='button' onclick='redirect(" + row.id + ")'>修改</a></@shiro.hasPermission>&nbsp;&nbsp;";
+		html += "<@shiro.hasPermission name='express.edit'><a class='button' onclick='redirect(" + row.id + ")'>修改</a></@shiro.hasPermission>&nbsp;&nbsp;";
 
 		return html;
 	}
 </script> <script type="text/javascript"
-	src="${request.getContextPath()}/views/course/index.js"></script> </#assign>
+	src="${request.getContextPath()}/views/express/index.js"></script> </#assign>
 <#include "/layout.html" encoding="utf-8" />

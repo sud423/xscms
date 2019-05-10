@@ -55,9 +55,9 @@ public class CourseController {
 			Course course = courseRepository.findCourseById(id);
 			map.put("model", course);
 		}
-		List<Dict> academys = dictRepository.findDictByKey("academy", SessionManager.getTenantId());
+		List<Dict> academys = dictRepository.findDictByKey("academy","", SessionManager.getTenantId());
 		map.put("academys", academys);
-		List<Dict> classifys = dictRepository.findDictByKey("classify", SessionManager.getTenantId());
+		List<Dict> classifys = dictRepository.findDictByKey("classify","", SessionManager.getTenantId());
 		map.put("classifys", classifys);
 		return "course/edit";
 	}
