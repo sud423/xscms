@@ -42,8 +42,7 @@ public class ClaController {
 	 * 
 	 * @param request 当前HTTP请求
 	 * @param keyword 关键字
-	 * @param page    索引页，下标从1开始
-	 * @param size    当前显示几条记录
+	 * @param param    分页对象信息
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -69,7 +68,7 @@ public class ClaController {
 	 * 保存数据
 	 * 
 	 * @param request
-	 * @param project    项目信息
+	 * @param cla    班级信息
 	 * @return 返回保存的结果
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
