@@ -33,7 +33,7 @@
 		inner
 		join dict b on c.classify=b.`value` and b.`key`='classify'
 		where
-		tenant_id=#{tenantId} and c.`status`!=20
+		c.tenant_id=#{tenantId} and c.`status`!=20
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
 			and (c.`name` like #{keyinfo} or a.text like #{keyinfo} or b.text like #{keyinfo})
