@@ -3,6 +3,9 @@ package com.susd.controllers;
 import com.susd.application.DiscountService;
 import com.susd.domain.activities.Discount;
 import com.susd.domain.activities.DiscountRepository;
+import com.susd.domain.complex.Dict;
+import com.susd.domain.complex.DictRepository;
+import com.susd.domainservice.identity.SessionManager;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -14,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 设置用户支付优惠区间
  */
 @Controller
-@RequestMapping(value = "/payset")
+@RequestMapping(value = "/payoffer")
 public class PayofferController {
 
     @Autowired
@@ -28,6 +32,9 @@ public class PayofferController {
 
     @Autowired
     private DiscountRepository discountRepository;
+
+    @Autowired
+    private DictRepository dictRepository;
 
     @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
     public String index(){
@@ -50,7 +57,11 @@ public class PayofferController {
             Discount discount=discountRepository.findById(id);
             map.put("model",discount);
         }
-        return "cla/edit";
+
+        List<Dict> dataSource=dictRepository.findDictByKey("express","", SessionManager.getTenantId());
+        map.put("data",dataSource);
+
+        return "payoffer/edit";
     }
 
     /**

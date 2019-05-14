@@ -32,7 +32,7 @@ public interface DiscountRepository {
      * @param id 主键值
      * @return
      */
-    Discount findById(int id);
+    Discount findById(@Param("id")int id);
 
     /**
      * 根据关键字和租房查询折扣

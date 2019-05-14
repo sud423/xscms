@@ -1,16 +1,16 @@
 /**
- * 焦点事件js
+ * 支付折扣管理js
  */
 
-setMenuCls("news");// 设置导航栏样式
+setMenuCls("payoffer");// 设置导航栏样式
 
 $(function() {
 	var url = window.location.href;
 	// 判断是否为列表页，如果是就加载数据
 	if (url.toLowerCase().indexOf("index") > -1) {
-		window.table = $('#tbNews').DataTable({
+		window.table = $('#tbPayOffer').DataTable({
 			"ajax" : {
-				url : basePath + "/news/list",
+				url : basePath + "/payoffer/list",
 				type : 'post',
 				data : function(d) {
 					d.keyword = $("#txtKeyword").val();
@@ -24,33 +24,13 @@ $(function() {
 					return seqNo;
 				}
 			}, {
-				"data" : "target",
-				"render" : function(data, type, row, meta) {
-					switch (data) {
-					case 1:
-						return "我爱上课";
-					case 2:
-						return "学校";
-					case 3:
-						return "全部";
-					}
-				}
+				"data" : "express"
 			}, {
-				"data" : "title"
+				"data" : "startPeriod"
 			}, {
-				"data" : "status",
-				"render" : function(data, type, full, callback) {
-					switch (data) {
-					case 1:
-						return "发布中";
-						break;
-					case 10:
-						return "待发布 ";
-						break;
-					}
-				}
+				"data" : "endPeriod"
 			}, {
-				"data" : "addTime"
+				"data" : "discount"
 			} ],
 			"columnDefs" : [ {
 				"render" : opt,
@@ -72,26 +52,44 @@ $(function() {
 		});
 
 		// 查询
-		$("#btnNewsSearch").bind("click", function() { // 点击按钮
+		$("#btnPayOffer").bind("click", function() { // 点击按钮
 			// 触发table重新请求服务器
 			window.table.ajax.reload();
 		});
 	} else {
 
-		$(".vertical-spin").TouchSpin({
+		$("input[name='sort'],input[name='startPeriod'],input[name='endPeriod']").TouchSpin({
 			verticalbuttons : true,
 			verticalupclass : 'ti-plus',
 			verticaldownclass : 'ti-minus',
 			min : 0,
 			max : 99999999
 		});
+		$("input[name='discount']").TouchSpin({
+			verticalbuttons : true,
+			verticalupclass : 'ti-plus',
+			verticaldownclass : 'ti-minus',
+			min : 0,
+			max : 100
+		});
 
-		$("#newsForm").validator().on('submit', function(e) {
+		$("#payofferForm").validator({
+			custom:{
+				gt:function ($el) {
+					var id = $el.data("gt") // foo
+					var matchValue = $("#" + id).val();
+
+					if (parseInt($el.val()) > 0 && parseInt(matchValue) >= parseInt($el.val())) {
+						return "截止有效值不能小于起始有效值";
+					}
+				}
+			}
+		}).on('submit', function(e) {
 			if (e.isDefaultPrevented()) {
 				return false;
 			} else {
-				$("#newsForm button").prop("disabled", true);
-				$.post(basePath + "/news/save", $("#newsForm").serialize(), function(data, status) {
+				$("#payofferForm button").prop("disabled", true);
+				$.post(basePath + "/payoffer/save", $("#payofferForm").serialize(), function(data, status) {
 					if (data.code != 0) {
 						swal("信息", data.result, "error");
 					} else {
@@ -100,11 +98,11 @@ $(function() {
 							text : data.result,
 							type : "success"
 						}, function() {
-							window.location.href = basePath + "/news/index";
+							window.location.href = basePath + "/payoffer/index";
 						});
 					}
 				}).always(function() {
-					$("#newsForm button").prop("disabled", false);
+					$("#payofferForm button").prop("disabled", false);
 				});
 				return false;
 			}
@@ -113,7 +111,7 @@ $(function() {
 });
 
 function redirect(id) {
-	window.location.href = basePath + '/news/edit/' + id;
+	window.location.href = basePath + '/payoffer/edit/' + id;
 }
 
 /**
@@ -123,7 +121,7 @@ function redirect(id) {
  * @returns
  */
 function change(id) {
-	$.post(basePath + '/news/change?newsId=' + id, function(data) {
+	$.post(basePath + '/payoffer/change?payofferId=' + id, function(data) {
 		if (data.code != 0) {
 			swal("信息", data.result, "error");
 		} else {

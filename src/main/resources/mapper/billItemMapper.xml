@@ -94,12 +94,10 @@
 	<select id="findBillItems" parameterType="int"
 		resultMap="billMap">
 		select
-		d.text express,u.`name`
+		b.express,u.`name`
 		client_name,b.province,b.city,b.express_no,b.price,a.`name`
 		account_name,b.add_time,b.id,b.bill_id
 		from bill_item b
-		inner join dict
-		d on d.`value`=b.express and d.`key`='express'
 		inner join `user` u on
 		b.user_id=u.id and u.type=10
 		inner join `user` a on b.account_id=a.id

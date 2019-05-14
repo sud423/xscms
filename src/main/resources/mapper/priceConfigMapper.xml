@@ -42,11 +42,10 @@
 	<select id="findByKeyword" parameterType="String"
 		resultMap="priceConfigMaps">
 
-	select price_config.id,price_config.tenant_id,text express,coefficient,province,
+	select price_config.id,tenant_id,express,coefficient,province,
 	city,area,standard_price,lowest_price,remark,add_fees,
 	maintain_id,price_config.add_time,price_config.version
 	from price_config
-	inner join dict on `value`=express and `key`='express'
 	where price_config.tenant_id=#{tenantId}
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
