@@ -42,7 +42,7 @@
 	</select>
 
 	<select id="getCars" resultMap="carMap">
-		select * from car where `status`=10
+		select * from car where `status`=10 and tenant_id=#{tenant_id}
 	</select>
 	
 	<update id="update" parameterType="com.susd.domain.complex.Car">
