@@ -50,8 +50,7 @@ public class BillController {
 	 * 
 	 * @param request 当前HTTP请求
 	 * @param keyword 关键字
-	 * @param page    索引页，下标从1开始
-	 * @param size    当前显示几条记录
+	 * @param param  分页信息 paeg  索引页，下标从1开始 size    当前显示几条记录
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -92,7 +91,7 @@ public class BillController {
 	/**
 	 * 保存账单
 	 * 
-	 * @param request 当前HTTP请求
+	 * @param input 创建账单信息
 	 * @return
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -104,7 +103,7 @@ public class BillController {
 	/**
 	 * 保存账单
 	 * 
-	 * @param request 当前HTTP请求
+	 * @param id 推送账单编号
 	 * @return
 	 */
 	@RequestMapping(value = "/push", method = RequestMethod.POST)

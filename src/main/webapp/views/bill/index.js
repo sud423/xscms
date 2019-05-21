@@ -87,9 +87,10 @@ $(document).ready(function() {
 						return data + row.city;
 					}
 				}, {
-					"data" : "express"
-				}, {
-					"data" : "expressNo"
+					"data" : "express",
+					"render" : function(data, type, row) {
+						return data +":"+ row.expressNo;
+					}
 				}, {
 					"data" : "price"
 				}, {

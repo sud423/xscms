@@ -82,7 +82,7 @@ public class BillItemOutDto {
 	}
 
 	public String getAddTime() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		return dateFormat.format(addTime);
 	}

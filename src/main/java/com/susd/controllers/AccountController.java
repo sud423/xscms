@@ -61,7 +61,9 @@ public class AccountController {
 		if (result.getCode() == 0) {
 			SavedRequest savedReq = WebUtils.getSavedRequest(request);
 			System.out.println(savedReq.getRequestUrl());
-			if (savedReq == null || savedReq.getRequestUrl() == null || savedReq.getRequestUrl().indexOf("favicon.ico")>-1) {
+			if (savedReq == null || savedReq.getRequestUrl() == null
+					|| savedReq.getRequestUrl().indexOf("favicon.ico")>-1
+					|| savedReq.getRequestUrl().indexOf("login")>-1) {
 				result.setResult(request.getContextPath());
 			} else {
 				// 返回上次请求的地址
