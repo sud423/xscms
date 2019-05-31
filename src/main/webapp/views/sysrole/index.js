@@ -147,7 +147,7 @@ function savePermission() {
 		} else {
 			swal({
 				title : "信息",
-				text : "授权成功，重新登录后生效",
+				text : "授权成功，请刷新后获取最新权限",
 				type : "success"
 			}, function() {
 				$("#responsive-modal").modal('hide');

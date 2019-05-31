@@ -11,25 +11,26 @@
 
 
 	<!-- 启用缓存注解开关 -->
-	<cache:annotation-driven
-		cache-manager="springCacheManager" />
+	<cache:annotation-driven cache-manager="springCacheManager" />
 
-
-
-	<bean id="ehcacheManagerFactory"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	<bean id="ehcacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 
+	<!--
+	Ehcache 使用可以查看官网Document
+	另外如果是按sping的注解可网上查相关资料学习，以下是简单的使用例子：
+	@Cacheable(value="缓存名称",key="#param")
+	https://elim.iteye.com/blog/2123030
+	https://www.cnblogs.com/jianjianyang/p/4938765.html
+	-->
 	<!-- spring 封装ehcache缓存管理器 -->
-	<bean id="springCacheManager"
-		class="org.springframework.cache.ehcache.EhCacheCacheManager">
+	<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcacheManagerFactory" />
 	</bean>
 
-	<!-- shiro封装cacheManager -->
-	<bean id="shiroCacheManager"
-		class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	<!-- shiro封装cacheManager 登录失败次数缓存记录-->
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="ehcacheManagerFactory" />
 	</bean>
 </beans>

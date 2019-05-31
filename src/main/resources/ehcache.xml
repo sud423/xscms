@@ -20,8 +20,8 @@
     <defaultCache
             maxEntriesLocalHeap="10000"
             eternal="false"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
             diskSpoolBufferSizeMB="30"
             maxEntriesLocalDisk="10000000"
             diskExpiryThreadIntervalSeconds="120"
@@ -29,12 +29,12 @@
         <persistence strategy="localTempSwap"/>
     </defaultCache>
 
-    <!-- 登录记录缓存 锁定10分钟 -->
+    <!-- 登录失败记录缓存 锁定10分钟 -->
     <cache name="passwordRetryCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
            timeToIdleSeconds="600"
-           timeToLiveSeconds="0"
+           timeToLiveSeconds="600"
            overflowToDisk="false"
            statistics="true">
     </cache>

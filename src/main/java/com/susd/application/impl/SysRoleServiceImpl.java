@@ -3,6 +3,7 @@ package com.susd.application.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.susd.domainservice.identity.UserRealm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysRoleRepository sysRoleRepository;
 
+	@Autowired
+	private UserRealm userRealm;
 	
 	@Override
 	public DatatableResult<SysRole> queryByKeyword(String keyword, DatatableParam param) {
@@ -52,6 +55,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 				}
 				role.setStatus(old.getStatus());
 				res = sysRoleRepository.update(role);
+				userRealm.clearCache();
 			}
 			if (res > 0)
 				return OptResult.Successed();
@@ -67,7 +71,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 		sysRoleRepository.deletePermission(roleId);
 		
 		sysRoleRepository.savePermission(roleId, permissionIds);
-		
+
+		userRealm.clearCache();
 		return OptResult.Successed();
 
 	}

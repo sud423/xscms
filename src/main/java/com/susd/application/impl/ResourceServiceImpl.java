@@ -3,6 +3,7 @@ package com.susd.application.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.susd.domainservice.identity.UserRealm;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -26,6 +27,9 @@ public class ResourceServiceImpl implements ResourceService {
 
 	@Autowired
 	private ResourceRepository resourceRepository;
+
+	@Autowired
+	private UserRealm userRealm;
 
 	@Override
 	public DatatableResult<Resource> queryByKeyword(String keyword, DatatableParam param) {
@@ -64,6 +68,7 @@ public class ResourceServiceImpl implements ResourceService {
 				}
 				resource.setStatus(old.getStatus());
 				res = resourceRepository.update(resource);
+				userRealm.clearCache();
 			}
 			if (res > 0)
 				return OptResult.Successed();

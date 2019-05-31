@@ -201,7 +201,7 @@ function saveRole() {
 		} else {
 			swal({
 				title : "信息",
-				text : "配置成功，重新登录后生效",
+				text : "配置成功，请刷新后获取最新权限",
 				type : "success"
 			}, function() {
 				$("#responsive-modal").modal('hide');

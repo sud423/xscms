@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.susd.domainservice.identity.UserRealm;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -33,7 +34,10 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private SysUserRepository sysUserRepository;
-	
+
+	@Autowired
+	private UserRealm userRealm;
+
 	@Override
 	public DatatableResult<UserDto> queryByKeyword(String keyword, DatatableParam param) {
 
@@ -133,7 +137,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public OptResult chgStatus(int userId, int opType) {
 		SysUser user = sysUserRepository.findUserById(userId);
-		String msg = "";
+		String msg;
 		if (opType == 1) {
 			user.enable();
 			msg = "启用";
@@ -187,8 +191,10 @@ public class SysUserServiceImpl implements SysUserService {
 
 		int res = sysUserRepository.update(user);
 
-		if (res > 0)
+		if (res > 0){
+			userRealm.clearCache();
 			return OptResult.Successed();
+		}
 		return OptResult.Failed("密码修改失败，请稍候重试");
 	}
 

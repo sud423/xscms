@@ -109,4 +109,13 @@ public class UserRealm extends AuthorizingRealm {
 
 		System.out.println(new Date().getTime() / 1000);
 	}
+
+	/**
+	 * 清除缓存
+	 */
+	public void clearCache() {
+		PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+		super.clearCache(principals);
+	}
+
 }
