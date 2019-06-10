@@ -38,13 +38,13 @@
 	<update id="update"
 		parameterType="com.susd.domain.site.News">
 		update news set
-		title=#{title},target=#{target},content=#{content},author=#{author},quote_url=#{quoteUrl},version=version+1,sort=${sort},`status`=${status}
+		category_id=#{categoryId},title=#{title},target=#{target},content=#{content},author=#{author},quote_url=#{quoteUrl},version=version+1,sort=${sort},`status`=${status}
 		where id=${id}
 	</update>
 	<insert id="add" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.susd.domain.site.News">
 		insert into news
-		(tenant_id,target,title,content,author,quote_url,`status`,release_time,user_id,version,sort,add_time)
-		values(#{tenantId},#{target},#{title},#{content},#{author},#{quoteUrl},#{status},#{addTime},#{userId},#{version},#{sort},#{addTime})
+		(category_id,tenant_id,target,title,content,author,quote_url,`status`,release_time,user_id,version,sort,add_time)
+		values(#{categoryId},#{tenantId},#{target},#{title},#{content},#{author},#{quoteUrl},#{status},#{addTime},#{userId},#{version},#{sort},#{addTime})
 	</insert>
 </mapper>

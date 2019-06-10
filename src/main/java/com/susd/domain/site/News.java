@@ -13,7 +13,9 @@ public class News implements Entity<News> {
 	private static final SimpleDateFormat dateFormat
     = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	private int id;
-	
+
+	private int categoryId;
+
 	private int tenantId;
 	
 	private byte target;
@@ -59,6 +61,14 @@ public class News implements Entity<News> {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public int getTenantId() {
