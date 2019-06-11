@@ -14,16 +14,26 @@ public class PriceConfig implements Entity<PriceConfig> {
 	private int tenantId;
 	
 	private String express;
-	
-	private int coefficient;
-	
+
+	private byte type;
+
 	private Address addr;
+
+	private int coefficient;
 	
 	//标准单价（单位：元/kg）
 	private float standardPrice;
 	
 	//最低运费（单位：元）
 	private float lowestPrice;
+
+	private float firstPrice;
+
+	private float firstWeight;
+
+	private float continuedPrice;
+
+	private float continuedWeight;
 	
 	/**附加费用（单位：元）*/
 	private float addFees;
@@ -62,6 +72,14 @@ public class PriceConfig implements Entity<PriceConfig> {
 		this.express = express;
 	}
 
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
+	}
+
 	public int getCoefficient() {
 		return coefficient;
 	}
@@ -93,6 +111,38 @@ public class PriceConfig implements Entity<PriceConfig> {
 
 	public void setLowestPrice(float lowestPrice) {
 		this.lowestPrice = lowestPrice;
+	}
+
+	public float getFirstPrice() {
+		return firstPrice;
+	}
+
+	public void setFirstPrice(float firstPrice) {
+		this.firstPrice = firstPrice;
+	}
+
+	public float getFirstWeight() {
+		return firstWeight;
+	}
+
+	public void setFirstWeight(float firstWeight) {
+		this.firstWeight = firstWeight;
+	}
+
+	public float getContinuedPrice() {
+		return continuedPrice;
+	}
+
+	public void setContinuedPrice(float continuedPrice) {
+		this.continuedPrice = continuedPrice;
+	}
+
+	public float getContinuedWeight() {
+		return continuedWeight;
+	}
+
+	public void setContinuedWeight(float continuedWeight) {
+		this.continuedWeight = continuedWeight;
 	}
 
 	public float getAddFees() {
