@@ -27,13 +27,31 @@ $(document).ready(function() {
 			}, {
 				"data" : "addr.province"
 			}, {
-				"data" : "addr.city"
+				"data" : "addr.city",
+				"render" : function(data) {
+					if (data.length > 19)
+						return "<span title='" + data + "'>" + data.substr(0, 19) + "……</span>";
+					else
+						return "<span title='" + data + "'>" + data + "</span>";
+				}
 			}, {
-				"data" : "coefficient"
+				"data" : "type",
+				"render":function (data) {
+					if (data == 10)
+						return "最低收费";
+					else
+						return "首重+续重";
+				}
 			}, {
-				"data" : "lowestPrice"
-			}, {
-				"data" : "standardPrice"
+				"data" : "type",
+				"render":function (data, type, row, meta) {
+					if (data == 10){
+						return "抛重比："+row.coefficient+" 最低收费："+row.lowestPrice+"元 货重价格："+row.standardPrice+"元/kg";
+					}
+					else{
+						return "首重："+row.firstPrice+"元/"+row.firstWeight+"kg 续重："+row.continuedPrice+"元/"+row.continuedWeight+"kg";
+					}
+				}
 			}, {
 				"data" : "addFees"
 			}, {
@@ -41,7 +59,7 @@ $(document).ready(function() {
 			} ],
 			"columnDefs" : [ {
 				"render" : opt,
-				"targets" : 9,
+				"targets" : 8,
 				"visible" : visible
 			} ],
 			drawCallback : function() {
@@ -94,7 +112,7 @@ $(document).ready(function() {
 			return false;
 		}
 	});
-	$("input[name='lowestPrice'],input[name='standardPrice'],input[name='expenses']").TouchSpin({
+	$("input[name='lowestPrice'],input[name='standardPrice'],input[name='expenses'],input[name='firstPrice'],input[name='firstWeight'],input[name='continuedPrice'],input[name='continuedWeight']").TouchSpin({
 		verticalbuttons : true,
 		verticalupclass : 'ti-plus',
 		verticaldownclass : 'ti-minus',

@@ -126,43 +126,55 @@ $(document).ready(function() {
 		});
 	} else {
 		$("#selClient").select2({
-			language : 'zh-CN',
+			language: 'zh-CN',
 			// "containerCssClass":'form-control',
-			ajax : {
-				url : basePath + '/client/findClient',
-				dataType : 'json',
-				quietMillis : 250,
-				data : function(params) {
+			ajax: {
+				url: basePath + '/client/findClient',
+				dataType: 'json',
+				quietMillis: 250,
+				data: function (params) {
 					return {
-						q : params.term, // search term
+						q: params.term, // search term
 					};
 				},
-				processResults : function(data, page) {
+				processResults: function (data, page) {
 					return {
-						results : data
+						results: data
 					};
 				},
-				cache : true
+				cache: true
 			}
 		});
 
 		$("#txtWeight,#txtFee").TouchSpin({
-			verticalbuttons : true,
-			verticalupclass : 'ti-plus',
-			verticaldownclass : 'ti-minus',
-			min : 0,
-			step : 0.01,
-			max : 99999999,
-			decimals : 2
+			verticalbuttons: true,
+			verticalupclass: 'ti-plus',
+			verticaldownclass: 'ti-minus',
+			min: 0,
+			step: 0.01,
+			max: 99999999,
+			decimals: 2
 		});
 
 		$("#mainTable tbody input").TouchSpin({
-			verticalbuttons : true,
-			verticalupclass : 'ti-plus',
-			verticaldownclass : 'ti-minus',
-			min : 0,
-			max : 99999999
+			verticalbuttons: true,
+			verticalupclass: 'ti-plus',
+			verticaldownclass: 'ti-minus',
+			min: 0,
+			max: 99999999
 		});
+
+		chg();
+		$("select[name='type']").change(function () {
+			chg();
+		});
+
+		function chg() {
+			if ($("select[name='type']").val() == "10")
+				$("#mainTable,#addPackBtn").show();
+			else
+				$("#mainTable,#addPackBtn").hide();
+		}
 	}
 
 	// 查询
@@ -295,7 +307,7 @@ function check() {
 		return false;
 	}
 
-	if (!$("#express").val()) {
+	if (!$("select[name='express']").val()) {
 		swal("信息", "请选择快递公司", "error");
 		return false;
 	}
@@ -312,13 +324,17 @@ function check() {
 
 	var mark = true;
 
-	$("#mainTable .vertical-spin").each(function(index, item) {
-		if ($(item).val() <= 0 || !$(item).val()) {
-			swal("信息", item.dataset.requiredError, "error");
-			mark = false;
-			return false;
-		}
-	})
+	if($("select[name='type']").val()=="10"){
+		$("#mainTable .vertical-spin").each(function(index, item) {
+			if ($(item).val() <= 0 || !$(item).val()) {
+				swal("信息", item.dataset.requiredError, "error");
+				mark = false;
+				return false;
+			}
+		})
+	}
+
+
 	return mark;
 }
 

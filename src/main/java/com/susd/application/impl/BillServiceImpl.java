@@ -88,7 +88,7 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public BillItemInputDto countFee(BillItemInputDto input) {
 		PriceConfig config = priceConfigRepository.findPrice(input.getProvince(), input.getCity(), input.getExpress(),
-				SessionManager.getTenantId());
+				SessionManager.getTenantId(),input.getType());
 
 		if (config == null || config.getId() == 0) {
 			input.setVolumeWeight(0);
@@ -96,26 +96,43 @@ public class BillServiceImpl implements BillService {
 			input.setTotalPrice(0);
 			return input;
 		}
+		//最低收费
+		if(input.getType()==10){
+			float volume = input.calculateTotalVolume();// 计算总体积
 
-		float volume = input.calculateTotalVolume();// 计算总体积
+			BigDecimal b = new BigDecimal(volume / config.getCoefficient());
+			float volumeWeight = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 
-		BigDecimal b = new BigDecimal(volume / config.getCoefficient());
-		float volumeWeight = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+			input.setVolumeWeight(volumeWeight);
 
-		input.setVolumeWeight(volumeWeight);
+			// 计算最后结算重量
+			float weight = input.getActualWeight() > volumeWeight ? input.getActualWeight() : volumeWeight;
+			input.setWeight(weight);
 
-		// 计算最后结算重量
-		float weight = input.getActualWeight() > volumeWeight ? input.getActualWeight() : volumeWeight;
-		input.setWeight(weight);
+			// 计算价格
+			float price = weight * config.getStandardPrice();
+			// 与最低价格比较
+			float maxPrice = price > config.getLowestPrice() ? price : config.getLowestPrice();
+			BigDecimal p = new BigDecimal(maxPrice + input.getCost() + config.getAddFees());
+			float totalPrice = p.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 
-		// 计算价格
-		float price = weight * config.getStandardPrice();
-		// 与最低价格比较
-		float maxPrice = price > config.getLowestPrice() ? price : config.getLowestPrice();
-		BigDecimal p = new BigDecimal(maxPrice + input.getCost() + config.getAddFees());
-		float totalPrice = p.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-
-		input.setTotalPrice(totalPrice);// 加上其它费用和额外费用
+			input.setTotalPrice(totalPrice);// 加上其它费用和额外费用
+		}
+		else{//首重+续重
+			input.setWeight(input.getActualWeight());
+			float firstW=input.getWeight()-config.getFirstWeight();
+			if(firstW>0){
+				float firstTotalPrice=config.getFirstPrice()*config.getFirstWeight();
+				float continuedTotalPrice=firstW/config.getContinuedWeight()* config.getContinuedPrice();
+				float totalPrice=firstTotalPrice+continuedTotalPrice;
+				BigDecimal p = new BigDecimal(totalPrice+input.getCost());
+				input.setTotalPrice(p.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());// 加上其它费用和额外费用
+			}
+			else{
+				BigDecimal b = new BigDecimal(firstW*config.getFirstPrice()+input.getCost());
+				input.setTotalPrice(b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());
+			}
+		}
 
 		return input;
 

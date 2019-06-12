@@ -71,6 +71,7 @@
 							<tr>
 								<th>序号</th>
 								<th>快递公司</th>
+								<th>结算类型</th>
 								<th>结算重量(kg)</th>
 								<th>价格(元)</th>
 							</tr>
@@ -127,7 +128,7 @@
 				function(data, status) {
 					$("#tbBill tbody").empty();
 					$.each(data, function() {
-						$("#tbBill tbody").append("<tr><td>"+this.seqNo+"</td><td>"+this.express+"</td><td>"+this.weight+"</td><td>"+this.price+"</td></tr>")
+						$("#tbBill tbody").append("<tr><td>"+this.seqNo+"</td><td>"+this.express+"</td><td>"+(this.type==10?'最低收费':'首重+续重')+"</td><td>"+this.weight+"</td><td>"+this.price+"</td></tr>")
 					})
 				}).always(function() {
 			$("#formSearch button").prop("disabled", false);

@@ -13,7 +13,9 @@ public class Bill implements Entity<Bill> {
 	private int id;
 	
 	private int tenantId;
-	
+
+	private byte type;
+
 	/**账单流水号*/
 	private String billNumber;
 	
@@ -77,6 +79,14 @@ public class Bill implements Entity<Bill> {
 
 	public void setTenantId(int tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
 	}
 
 	public String getBillNumber() {

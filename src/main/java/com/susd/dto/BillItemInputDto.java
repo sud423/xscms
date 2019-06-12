@@ -21,6 +21,8 @@ public class BillItemInputDto {
 	@Size(max=60,message="目的地市最大长度为60个字符")
 	private String city;
 
+	private byte type;
+
 	// 其它费用
 	private float cost;
 
@@ -86,6 +88,14 @@ public class BillItemInputDto {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
 	}
 
 	public float getCost() {

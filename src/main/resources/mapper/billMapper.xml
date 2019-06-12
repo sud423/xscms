@@ -67,9 +67,9 @@
 	<insert id="save" parameterType="com.susd.domain.bill.Bill"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into
-		bill(tenant_id,bill_number,period,user_id,price,`status`,version,remark,add_time,maintain_id)
+		bill(tenant_id,`type`,bill_number,period,user_id,price,`status`,version,remark,add_time,maintain_id)
 		values
-		(#{tenantId},#{billNumber},#{period},#{userId},#{totalPrice},#{status},1,#{remark},#{addTime},#{maintainId})
+		(#{tenantId},#{type},#{billNumber},#{period},#{userId},#{totalPrice},#{status},1,#{remark},#{addTime},#{maintainId})
 	</insert>
 	<update id="updatePrice">
 		update bill set price=#{price},version=version+1

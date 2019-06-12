@@ -69,41 +69,97 @@
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
-		<div class="form-group">
-			<label class="col-md-12">抛重比</label>
-			<div class="col-md-12">
 
-				<input id="coefficient" class="vertical-spin" type="text"
-					data-bts-button-down-class="btn btn-default btn-outline"
-					data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
-					autocomplete="off" name="coefficient"
-					value="${((model.coefficient)!0)?string('#')}" />
+		<div id="lowpriceedit">
+
+			<div class="form-group">
+				<label class="col-md-12">抛重比</label>
+				<div class="col-md-12">
+
+					<input id="coefficient" class="vertical-spin" type="text"
+						data-bts-button-down-class="btn btn-default btn-outline"
+						data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
+						autocomplete="off" name="coefficient"
+						value="${((model.coefficient)!0)?string('#')}" />
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
 			</div>
-			<div class="col-md-12 help-block with-errors"></div>
+			<div class="form-group">
+				<label class="col-md-12">最低收费(元)</label>
+				<div class="col-md-12">
+					<input class="vertical-spin" type="text"
+						data-bts-button-down-class="btn btn-default btn-outline"
+						data-bts-button-up-class="btn btn-default btn-outline" required
+						autocomplete="off" name="lowestPrice"
+						value="${((model.lowestPrice)!0)?string('#.00')}" />
+
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12">货重价格(元/kg)</label>
+				<div class="col-md-12">
+
+					<input class="vertical-spin" required type="text"
+						data-bts-button-down-class="btn btn-default btn-outline"
+						data-bts-button-up-class="btn btn-default btn-outline" required
+						autocomplete="off" name="standardPrice"
+						value="${((model.standardPrice)!0)?string('#.00')}" />
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
+			</div>
+
 		</div>
-		<div class="form-group">
-			<label class="col-md-12">最低收费(元)</label>
-			<div class="col-md-12">
-				<input class="vertical-spin" type="text"
-					data-bts-button-down-class="btn btn-default btn-outline"
-					data-bts-button-up-class="btn btn-default btn-outline" required
-					autocomplete="off" name="lowestPrice"
-					value="${((model.lowestPrice)!0)?string('#.00')}" />
 
-			</div>
-			<div class="col-md-12 help-block with-errors"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-12">货重价格(元/kg)</label>
-			<div class="col-md-12">
+		<div id="firstpriceedit" style="display:none;">
+			<div class="form-group">
+				<label class="col-md-12">首重价格(元)</label>
+				<div class="col-md-12">
 
-				<input class="vertical-spin" required type="text"
-					data-bts-button-down-class="btn btn-default btn-outline"
-					data-bts-button-up-class="btn btn-default btn-outline" required
-					autocomplete="off" name="standardPrice"
-					value="${((model.standardPrice)!0)?string('#.00')}" />
+					<input class="vertical-spin" type="text"
+						   data-bts-button-down-class="btn btn-default btn-outline"
+						   data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
+						   autocomplete="off" name="firstPrice"
+						   value="${((model.firstPrice)!0)?string('#')}" />
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
 			</div>
-			<div class="col-md-12 help-block with-errors"></div>
+			<div class="form-group">
+				<label class="col-md-12">首重(kg)</label>
+				<div class="col-md-12">
+					<input class="vertical-spin" type="text"
+						   data-bts-button-down-class="btn btn-default btn-outline"
+						   data-bts-button-up-class="btn btn-default btn-outline" required
+						   autocomplete="off" name="firstWeight"
+						   value="${((model.firstWeight)!1)?string('#.00')}" />
+
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12">续重价格(元)</label>
+				<div class="col-md-12">
+
+					<input class="vertical-spin" required type="text"
+						   data-bts-button-down-class="btn btn-default btn-outline"
+						   data-bts-button-up-class="btn btn-default btn-outline" required
+						   autocomplete="off" name="continuedPrice"
+						   value="${((model.continuedPrice)!0)?string('#.00')}" />
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-12">续重(kg)</label>
+				<div class="col-md-12">
+					<input class="vertical-spin" type="text"
+						   data-bts-button-down-class="btn btn-default btn-outline"
+						   data-bts-button-up-class="btn btn-default btn-outline" required
+						   autocomplete="off" name="continuedWeight"
+						   value="${((model.continuedWeight)!1)?string('#.00')}" />
+
+				</div>
+				<div class="col-md-12 help-block with-errors"></div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-md-12">其它费用(元)</label>
@@ -154,7 +210,22 @@ $(function () {
 	var arr=citys.split(",");
 	$('.selectpicker').selectpicker("val",arr);
 
-	$("#selType")
+	chg();
+	$("#selType").change(function(){
+		console.log($(this).val());
+		chg();
+	});
+
+	function chg(){
+		if($("#selType").val()=="10"){
+			$("#lowpriceedit").show();
+			$("#firstpriceedit").hide();
+		}
+		if($("#selType").val()=="20"){
+			$("#lowpriceedit").hide();
+			$("#firstpriceedit").show();
+		}
+	}
 });
 </script>
 

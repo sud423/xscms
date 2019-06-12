@@ -66,5 +66,5 @@ public interface PriceConfigRepository {
 	 * @return
 	 */
 	PriceConfig findPrice(@Param("province") String province, @Param("city") String city,
-						  @Param("express") String express, @Param("tenantId") int tenantId);
+						  @Param("express") String express, @Param("tenantId") int tenantId, @Param("type") byte type);
 }

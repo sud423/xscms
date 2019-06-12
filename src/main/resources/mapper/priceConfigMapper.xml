@@ -19,11 +19,16 @@
 		<id column="id" property="id" />
 		<result column="tenant_id" property="tenantId" />
 		<result column="express" property="express" />
+		<result column="type" property="type" />
 		<result column="coefficient" property="coefficient" />
 		<result column="province" property="addr.province" />
 		<result column="city" property="addr.city" />
 		<result column="standard_price" property="standardPrice" />
 		<result column="lowest_price" property="lowestPrice" />
+		<result column="first_price" property="firstPrice" />
+		<result column="first_weight" property="firstWeight" />
+		<result column="continued_price" property="continuedPrice" />
+		<result column="continued_weight" property="continuedWeight" />
 		<result column="add_fees" property="addFees" />
 		<result column="maintain_id" property="maintainId" />
 		<result column="add_time" property="addTime" />
@@ -35,18 +40,19 @@
 		parameterType="com.susd.domain.complex.PriceConfig"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into price_config
-		(tenant_id,express,coefficient,province,city,area,standard_price,lowest_price,add_fees,remark,maintain_id,add_time,version)
+		(tenant_id,express,`type`,coefficient,province,city,area,standard_price,lowest_price,first_price,first_weight,continued_price,continued_weight,add_fees,remark,maintain_id,add_time,version)
 		values
-		(#{tenantId},#{express},#{coefficient},#{addr.province},#{addr.city},#{addr.area},#{standardPrice},#{lowestPrice},#{addFees},#{remark},#{maintainId},#{addTime},#{version})
+		(#{tenantId},#{express},#{type},#{coefficient},#{addr.province},#{addr.city},#{addr.area},#{standardPrice},#{lowestPrice},#{firstPrice},#{firstWeight},#{continuedPrice},#{continuedWeight},#{addFees},#{remark},#{maintainId},#{addTime},#{version})
 	</insert>
 	<select id="findByKeyword" parameterType="String"
 		resultMap="priceConfigMaps">
 
-	select price_config.id,tenant_id,express,coefficient,province,
+	select price_config.id,tenant_id,express,`type`,coefficient,province,
 	city,area,standard_price,lowest_price,remark,add_fees,
-	maintain_id,price_config.add_time,price_config.version
+	maintain_id,price_config.add_time,version,
+	first_price,first_weight,continued_price,continued_weight
 	from price_config
-	where price_config.tenant_id=#{tenantId}
+	where tenant_id=#{tenantId}
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
 			and (express like #{keyinfo} or province like #{keyinfo})
@@ -67,21 +73,26 @@
 	<update id="update"
 		parameterType="com.susd.domain.complex.PriceConfig">
 		update price_config set
-		express=#{express},coefficient=#{coefficient},province=#{addr.province},
+		express=#{express},`type`=#{type},coefficient=#{coefficient},province=#{addr.province},
 		city=#{addr.city},area=#{addr.area},add_fees=#{addFees},
-		standard_price=#{standardPrice},lowest_price=#{lowestPrice},remark=#{remark},version=version+1
+		standard_price=#{standardPrice},lowest_price=#{lowestPrice},first_price=#{firstPrice}
+		,first_weight=#{firstWeight},continued_price=#{continuedPrice}
+		,continued_weight=#{continuedWeight},remark=#{remark},version=version+1
 		where id=${id}
 	</update>
 
 
 	<select id="priceCount" resultType="com.susd.domain.complex.PriceSearchResult">
 	
-	select (@i:=@i+1) as seqNo,text express,if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) weight,
-	if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price>lowest_price,
-	if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price,lowest_price) price 
-	from price_config 
-	inner join dict on `value`=express and `key`='express' ,(select @i:=0) as it
-	where tenant_id=#{tenantId} and province=#{province} 
+	select (@i:=@i+1) as seqNo,express,`type`,if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) weight,
+	case `type` when 10 then if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price>lowest_price,
+	if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price,lowest_price)
+	 else
+		if(${weight} &lt;= first_weight,${weight}*first_price,first_price*first_weight+(${weight}-first_weight)/continued_weight* continued_price)
+	 end price
+	from price_config ,
+	(select @i:=0) as it
+	where tenant_id=#{tenantId} and province=#{province}
 	<if test="city != null and city != ''">
 			<bind name="keyinfo" value="'%' + city + '%'" />
 			and city like #{keyinfo}
@@ -91,7 +102,7 @@
 	
 	<select id="findPrice" resultMap="priceConfigMap">
 			<bind name="keyinfo" value="'%' + city + '%'" />
-		select * from price_config where tenant_id=#{tenantId} and province=#{province} and city like #{keyinfo} and express=#{express}
+		select * from price_config where tenant_id=#{tenantId} and province=#{province} and city like #{keyinfo} and express=#{express} and `type`=#{type}
 	</select>
 
 </mapper>
