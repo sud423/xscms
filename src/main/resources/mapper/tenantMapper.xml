@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.identity.TenantRepository">
+    <insert id="add" parameterType="com.susd.domain.identity.Tenant" useGeneratedKeys="true" keyProperty="id">
+        insert int tenant (`name`,company,contact,cell,`domain`,ip,account,password,port,os,add_time)
+        values (#{name},#{company},#{contact},#{cell},#{domain},#{ip},#{account},#{password},#{port},#{os},#{add_time})
+    </insert>
+
+    <select id="findTenantById" parameterType="int" resultType="com.susd.domain.identity.Tenant">
+        select * from tenant where id=#{tenantId}
+    </select>
+
+    <select id="findByKeyword" parameterType="String" resultType="com.susd.domain.identity.Tenant">
+        select * from tenant
+        <if test="keyword != null and keyword != ''">
+            <bind name="keyinfo" value="'%' + keyword + '%'" />
+            where `name` like #{keyinfo} or company like #{keyinfo} or contact like #{keyinfo}
+            cell like #{keyinfo}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.susd.domain.identity.Tenant">
+        update tenant set `name`=#{name},company=#{name},contact=#{name},cell=#{name},
+        `domain`=#{name},ip=#{name},account,password,port,os
+        where id=#{id}
+    </update>
+</mapper>

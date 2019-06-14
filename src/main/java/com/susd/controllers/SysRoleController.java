@@ -78,7 +78,7 @@ public class SysRoleController {
 	 * 保存数据
 	 * 
 	 * @param request
-	 * @param user    用户信息
+	 * @param role    角色信息
 	 * @return 返回保存的结果
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
