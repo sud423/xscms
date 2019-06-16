@@ -70,20 +70,21 @@
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
 
-		<div id="lowpriceedit">
+		<div class="form-group">
+			<label class="col-md-12">抛重比</label>
+			<div class="col-md-12">
 
-			<div class="form-group">
-				<label class="col-md-12">抛重比</label>
-				<div class="col-md-12">
-
-					<input id="coefficient" class="vertical-spin" type="text"
-						data-bts-button-down-class="btn btn-default btn-outline"
-						data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
-						autocomplete="off" name="coefficient"
-						value="${((model.coefficient)!0)?string('#')}" />
-				</div>
-				<div class="col-md-12 help-block with-errors"></div>
+				<input id="coefficient" class="vertical-spin" type="text"
+					data-bts-button-down-class="btn btn-default btn-outline"
+					data-bts-button-up-class="btn btn-default btn-outline" required data-error="抛重比不能为空"
+					autocomplete="off" name="coefficient"
+					value="${((model.coefficient)!0)?string('#')}" />
 			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+
+		<div id="lowpriceedit">
+			
 			<div class="form-group">
 				<label class="col-md-12">最低收费(元)</label>
 				<div class="col-md-12">
@@ -173,6 +174,15 @@
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
+		
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea data-maxlength="255" class="form-control" rows="3"
+					name="remark">${(model.remark)!""}</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
 
 		<div class="form-group m-b-0">
 			<div class="col-md-12">
@@ -199,7 +209,7 @@
 <script type="text/javascript"
 	src="${request.getContextPath()}/assets/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script type="text/javascript"
-	src="${request.getContextPath()}/views/priceconfig/index.js"></script>
+	src="${request.getContextPath()}/views/priceconfig/index.js?v=1.0.0"></script>
 <script type="text/javascript">
 $(function () {
 	//$("#selProvince").distpicker({

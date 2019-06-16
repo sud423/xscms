@@ -45,12 +45,15 @@ $(document).ready(function() {
 			}, {
 				"data" : "type",
 				"render":function (data, type, row, meta) {
+					var html="抛重比："+row.coefficient;
 					if (data == 10){
-						return "抛重比："+row.coefficient+" 最低收费："+row.lowestPrice+"元 货重价格："+row.standardPrice+"元/kg";
+						html += " 最低收费："+row.lowestPrice+"元 货重价格："+row.standardPrice+"元/kg";
 					}
 					else{
-						return "首重："+row.firstPrice+"元/"+row.firstWeight+"kg 续重："+row.continuedPrice+"元/"+row.continuedWeight+"kg";
+						html += " 首重："+row.firstPrice+"元/"+row.firstWeight+"kg 续重："+row.continuedPrice+"元/"+row.continuedWeight+"kg";
 					}
+					
+					return "<span style=\"color:"+(data==10?"red":"green")+";\">"+html+"</span>";
 				}
 			}, {
 				"data" : "addFees"
