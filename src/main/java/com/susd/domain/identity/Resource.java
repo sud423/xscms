@@ -11,9 +11,7 @@ public class Resource implements Entity<Resource> {
 
 	//资源编号
 	private int id;
-	
-	private int tenantId;
-	
+
 	private int parentId;
 	
 	private String parentIds;
@@ -41,16 +39,6 @@ public class Resource implements Entity<Resource> {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-
-
-	public int getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(int tenantId) {
-		this.tenantId = tenantId;
 	}
 
 	public int getParentId() {

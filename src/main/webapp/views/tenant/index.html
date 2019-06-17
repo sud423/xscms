@@ -1,0 +1,132 @@
+<#assign title> 租户管理 </#assign>
+<#assign head>
+<link
+		href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css"
+		rel="stylesheet"></link>
+
+
+</#assign>
+<#assign contentBody>
+
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">租户列表</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+
+			<li class="active">租户管理</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+
+<div class="white-box">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="col-sm-3" style="padding-left: 3px;">
+
+					<div class="input-group">
+						<input class="form-control" id="txtTenantKeyword" autocomplete="off"
+							placeholder="租户名称"> <span class="input-group-btn">
+							<button id="searchTenant" class="btn btn-warning" type="button">
+								<i class="ti-search"></i>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-sm-9" style="padding: 2px 0;">
+
+					<a class="btn btn-info"
+						href='${request.getContextPath()}/tenant/edit'>新增</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				<table id="tbTenant" class="display nowrap" cellspacing="0"
+					width="100%">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>租户名</th>
+							<th>公司</th>
+							<th>联系人</th>
+							<th>电话</th>
+							<th>域名</th>
+							<th>服务器IP</th>
+							<th>服务器账号</th>
+							<th>密码</th>
+							<th>操作系统</th>
+							<th width="100px">操作</th>
+
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div id="responsive-modal" class="modal fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h4 class="modal-title">配置资源</h4>
+			</div>
+			<div class="modal-body">
+				<form id="resourceForm">
+					<h5>勾选所需的资源</h5>
+					<input name="tenantId" type="hidden" id="txtTenantId">
+					<input name="resourceId" type="hidden" id="txtResouceIds">
+					<div class="zTreeDemoBackground left">
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button"
+					class="btn btn-success waves-effect waves-light"
+					onclick="saveResource()">保存</button>
+				<button type="button" class="btn btn-inverse waves-effect"
+					data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript">
+
+	var json = '${datasource}';
+	var zNodes = eval(json);
+	var visible=true;
+	function opt(data, type, row) {
+		var html = "";
+
+		html += "<a class='button' onclick='openWin(" + row.id + ","+row.resources+")'>配置资源</a>&nbsp;&nbsp;";
+
+		html += "<a class='button' onclick='redirect("+ row.id + ")'>修改</a>&nbsp;&nbsp;";
+
+		return html;
+	}
+</script> <script type="text/javascript"
+	src="${request.getContextPath()}/views/tenant/index.js"></script>
+<script
+		type="text/javascript"
+		src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript"
+		src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.excheck.min.js"></script>
+
+</#assign>
+<#include "/layout.html" encoding="utf-8">

@@ -33,4 +33,20 @@ public interface TenantRepository {
      * @return
      */
     int update(Tenant tenant);
+
+    /**
+     * 根据租户删除资源
+     * @param tenantId
+     * @return
+     */
+    int deleteResource(@Param("tenantId") int tenantId);
+
+    /**
+     * 保存租房对应资源信息
+     * @param tenantId
+     * @param resourceIds
+     * @return
+     */
+    int saveResource(@Param("tenantId") int tenantId,@Param("resourceIds") String[] resourceIds);
+
 }

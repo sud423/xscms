@@ -16,6 +16,7 @@ import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 import com.susd.infrastructure.Validate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
@@ -66,6 +67,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@Transactional
 	public OptResult savePermission(int roleId, String[] permissionIds) {
 		
 		sysRoleRepository.deletePermission(roleId);

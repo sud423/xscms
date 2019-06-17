@@ -4,7 +4,6 @@
 	<resultMap id="resourceMap"
 		type="com.susd.domain.identity.Resource">
 		<id column="id" property="id" />
-		<result column="tenant_id" property="tenantId" />
 		<result column="parent_id" property="parentId" />
 		<result column="parent_ids" property="parentIds" />
 		<result column="add_time" property="addTime" />
@@ -14,19 +13,19 @@
 		parameterType="com.susd.domain.identity.Resource"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into resource
-		(tenant_id,`parent_id`,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version)
+		(`parent_id`,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version)
 		values
-		(#{tenantId},#{parentId},#{parentIds},#{name},#{type},#{permission},#{status},#{sort},#{addTime},#{remark},#{version})
+		(#{parentId},#{parentIds},#{name},#{type},#{permission},#{status},#{sort},#{addTime},#{remark},#{version})
 	</insert>
 	<select id="findByKeyword" parameterType="String"
 		resultMap="resourceMap"><!-- and tenant_id=#{tenantId} -->
 
 		select
-		id,tenant_id,`name`,type,`permission`,sort,remark,status,add_time from
-		resource where tenant_id=#{tenantId}
+		id,`name`,type,`permission`,sort,remark,status,add_time from
+		resource where
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
-			and (`name` like #{keyinfo} or type like #{keyinfo} or `permission` like #{keyinfo})
+			(`name` like #{keyinfo} or type like #{keyinfo} or `permission` like #{keyinfo})
 		</if>
 		order by sort asc
 	</select>
@@ -34,12 +33,12 @@
 	<select id="findResourceById" parameterType="int"
 		resultMap="resourceMap">
 		select
-		id,tenant_id,parent_id,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version
+		id,parent_id,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version
 		from resource where id = #{rourceId}
 	</select>
 
 	<select id="queryToDropDataSrource" resultMap="resourceMap">
-		select id,`name`,parent_id from resource where tenant_id=#{tenantId} and `status`=1
+		select id,`name`,parent_id from resource where `status`=1
 		order by sort asc
 	</select>
 

@@ -23,4 +23,12 @@ public interface TenantService {
      * @return
      */
     OptResult save(Tenant tenant);
+
+    /**
+     * 保存租房对应的资源信息
+     * @param tenantId 租户编号
+     * @param resourceIds 资源列表
+     * @return
+     */
+    OptResult saveResource(int tenantId,String [] resourceIds);
 }

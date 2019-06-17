@@ -12,6 +12,7 @@ import com.susd.infrastructure.OptResult;
 import com.susd.infrastructure.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public DatatableResult<Tenant> findByKeyword(String keyword, DatatableParam param) {
-        PageHelper.startPage(param.getPageIndex(), param.getLength(), true);
+        //PageHelper.startPage(param.getPageIndex(), param.getLength(), true);
         List<Tenant> priceConfigs = tenantRepository.findByKeyword(keyword);
 
         PageInfo<Tenant> pageInfo = new PageInfo(priceConfigs);
@@ -50,5 +51,16 @@ public class TenantServiceImpl implements TenantService {
         }
 
         return Validate.verify(tenant);
+    }
+
+    @Override
+    @Transactional
+    public OptResult saveResource(int tenantId, String[] resourceIds) {
+
+        tenantRepository.deleteResource(tenantId);
+
+        tenantRepository.saveResource(tenantId,resourceIds);
+
+        return OptResult.Successed();
     }
 }

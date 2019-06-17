@@ -58,8 +58,7 @@ public class ResourceServiceImpl implements ResourceService {
 				resource.setVersion(1);
 				resource.setAddTime(new Date());
 				resource.setStatus((byte) 1);
-				
-				resource.setTenantId(SessionManager.getTenantId());
+
 				res = resourceRepository.add(resource);
 			} else {
 				Resource old = resourceRepository.findResourceById(resource.getId());

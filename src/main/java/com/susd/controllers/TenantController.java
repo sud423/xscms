@@ -1,8 +1,11 @@
 package com.susd.controllers;
 
+import com.alibaba.fastjson.JSONObject;
+import com.susd.application.ResourceService;
 import com.susd.application.TenantService;
 import com.susd.domain.identity.Tenant;
 import com.susd.domain.identity.TenantRepository;
+import com.susd.dto.ResourceItem;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,12 +30,20 @@ public class TenantController {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private ResourceService resourceService;
     /**
      * 租户管理首页
      * @return
      */
     @RequestMapping(value="/index", method = RequestMethod.GET)
-    public String index() {
+    public String index(Map<String, Object> map) {
+        List<ResourceItem> dataSource=resourceService.queryToDropDataSrource();
+
+        String json= JSONObject.toJSONString(dataSource);
+
+        map.put("datasource", json);
+
         return "tenant/index";
     }
 
@@ -50,7 +62,7 @@ public class TenantController {
             Tenant tenant = tenantRepository.findTenantById(id);
             map.put("model", tenant);
         }
-        return "sysrole/edit";
+        return "tenant/edit";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -58,5 +70,22 @@ public class TenantController {
     public OptResult save(HttpServletRequest request, Tenant tenant) {
 
         return tenantService.save(tenant);
+    }
+
+    /**
+     * 保存配置的资源
+     * @param tenantId
+     * @param resourceId
+     * @return
+     */
+    @RequestMapping(value = "/saveresource", method = RequestMethod.POST)
+    @ResponseBody
+    public OptResult savePermission(int tenantId,String resourceId) {
+        if(resourceId==null || resourceId=="")
+            return OptResult.Failed("请勾选权限");
+
+        String [] permissionIds=resourceId.split(",");
+
+        return tenantService.saveResource(tenantId, permissionIds);
     }
 }

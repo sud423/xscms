@@ -50,7 +50,7 @@ public interface SysUserRepository {
 	 * @param userName 用户名
 	 * @return 返回用户名相应的资源权限
 	 */
-	Set<String> findResourceByUserName(@Param("userName") String userName, @Param("tenantId") int tenantId);
+	Set<String> findResourceByUserName(@Param("userName") String userName);
 
 	/**
 	 * 更新用户信息

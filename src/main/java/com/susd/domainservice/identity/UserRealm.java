@@ -49,7 +49,7 @@ public class UserRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		Set<String> roles = sysUserRepository.findRoleByUserName(username, user.getTenantId());
 		authorizationInfo.setRoles(roles);
-		Set<String> resources = sysUserRepository.findResourceByUserName(username, user.getTenantId());
+		Set<String> resources = sysUserRepository.findResourceByUserName(username);
 		authorizationInfo.setStringPermissions(resources);
 		
 		return authorizationInfo;

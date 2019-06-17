@@ -81,8 +81,7 @@
 		s.id=rr.resource_id
 		inner join user_role ur on ur.role_id=rr.role_id
 		inner join `user` u on u.id=ur.user_id
-		where s.tenant_id=#{tenantId}
-		and u.user_name = #{userName};
+		where u.user_name = #{userName};
 	</select>
 	<update id="update"
 		parameterType="com.susd.domain.identity.SysUser">

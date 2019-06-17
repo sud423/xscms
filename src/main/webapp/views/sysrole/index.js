@@ -129,7 +129,7 @@ function openPermissWin(id, name) {
 	if (arguments.length > 2) {
 		var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 		$.each(arguments, function(index) {
-			if (typeof this != "function" && index > 0 && this) {
+			if (typeof this != "function" && index > 1 && this) {
 				var node = zTree.getNodeByParam("id", this);
 				if (node != null) {
 					zTree.checkNode(node, true)

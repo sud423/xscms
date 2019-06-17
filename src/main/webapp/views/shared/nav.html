@@ -141,12 +141,17 @@
 						</@shiro.hasPermission>
 
 					</ul></li>  </@shiro.hasPermission>
-				 <@shiro.hasPermission name="systemset">
+
 			<li><a href="#" class="waves-effect"><i
 					class="icon-settings fa-fw"></i> <span class="hide-menu">系统设置<span
 						class="fa arrow"></span>
 				</span></a>
 				<ul class="nav nav-second-level">
+
+					<li><a href="${basePath}/tenant/index" id="tenant">
+						<i class="icon-wrench fa-fw"></i> <span
+							class="hide-menu">租户管理</span></a></li>
+
 					<@shiro.hasPermission name="sysuser">
 					<li><a href="${basePath}/sysuser/index" id="sysuser"><i
 							data-icon="&#xe026;" class="icon-user fa-fw"></i> <span
@@ -163,7 +168,7 @@
                     <li><a href="${basePath}/express/index" id="express"><i
                             class="icon-plane fa-fw"></i> <span class="hide-menu">物流管理</span></a></li>
                     </@shiro.hasPermission>
-				</ul></li>  </@shiro.hasPermission>
+				</ul></li>
 		</ul>
 
 	</div>

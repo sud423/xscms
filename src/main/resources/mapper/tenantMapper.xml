@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.susd.domain.identity.TenantRepository">
+    <resultMap id="tenantMaps"
+               type="com.susd.domain.identity.Tenant">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="company" property="company" />
+        <result column="contact" property="contact" />
+        <result column="cell" property="cell" />
+        <result column="domain" property="domain" />
+        <result column="ip" property="ip" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="port" property="port" />
+        <result column="os" property="os" />
+        <result column="add_time" property="addTime" />
+        <collection property="resources" ofType="Integer">
+            <result column="resource_id"/>
+        </collection>
+    </resultMap>
+
     <insert id="add" parameterType="com.susd.domain.identity.Tenant" useGeneratedKeys="true" keyProperty="id">
         insert int tenant (`name`,company,contact,cell,`domain`,ip,account,password,port,os,add_time)
         values (#{name},#{company},#{contact},#{cell},#{domain},#{ip},#{account},#{password},#{port},#{os},#{add_time})
@@ -10,8 +29,9 @@
         select * from tenant where id=#{tenantId}
     </select>
 
-    <select id="findByKeyword" parameterType="String" resultType="com.susd.domain.identity.Tenant">
-        select * from tenant
+    <select id="findByKeyword" parameterType="String" resultMap="tenantMaps">
+        select t.id,`name`,company,contact,cell,domain,ip,account,password,port,os,add_time,tr.resource_id from tenant t
+        left join tenant_resource tr on tr.tenant_id=t.id
         <if test="keyword != null and keyword != ''">
             <bind name="keyinfo" value="'%' + keyword + '%'" />
             where `name` like #{keyinfo} or company like #{keyinfo} or contact like #{keyinfo}
@@ -24,4 +44,17 @@
         `domain`=#{name},ip=#{name},account,password,port,os
         where id=#{id}
     </update>
+
+    <delete id="deleteResource" parameterType="int">
+        delete from tenant_resource where tenant_id=${tenantId}
+    </delete>
+
+    <insert id="saveResource">
+        insert into tenant_resource (tenant_id,resource_id)
+        values
+        <foreach collection="resourceIds" item="item" index="index"
+                 separator=",">
+            (#{tenantId}, #{item})
+        </foreach>
+    </insert>
 </mapper>

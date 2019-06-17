@@ -5,6 +5,7 @@ import com.susd.domain.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 public class Tenant implements Entity<Tenant> {
 
@@ -43,6 +44,8 @@ public class Tenant implements Entity<Tenant> {
     private String os;
     //添加时间
     private Date addTime;
+
+    private List<Integer> resources;
 
     public int getId() {
         return id;
@@ -138,6 +141,14 @@ public class Tenant implements Entity<Tenant> {
 
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
+    }
+
+    public List<Integer> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Integer> resources) {
+        this.resources = resources;
     }
 
     @Override

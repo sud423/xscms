@@ -1,0 +1,119 @@
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">租户信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/tenant/index">租户列表</a></li>
+			<li class="active">租户信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+<form class="form-horizontal" id="tenantForm" method="post">
+		<input type="hidden" name="id" value="${(model.id)!'0'}">
+		<div class="form-group">
+			<label class="col-md-12">租户名</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					   data-toggle="validator" data-error="姓名不能为空" name="name"
+					   value="<#if model??>${model.name!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">公司名称</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" autocomplete="off"  name="company"
+					value="<#if model??>${model.company!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">联系人</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" autocomplete="off"  name="contact"
+					value="<#if model??>${model.contact!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">手机号</label>
+			<div class="col-md-12">
+				<input type="tel" class="form-control" required autocomplete="off"
+					data-toggle="validator" data-required-error="手机号不能为空" name="cell"
+					pattern="^0?1[3|4|5|7|8|6|9][0-9]\d{8}$" data-pattern-error="手机号格式不正确" value="<#if model??>${model.cell!''}</#if>">
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+	<div class="form-group">
+		<label class="col-md-12">域名</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="domain"
+				   value="<#if model??>${model.domain!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-12">服务器外网IP</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="ip"
+				   value="<#if model??>${model.ip!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-12">服务器远程登录账号</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="account"
+				   value="<#if model??>${model.account!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-12">服务器远程登录密码</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="password"
+				   value="<#if model??>${model.password!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-12">远程登录端口</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="port"
+				   value="<#if model??>${model.port!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-12">操作系统</label>
+		<div class="col-md-12">
+			<input type="text" class="form-control" autocomplete="off"  name="os"
+				   value="<#if model??>${model.os!''}</#if>">
+		</div>
+		<div class="col-md-12 help-block with-errors"></div>
+	</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12"><@shiro.hasAnyPermissions name="tenant.add,tenant.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button></@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/tenant/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+	
+</div>
+</#assign>
+
+<#assign body> <script type="text/javascript"
+	src="${request.getContextPath()}/views/tenant/index.js"></script> </#assign>
+
+<#include "/layout.html" encoding="utf-8">
