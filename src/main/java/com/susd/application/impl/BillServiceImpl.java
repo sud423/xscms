@@ -96,18 +96,19 @@ public class BillServiceImpl implements BillService {
 			input.setTotalPrice(0);
 			return input;
 		}
+		float volume = input.calculateTotalVolume();// 计算总体积
+
+		BigDecimal b = new BigDecimal(volume / config.getCoefficient());
+		float volumeWeight = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+
+		input.setVolumeWeight(volumeWeight);
+
+		// 计算最后结算重量
+		float weight = input.getActualWeight() > volumeWeight ? input.getActualWeight() : volumeWeight;
+		input.setWeight(weight);
+
 		//最低收费
 		if(input.getType()==10){
-			float volume = input.calculateTotalVolume();// 计算总体积
-
-			BigDecimal b = new BigDecimal(volume / config.getCoefficient());
-			float volumeWeight = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-
-			input.setVolumeWeight(volumeWeight);
-
-			// 计算最后结算重量
-			float weight = input.getActualWeight() > volumeWeight ? input.getActualWeight() : volumeWeight;
-			input.setWeight(weight);
 
 			// 计算价格
 			float price = weight * config.getStandardPrice();
@@ -119,7 +120,7 @@ public class BillServiceImpl implements BillService {
 			input.setTotalPrice(totalPrice);// 加上其它费用和额外费用
 		}
 		else{//首重+续重
-			input.setWeight(input.getActualWeight());
+
 			float firstW=input.getWeight()-config.getFirstWeight();
 			if(firstW>0){
 				float firstTotalPrice=config.getFirstPrice()*config.getFirstWeight();
@@ -129,8 +130,8 @@ public class BillServiceImpl implements BillService {
 				input.setTotalPrice(p.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());// 加上其它费用和额外费用
 			}
 			else{
-				BigDecimal b = new BigDecimal(firstW*config.getFirstPrice()+input.getCost());
-				input.setTotalPrice(b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());
+				BigDecimal m = new BigDecimal(config.getFirstPrice()+input.getCost());
+				input.setTotalPrice(m.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());
 			}
 		}
 
@@ -152,7 +153,7 @@ public class BillServiceImpl implements BillService {
 					totalPrice = input.getTotalPrice() - item.getPrice();
 			}
 
-			OptResult res = createBill(input.getUserId(), input.getBillId(), totalPrice, input.getVersion());
+			OptResult res = createBill(input.getUserId(), input.getBillId(), totalPrice, input.getVersion(),input.getCost(),input.getType());
 			if (res.getCode() != 0)
 				return res;
 
@@ -219,7 +220,7 @@ public class BillServiceImpl implements BillService {
 	 * @param totalPrice
 	 * @return
 	 */
-	private OptResult createBill(int clientId, int billId, float totalPrice, int version) {
+	private OptResult createBill(int clientId, int billId, float totalPrice, int version,float cost,byte type) {
 		Bill bill = null;
 		if (billId == 0)
 			bill = billRepository.findByClient(clientId, Utils.getPeriod());

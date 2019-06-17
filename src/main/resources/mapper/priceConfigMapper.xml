@@ -88,7 +88,7 @@
 	case `type` when 10 then if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price>lowest_price,
 	if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price,lowest_price)
 	 else
-		if(${weight} &lt;= first_weight,${weight}*first_price,first_price*first_weight+(${weight}-first_weight)/continued_weight* continued_price)
+		if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) &lt;= first_weight,first_price,first_weight+(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight})-first_weight)/continued_weight* continued_price)
 	 end price
 	from price_config ,
 	(select @i:=0) as it

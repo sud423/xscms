@@ -5,6 +5,7 @@
 		<id column="id" property="id" />
 		<result column="express" property="express" />
 		<result column="express_no" property="expressNo" />
+		<result column="type" property="type" />
 		<result column="price" property="price" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
@@ -29,6 +30,7 @@
 		<id column="id" property="id" />
 		<result column="express" property="express" />
 		<result column="express_no" property="expressNo" />
+		<result column="type" property="type" />
 		<result column="price" property="price" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
@@ -56,10 +58,10 @@
 	<insert id="save" parameterType="com.susd.domain.bill.BillItem"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into
-		bill_item(tenant_id,express,express_no,user_id,price,cost,bill_id,weight,
-		actual_weight,volume_weight,count,province,city,add_time,account_id,remark)
+		bill_item(tenant_id,express,express_no,`type`,user_id,price,cost,bill_id,weight,
+		actual_weight,volume_weight,`count`,province,city,add_time,account_id,remark)
 		values
-		(#{tenantId},#{express},#{expressNo},#{userId},#{price},#{cost},#{billId},#{weight},
+		(#{tenantId},#{express},#{expressNo},#{type},#{userId},#{price},#{cost},#{billId},#{weight},
 		#{actualWeight},#{volumeWeight},#{count},#{province},#{city},#{addTime},#{accountId},#{remark})
 	</insert>
 
@@ -67,7 +69,7 @@
 		parameterType="com.susd.domain.bill.BillItem">
 		update bill_item set
 		express=#{express},express_no=#{expressNo},
-		price=#{price},cost=#{cost},
+		`type`=#{type},price=#{price},cost=#{cost},
 		weight=#{weight},actual_weight=#{actualWeight},
 		volume_weight=#{volumeWeight},count=#{count},
 		province=#{province},city=#{city},remark=#{remark} 
@@ -94,8 +96,8 @@
 	<select id="findBillItems" parameterType="int"
 		resultMap="billMap">
 		select
-		b.express,u.`name`
-		client_name,b.province,b.city,b.express_no,b.price,a.`name`
+		b.express,u.`name` client_name,b.`type`,
+		b.province,b.city,b.express_no,b.price,a.`name`
 		account_name,b.add_time,b.id,b.bill_id
 		from bill_item b
 		inner join `user` u on
@@ -109,7 +111,7 @@
 		select
 		b.id,b.bill_id,b.user_id,u.`name`
 		client_name,b.province,b.city,b.cost,b.remark,
-		b.express,b.express_no,b.actual_weight,b.volume_weight,b.weight,b.price,b.count,l.version,
+		b.express,b.express_no,b.`type`,b.actual_weight,b.volume_weight,b.weight,b.price,b.count,l.version,
 		p.id pack_id,p.len,p.width,p.height,p.count num
 		from bill_item b
 		inner join bill l on b.bill_id=l.id

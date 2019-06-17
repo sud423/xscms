@@ -17,7 +17,9 @@ public class BillItem implements Entity<BillItem> {
 	private String express;
 	
 	private String expressNo;
-	
+
+	private byte type;
+
 	private int userId;
 	
 	private float price;
@@ -86,6 +88,14 @@ public class BillItem implements Entity<BillItem> {
 
 	public void setExpressNo(String expressNo) {
 		this.expressNo = expressNo;
+	}
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
 	}
 
 	public int getUserId() {

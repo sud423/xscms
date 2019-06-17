@@ -164,17 +164,6 @@ $(document).ready(function() {
 			max: 99999999
 		});
 
-		chg();
-		$("select[name='type']").change(function () {
-			chg();
-		});
-
-		function chg() {
-			if ($("select[name='type']").val() == "10")
-				$("#mainTable,#addPackBtn").show();
-			else
-				$("#mainTable,#addPackBtn").hide();
-		}
 	}
 
 	// 查询
