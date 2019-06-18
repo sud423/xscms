@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.susd.domainservice.identity.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class SysRoleController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Map<String, Object> map,HttpServletRequest request) {
 
-		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource();
+		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource(SessionManager.getTenantId());
 		
 		String json=JSONObject.toJSONString(dataSource);
 		

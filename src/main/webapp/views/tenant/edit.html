@@ -98,14 +98,11 @@
 		<div class="col-md-12 help-block with-errors"></div>
 	</div>
 		<div class="form-group m-b-0">
-			<div class="col-md-12"><@shiro.hasAnyPermissions name="tenant.add,tenant.edit">
-				<button type="submit"
-					class="btn btn-success waves-effect waves-light m-r-10">保
-					存</button></@shiro.hasAnyPermissions>
-				<button type="button"
-					class="btn btn-inverse waves-effect waves-light m-r-10"
-					onclick="window.location.href=basePath+'/tenant/index'">返
-					回</button>
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="tenant.add,tenant.edit">
+				<button type="submit" class="btn btn-success waves-effect waves-light m-r-10">保存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button" class="btn btn-inverse waves-effect waves-light m-r-10" onclick="window.location.href=basePath+'/tenant/index'">返 回</button>
 			</div>
 		</div>
 	</form>

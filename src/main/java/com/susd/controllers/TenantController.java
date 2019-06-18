@@ -38,7 +38,7 @@ public class TenantController {
      */
     @RequestMapping(value="/index", method = RequestMethod.GET)
     public String index(Map<String, Object> map) {
-        List<ResourceItem> dataSource=resourceService.queryToDropDataSrource();
+        List<ResourceItem> dataSource=resourceService.queryToDropDataSrource(0);
 
         String json= JSONObject.toJSONString(dataSource);
 

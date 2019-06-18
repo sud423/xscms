@@ -13,5 +13,5 @@ public interface ResourceService {
 	
 	OptResult save(Resource resource);
 	
-	List<ResourceItem> queryToDropDataSrource();
+	List<ResourceItem> queryToDropDataSrource(int tenantId);
 }

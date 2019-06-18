@@ -13,7 +13,7 @@
 		parameterType="com.susd.domain.identity.Resource"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into resource
-		(`parent_id`,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version)
+		(`parent_id`,parent_ids,`name`,`type`,permission,`status`,sort,add_time,remark,version)
 		values
 		(#{parentId},#{parentIds},#{name},#{type},#{permission},#{status},#{sort},#{addTime},#{remark},#{version})
 	</insert>
@@ -21,11 +21,11 @@
 		resultMap="resourceMap"><!-- and tenant_id=#{tenantId} -->
 
 		select
-		id,`name`,type,`permission`,sort,remark,status,add_time from
-		resource where
+		id,`name`,`type`,`permission`,sort,remark,status,add_time from
+		resource where 1=1
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
-			(`name` like #{keyinfo} or type like #{keyinfo} or `permission` like #{keyinfo})
+			and (`name` like #{keyinfo} or `type` like #{keyinfo} or `permission` like #{keyinfo})
 		</if>
 		order by sort asc
 	</select>
@@ -33,12 +33,22 @@
 	<select id="findResourceById" parameterType="int"
 		resultMap="resourceMap">
 		select
-		id,parent_id,parent_ids,`name`,type,permission,`status`,sort,add_time,remark,version
+		id,parent_id,parent_ids,`name`,`type`,permission,`status`,sort,add_time,remark,version
 		from resource where id = #{rourceId}
 	</select>
 
 	<select id="queryToDropDataSrource" resultMap="resourceMap">
-		select id,`name`,parent_id from resource where `status`=1
+		select id,`name`,parent_id from resource r
+		<choose>
+			<when test="tenantId>0">
+				inner join tenant_resource tr on tr.resource_id=r.id
+				where tr.tenant_id=${tenantId}
+			</when>
+			<otherwise>
+				where 1=1
+			</otherwise>
+		</choose>
+		and `status`=1
 		order by sort asc
 	</select>
 

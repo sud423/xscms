@@ -79,8 +79,8 @@ public class ResourceServiceImpl implements ResourceService {
 
 	
 	@Override
-	public List<ResourceItem> queryToDropDataSrource() {
-		List<Resource> resources = resourceRepository.queryToDropDataSrource(SessionManager.getTenantId());
+	public List<ResourceItem> queryToDropDataSrource(int tenantId) {
+		List<Resource> resources = resourceRepository.queryToDropDataSrource(tenantId);
 		PropertyMap<Resource, ResourceItem> resourceMap = new PropertyMap<Resource, ResourceItem>() {
 			@Override
 			protected void configure() {

@@ -62,7 +62,7 @@ public class ResourceController {
 			map.put("model", user);
 		}
 		
-		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource();
+		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource(0);
 		
 		String json=JSONObject.toJSONString(dataSource);
 		

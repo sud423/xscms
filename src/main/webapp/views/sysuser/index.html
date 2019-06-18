@@ -105,9 +105,9 @@
 
 <#assign body> <script type="text/javascript">
 
-<@shiro.hasAnyPermissions name="sysuser.configrole,sysuser.resetpwd,sysuser.edit,sysuser.freeze,sysuser.enable">
-							var visible=true;
-							</@shiro.hasAnyPermissions>
+	<@shiro.hasAnyPermissions name="sysuser.configrole,sysuser.resetpwd,sysuser.edit,sysuser.freeze,sysuser.enable">
+	var visible=true;
+	</@shiro.hasAnyPermissions>
 	function opt(data, type, row) {
 		var html = "";
 		

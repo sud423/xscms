@@ -30,8 +30,8 @@
 				<div class="col-sm-3" style="padding-left: 3px;">
 
 					<div class="input-group">
-						<input class="form-control" id="txtTenantKeyword" autocomplete="off"
-							placeholder="租户名称"> <span class="input-group-btn">
+						<input class="form-control" id="txtTenantKeyword" autocomplete="off"placeholder="租户名称">
+						<span class="input-group-btn">
 							<button id="searchTenant" class="btn btn-warning" type="button">
 								<i class="ti-search"></i>
 							</button>
@@ -39,9 +39,9 @@
 					</div>
 				</div>
 				<div class="col-sm-9" style="padding: 2px 0;">
-
-					<a class="btn btn-info"
-						href='${request.getContextPath()}/tenant/edit'>新增</a>
+					<@shiro.hasPermission name='tenant.add'>
+					<a class="btn btn-info" href='${request.getContextPath()}/tenant/edit'>新增</a>
+					</@shiro.hasPermission>
 				</div>
 			</form>
 		</div>
@@ -63,8 +63,10 @@
 							<th>服务器账号</th>
 							<th>密码</th>
 							<th>操作系统</th>
-							<th width="100px">操作</th>
 
+							<@shiro.hasAnyPermissions name="tenant.edit,tenant.config">
+							<th width="100px">操作</th>
+							</@shiro.hasAnyPermissions>
 						</tr>
 					</thead>
 				</table>
@@ -110,13 +112,15 @@
 
 	var json = '${datasource}';
 	var zNodes = eval(json);
+	<@shiro.hasAnyPermissions name="tenant.edit,tenant.config">
 	var visible=true;
+	</@shiro.hasAnyPermissions>
 	function opt(data, type, row) {
 		var html = "";
 
-		html += "<a class='button' onclick='openWin(" + row.id + ","+row.resources+")'>配置资源</a>&nbsp;&nbsp;";
+		html += "<@shiro.hasPermission name='tenant.config'><a class='button' onclick='openWin(" + row.id + ","+row.resources+")'>配置资源</a>&nbsp;&nbsp;</@shiro.hasPermission>";
 
-		html += "<a class='button' onclick='redirect("+ row.id + ")'>修改</a>&nbsp;&nbsp;";
+		html += "<@shiro.hasPermission name='tenant.edit'><a class='button' onclick='redirect("+ row.id + ")'>修改</a>&nbsp;&nbsp;</@shiro.hasPermission>";
 
 		return html;
 	}
