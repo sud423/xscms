@@ -85,11 +85,11 @@
 	<select id="priceCount" resultType="com.susd.domain.complex.PriceSearchResult">
 	
 	select (@i:=@i+1) as seqNo,express,`type`,if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) weight,
-	case `type` when 10 then if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price>lowest_price,
+	(add_fees+case `type` when 10 then if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price>lowest_price,
 	if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) *standard_price,lowest_price)
 	 else
 		if(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight}) &lt;= first_weight,first_price,first_weight+(if(${volume}*100*100*100/coefficient>${weight},${volume}*100*100*100/coefficient,${weight})-first_weight)/continued_weight* continued_price)
-	 end price
+	 end) price
 	from price_config ,
 	(select @i:=0) as it
 	where tenant_id=#{tenantId} and province=#{province}
