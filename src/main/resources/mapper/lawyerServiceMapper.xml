@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.law.LawyerServiceRepository">
+    <select id="findById" parameterType="int" resultType="com.susd.domain.law.LawyerService">
+        select * from lawyer_service where lawyer_id=${id}
+    </select>
+
+    <insert id="add" parameterType="com.susd.domain.law.LawyerService">
+        insert into lawyer_service (lawyer_id,service_id,is_command,price,hours)
+        values (#{lawyerId},#{serviceId},#{isCommand },#{price},#{hours})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from lawyer_service where lawyer_id=${lawyerId}
+    </delete>
+</mapper>

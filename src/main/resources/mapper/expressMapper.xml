@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.complex.ExpressRepository">
+    <select id="findById" parameterType="int" resultType="com.susd.domain.complex.Express">
+        select * from express where id=${id}
+    </select>
+    <select id="findByKeyword" resultType="com.susd.domain.complex.Express">
+        select * from express where tenant_id=${tenantId}
+        <if test="keyword != null and keyword != ''">
+            <bind name="keyinfo" value="'%' + keyword + '%'" />
+            and (`name` like #{keyinfo} or code like #{keyinfo})
+        </if>
+        order by add_time desc
+    </select>
+    <insert id="add" parameterType="com.susd.domain.complex.Express" keyProperty="id" useGeneratedKeys="true">
+        insert into express (tenant_id,`name`,code,coefficient,`type`,remark,add_time,version)
+        values (#{tenantId},#{name},#{code},#{coefficient},#{type},#{remark},#{addTime},#{version})
+    </insert>
+
+    <update id="update" parameterType="com.susd.domain.complex.Express">
+        update express set `name`=#{name},code=#{code},coefficient=#{coefficient},`type`=#{type},remark=#{remark},version=version+1
+        where id=${id}
+    </update>
+</mapper>

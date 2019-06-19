@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -37,6 +38,9 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
 	private UserRealm userRealm;
+
+	@Value("rest_pwd")
+	private String pwd;
 
 	@Override
 	public DatatableResult<UserDto> queryByKeyword(String keyword, DatatableParam param) {
@@ -92,7 +96,7 @@ public class SysUserServiceImpl implements SysUserService {
 				// 随机数生成器
 				RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 				user.setSalt(randomNumberGenerator.nextBytes().toHex());
-				String newPassword = new SimpleHash("md5", "qwe123", user.getSalt(), 2).toHex();
+				String newPassword = new SimpleHash("md5", pwd, user.getSalt(), 2).toHex();
 				user.setPassword(newPassword);
 				user.setVersion(1);
 				user.setAddTime(new Date());
@@ -123,7 +127,7 @@ public class SysUserServiceImpl implements SysUserService {
 		if (user == null || user.getId() == 0)
 			return OptResult.Failed("待重置的账户不存在");
 
-		String newPassword = new SimpleHash("md5", "qwe123", user.getSalt(), 2).toHex();
+		String newPassword = new SimpleHash("md5", pwd, user.getSalt(), 2).toHex();
 		user.setPassword(newPassword);
 
 		int res = sysUserRepository.update(user);

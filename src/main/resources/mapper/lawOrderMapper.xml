@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.susd.domain.law.LawOrderRepository">
+    <select id="findById" parameterType="int" resultType="com.susd.domain.law.LawOrder">
+        select * from law_order where id=${id}
+    </select>
+    <select id="findByKeyword" resultType="com.susd.domain.law.LawOrder">
+        select * from law_order where tenant_id=${tenantId}
+<!--        <if test="keyword != null and keyword != ''">-->
+<!--            <bind name="keyinfo" value="'%' + keyword + '%'" />-->
+<!--            and (surname like #{keyinfo} or `name` like #{keyinfo} or cell like #{keyinfo} or firm like #{keyinfo} or address like #{address} or wechat like #{keyinfo})-->
+<!--        </if>-->
+        order by add_time desc
+    </select>
+
+    <update id="update" parameterType="com.susd.domain.law.LawOrder">
+        update law_order set order_no=#{orderNo},amount=#{amount},remark=#{remark},version=version+1
+        where id=${id}
+    </update>
+</mapper>
