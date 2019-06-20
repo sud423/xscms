@@ -21,6 +21,15 @@ public interface ExpressRepository {
     List<Express> findByKeyword(@Param("keyword") String keyword, @Param("tenantId") int tenantId);
 
     /**
+     * 检查名称是否被占用
+     * @param name
+     * @param id
+     * @return
+     */
+    boolean existsByName(@Param("name") String name,@Param("id") int id,@Param("tenantId") int tenantId);
+
+
+    /**
      * 添加物流公司信息
      * @param category 待保存物流公司对象
      * @return

@@ -12,6 +12,13 @@
         </if>
         order by add_time desc
     </select>
+    <select id="existsByName" resultType="boolean">
+        select * from express where `name`=#{name} and tenant_id=#{tenantId}
+        <if test="id>0">
+            and id!=#{id}
+        </if>
+    </select>
+
     <insert id="add" parameterType="com.susd.domain.complex.Express" keyProperty="id" useGeneratedKeys="true">
         insert into express (tenant_id,`name`,code,coefficient,`type`,remark,add_time,version)
         values (#{tenantId},#{name},#{code},#{coefficient},#{type},#{remark},#{addTime},#{version})
