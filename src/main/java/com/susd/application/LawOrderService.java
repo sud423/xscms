@@ -4,7 +4,7 @@ import com.susd.domain.law.LawOrder;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 
-public interface LawyerOrderService {
+public interface LawOrderService {
 
     /**
      * 查询订单

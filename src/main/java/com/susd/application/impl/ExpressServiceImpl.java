@@ -58,6 +58,6 @@ public class ExpressServiceImpl implements ExpressService {
         List<Express> users = expressRepository.findByKeyword(keyword, SessionManager.getTenantId());
         PageInfo<Express> pagedInfo = new PageInfo(users);
 
-        return new DatatableResult<Express>(pagedInfo, param.getDraw());
+        return new DatatableResult(pagedInfo, param.getDraw());
     }
 }
