@@ -5,7 +5,7 @@ import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 
-public interface ServiceItmesService {
+public interface ServiceItemsService {
 
     /**
      * 保存服务项内容数据

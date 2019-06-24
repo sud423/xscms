@@ -2,7 +2,7 @@ package com.susd.application.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.susd.application.ServiceItmesService;
+import com.susd.application.ServiceItemsService;
 import com.susd.domain.law.ServiceItems;
 import com.susd.domain.law.ServiceItemsRepository;
 import com.susd.domainservice.identity.SessionManager;
@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ServiceItemsServiceImpl implements ServiceItmesService {
+public class ServiceItemsServiceImpl implements ServiceItemsService {
 
     @Autowired
     private ServiceItemsRepository serviceItemsRepository;

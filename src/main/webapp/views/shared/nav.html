@@ -111,6 +111,32 @@
 				</ul>
 			</li>
 			</@shiro.hasPermission>
+			<@shiro.hasPermission name="law">
+			<li>
+				<a href="#" class="waves-effect">
+					<i class="icon-people fa-fw"></i>
+					<span class="hide-menu">e法网<span class="fa arrow"></span></span>
+				</a>
+				<ul class="nav nav-second-level">
+					<@shiro.hasPermission name="serviceitems">
+					<li>
+						<a href="${basePath}/serviceitems/index" id="serviceitems">
+							<i class="ti-id-badge fa-fw"></i>
+							<span class="hide-menu">服务内容</span>
+						</a>
+					</li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="lawyer">
+				<li>
+					<a href="${basePath}/lawyer/index" id="lawyer">
+						<i class="ti-user fa-fw"></i>
+						<span class="hide-menu">律师管理</span>
+					</a>
+				</li>
+				</@shiro.hasPermission>
+				</ul>
+			</li>
+			</@shiro.hasPermission>
 			<@shiro.hasPermission name="iclass">
 			<li>
 				<a href="#" class="waves-effect">
