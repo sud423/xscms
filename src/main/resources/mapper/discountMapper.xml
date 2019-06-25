@@ -3,13 +3,13 @@
 <mapper namespace="com.susd.domain.activities.DiscountRepository">
 
     <insert id="add" parameterType="com.susd.domain.activities.Discount" keyColumn="id" useGeneratedKeys="true">
-        insert into discount (type,express,start_period,end_period,discount,`sort`,overlay_use,remark,add_time,tenant_id,user_id,version)
-        values (#{type},#{express},#{startPeriod},#{endPeriod},#{discount},#{sort},#{overlayUse},#{remark},#{addTime},#{tenantId},#{userId},#{version})
+        insert into discount (`type`,express,start_period,end_period,discount,`sort`,overlay_use,low_price,remark,add_time,tenant_id,user_id,version)
+        values (#{type},#{express},#{startPeriod},#{endPeriod},#{discount},#{sort},#{overlayUse},#{lowPrice},#{remark},#{addTime},#{tenantId},#{userId},#{version})
     </insert>
 
     <update id="update" parameterType="com.susd.domain.activities.Discount">
         update discount set express=#{express},start_period=#{startPeriod},end_period=#{endPeriod},
-        `sort`=${sort},overlay_use=#{overlayUse},remark=#{remark},version=version+1
+        `sort`=${sort},overlay_use=#{overlayUse},low_price=#{lowPrice},remark=#{remark},version=version+1
         where id=${id}
     </update>
 

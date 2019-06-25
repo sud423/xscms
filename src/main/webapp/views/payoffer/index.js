@@ -31,10 +31,12 @@ $(function() {
 				"data" : "endPeriod"
 			}, {
 				"data" : "discount"
+			} , {
+				"data" : "lowPrice"
 			} ],
 			"columnDefs" : [ {
 				"render" : opt,
-				"targets" : 5,
+				"targets" : 6,
 				"visible" : visible
 			} ],
 			drawCallback : function() {
@@ -58,7 +60,7 @@ $(function() {
 		});
 	} else {
 
-		$("input[name='sort'],input[name='startPeriod'],input[name='endPeriod']").TouchSpin({
+		$("input[name='sort'],input[name='startPeriod'],input[name='endPeriod'],input[name='lowPrice']").TouchSpin({
 			verticalbuttons : true,
 			verticalupclass : 'ti-plus',
 			verticaldownclass : 'ti-minus',
