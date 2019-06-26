@@ -1,9 +1,8 @@
 package com.susd.controllers;
 
-import com.susd.application.DictService;
-import com.susd.domain.complex.Dict;
-import com.susd.domain.complex.DictRepository;
-import com.susd.domainservice.identity.SessionManager;
+import com.susd.application.ExpressService;
+import com.susd.domain.complex.Express;
+import com.susd.domain.complex.ExpressRepository;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -22,10 +21,10 @@ import java.util.Map;
 public class ExpressController {
 
     @Autowired
-    private DictRepository dictRepository;
+    private ExpressService expressService;
 
     @Autowired
-    private DictService dictService;
+    private ExpressRepository expressRepository;
 
     /**
      * 首页/列表页
@@ -38,9 +37,9 @@ public class ExpressController {
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
-    public DatatableResult<Dict> query(HttpServletRequest request, DatatableParam param, String keyword) {
+    public DatatableResult<Express> query(HttpServletRequest request, DatatableParam param, String keyword) {
 
-        DatatableResult<Dict> result = dictService.findByKeyword(keyword,"express" ,param);
+        DatatableResult<Express> result = expressService.queryByKeyword(keyword,param);
 
         return result;
     }
@@ -54,7 +53,7 @@ public class ExpressController {
     @RequestMapping(value = { "/edit/{id}", "/edit" }, method = RequestMethod.GET)
     public String edit(Map<String, Object> map, @PathVariable(name = "id", required = false) Integer id) {
         if (id != null && id > 0) {
-            Dict course = dictRepository.findDictById(id);
+            Express course = expressRepository.findById(id);
             map.put("model", course);
         }
 
@@ -68,8 +67,8 @@ public class ExpressController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public OptResult save(Dict dict) {
-        return dictService.save(dict);
+    public OptResult save(Express dict) {
+        return expressService.save(dict);
     }
 
     /**
@@ -80,6 +79,7 @@ public class ExpressController {
     @RequestMapping(value = "/change", method = RequestMethod.POST)
     @ResponseBody
     public OptResult delete(int dictId) {
-        return dictService.delete(dictId);
+        //return expressService.delete(dictId);
+        return OptResult.Failed("该快递公司不能删除");
     }
 }

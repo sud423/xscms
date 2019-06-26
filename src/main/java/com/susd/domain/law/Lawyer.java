@@ -2,8 +2,8 @@ package com.susd.domain.law;
 
 import com.susd.domain.Entity;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Lawyer implements Entity<Lawyer> {
@@ -13,47 +13,47 @@ public class Lawyer implements Entity<Lawyer> {
     private int tenantId;
 
     @NotNull(message = "姓不能为空")
-    @Max(value = 10,message = "姓最大长度不能超过10个字符")
+    @Size(max = 10,message = "姓最大长度不能超过10个字符")
     private String surname;
 
     @NotNull(message = "名字不能为空")
-    @Max(value = 20,message = "名字最大长度不能超过20个字符")
+    @Size(max = 20,message = "名字最大长度不能超过20个字符")
     private String name;
 
     @NotNull(message = "性别不能为空")
     private String sex;
 
     @NotNull(message = "手机号不能为空")
-    @Max(value = 25,message = "手机号最大长度不能超过15个字符")
+    @Size(max = 25,message = "手机号最大长度不能超过15个字符")
     private String cell;
 
-    @Max(value = 20,message = "固定电话最大长度不能超过20个字符")
+    @Size(max = 20,message = "固定电话最大长度不能超过20个字符")
     private String fixed;
 
-    @Max(value = 20,message = "学历最大长度不能超过20个字符")
+    @Size(max = 20,message = "学历最大长度不能超过20个字符")
     private String degree;
 
     @NotNull(message = "所在律师所不能为空")
-    @Max(value = 255,message = "所在律师所最大长度不能超过255个字符")
+    @Size(max = 255,message = "所在律师所最大长度不能超过255个字符")
     private String firm;
 
-    @Max(value = 100,message = "职务最大长度不能超过100个字符")
+    @Size(max = 100,message = "职务最大长度不能超过100个字符")
     private String position;
 
     @NotNull(message = "执业执号不能为空")
-    @Max(value = 100,message = "执业执号最大长度不能超过255个字符")
+    @Size(max = 100,message = "执业执号最大长度不能超过255个字符")
     private String practiceNo;
 
-    @Max(value = 255,message = "联系地址最大长度不能超过255个字符")
+    @Size(max = 255,message = "联系地址最大长度不能超过255个字符")
     private String address;
 
-    @Max(value = 100,message = "微信号最大长度不能超过255个字符")
+    @Size(max = 100,message = "微信号最大长度不能超过255个字符")
     private String wechat;
 
-    @Max(value = 20,message = "QQ号最大长度不能超过20个字符")
+    @Size(max = 20,message = "QQ号最大长度不能超过20个字符")
     private String qq;
 
-    @Max(value = 255,message = "备注最大长度不能超过255个字符")
+    @Size(max = 255,message = "备注最大长度不能超过255个字符")
     private String remark;
 
     private Date addTime;

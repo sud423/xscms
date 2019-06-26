@@ -4,6 +4,7 @@ import com.susd.domain.Entity;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Express implements Entity<Express> {
@@ -19,17 +20,17 @@ public class Express implements Entity<Express> {
     private int tenantId;
 
     @NotNull(message = "物流名称不能为空")
-    @Max(value = 100,message = "物流名称不能超过100个字符")
+    @Size(max = 100,message = "物流名称不能超过100个字符")
     private String name;
 
-    @Max(value = 100,message = "物流编码不能超过100个字符")
+    @Size(max= 100,message = "物流编码不能超过100个字符")
     private String code;
 
     private int coefficient;
 
     private byte type;
 
-    @Max(value = 255,message = "备注不能超过255个字符")
+    @Size(max = 255,message = "备注不能超过255个字符")
     private String remark;
 
     private Date addTime;

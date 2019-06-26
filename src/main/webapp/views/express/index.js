@@ -24,13 +24,23 @@ $(function() {
 					return seqNo;
 				}
 			}, {
-				"data" : "value"
+				"data" : "name"
 			}, {
-				"data" : "text"
+				"data" : "code"
+			}, {
+				"data" : "coefficient"
+			}, {
+				"data" : "type",
+				"render":function (data) {
+					if (data == 10)
+						return "最低收费";
+					else
+						return "首重+续重";
+				}
 			}],
 			"columnDefs" : [ {
 				"render" : opt,
-				"targets" : 3,
+				"targets" : 5,
 				"visible" : visible
 			} ],
 			drawCallback : function() {
@@ -54,7 +64,7 @@ $(function() {
 		});
 	} else {
 
-		$("input[name='sort']").TouchSpin({
+		$("input[name='coefficient']").TouchSpin({
 			verticalbuttons : true,
 			verticalupclass : 'ti-plus',
 			verticaldownclass : 'ti-minus',

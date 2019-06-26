@@ -22,8 +22,8 @@
 			<label class="col-md-12">物流名称</label>
 			<div class="col-md-12">
 				<input type="text" class="form-control" required autocomplete="off"
-					maxlength="60" data-toggle="validator" data-required-error="物流名称不能为空"
-					name="text" value="${(model.text)!''}" />
+					maxlength="100" data-toggle="validator" data-required-error="物流名称不能为空"
+					name="name" value="${(model.name)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
@@ -31,19 +31,44 @@
 			<label class="col-md-12">物流编码</label>
 			<div class="col-md-12">
 				<input type="text" class="form-control" required autocomplete="off"  data-required-error="物流编码不能为空"
-					   maxlength="255" name="value" value="${(model.value)!''}" />
+					   maxlength="100" name="code" value="${(model.code)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-12">排序</label>
+			<label class="col-md-12">泡重比</label>
 			<div class="col-md-12">
 
 				<input class="vertical-spin" type="text"
 					data-bts-button-down-class="btn btn-default btn-outline"
 					data-bts-button-up-class="btn btn-default btn-outline" required
-					data-required-error="排序不能为空" autocomplete="off" name="sort"
-					value="${((model.sort)!99)?string('#')}" />
+					data-required-error="泡重比不能为空" autocomplete="off" name="coefficient"
+					value="${((model.coefficient)!6000)?string('#')}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">结算类型</label>
+			<div class="col-md-12">
+				<select class="form-control" id="selType" name="type">
+					<#if (((model.type)!0)== 10)>
+						<option value="10" selected="selected">最低收费</option>
+					<#else>
+						<option value="10">最低收费</option>
+					</#if>
+					<#if (((model.type)!0)== 20)>
+						<option value="20" selected="selected">首重+续重</option>
+					<#else>
+						<option value="20">首重+续重</option>
+					</#if>
+				</select>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea data-maxlength="255" class="form-control" rows="3" name="remark">${(model.remark)!""}</textarea>
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>

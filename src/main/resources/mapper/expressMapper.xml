@@ -13,7 +13,7 @@
         order by add_time desc
     </select>
     <select id="existsByName" resultType="boolean">
-        select * from express where `name`=#{name} and tenant_id=#{tenantId}
+        select if(count(0)>0,1,0) from express where `name`=#{name} and tenant_id=#{tenantId}
         <if test="id>0">
             and id!=#{id}
         </if>

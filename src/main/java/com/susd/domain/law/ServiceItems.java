@@ -2,8 +2,8 @@ package com.susd.domain.law;
 
 import com.susd.domain.Entity;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class ServiceItems implements Entity<ServiceItems> {
@@ -13,10 +13,10 @@ public class ServiceItems implements Entity<ServiceItems> {
     private int tenantId;
 
     @NotNull(message = "服务内容不能为空")
-    @Max(value=100,message = "服务内容最大长度不能超过100个字符")
+    @Size(max = 100,message = "服务内容最大长度不能超过100个字符")
     private String name;
 
-    @Max(value=255,message = "服务内容最大长度不能超过100个字符")
+    @Size(max = 255,message = "服务内容最大长度不能超过100个字符")
     private String remark;
 
     private Date addTime;

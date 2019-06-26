@@ -11,10 +11,12 @@ import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 import com.susd.infrastructure.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class LawyerServiceImpl implements LawyerService {
 
     @Autowired
