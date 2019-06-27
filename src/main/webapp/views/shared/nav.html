@@ -40,6 +40,15 @@
 						</a>
 					</li>
 					</@shiro.hasPermission>
+
+					<@shiro.hasPermission name="express">
+					<li>
+						<a href="${basePath}/express/index" id="express">
+							<i class="icon-plane fa-fw"></i>
+							<span class="hide-menu">物流管理</span>
+						</a>
+					</li>
+					</@shiro.hasPermission>
 					<@shiro.hasPermission name="priceconfig">
 					<li>
 						<a href="${basePath}/priceconfig/index" id="priceconfig">
@@ -131,6 +140,22 @@
 					<a href="${basePath}/lawyer/index" id="lawyer">
 						<i class="mdi mdi-account fa-fw"></i>
 						<span class="hide-menu">律师管理</span>
+					</a>
+				</li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="newcategories">
+				<li>
+					<a href="${basePath}/newcategories/index" id="newcategories">
+						<i class="ti-layout fa-fw"></i>
+						<span class="hide-menu">文件分类</span>
+					</a>
+				</li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="document">
+				<li>
+					<a href="${basePath}/document/index" id="document">
+						<i class="icon-folder-alt fa-fw"></i>
+						<span class="hide-menu">文件管理</span>
 					</a>
 				</li>
 				</@shiro.hasPermission>
@@ -309,14 +334,6 @@
 							<a href="${basePath}/resource/index" id="resource">
 								<i class="ti-lock fa-fw"></i>
 								<span class="hide-menu">资源管理</span>
-							</a>
-						</li>
-						</@shiro.hasPermission>
-						<@shiro.hasPermission name="express">
-						<li>
-							<a href="${basePath}/express/index" id="express">
-								<i class="icon-plane fa-fw"></i>
-								<span class="hide-menu">物流管理</span>
 							</a>
 						</li>
 						</@shiro.hasPermission>

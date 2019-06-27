@@ -44,7 +44,7 @@ public class LawyerServiceImpl implements LawyerService {
             }
 
             if(res>0)
-                OptResult.Successed();
+                return OptResult.Successed();
             return OptResult.Failed("数据保存失败");
         }
         return Validate.verify(lawyer);

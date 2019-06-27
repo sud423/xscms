@@ -1,18 +1,18 @@
 package com.susd.application;
 
-import com.susd.domain.site.NewsCategories;
+import com.susd.domain.site.NewCategories;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 
-public interface NewsCategoriesService {
+public interface NewCategoriesService {
 
     /**
      * 保存分类信息
-     * @param express
+     * @param category
      * @return
      */
-    OptResult save(NewsCategories express);
+    OptResult save(NewCategories category);
 
     /**
      * 分页查询分类
@@ -20,6 +20,6 @@ public interface NewsCategoriesService {
      * @param param
      * @return
      */
-    DatatableResult<NewsCategories> queryByKeyword(String keyword, DatatableParam param);
+    DatatableResult<NewCategories> queryByKeyword(String keyword, DatatableParam param);
 
 }

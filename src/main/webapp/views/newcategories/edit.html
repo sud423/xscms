@@ -1,65 +1,56 @@
 <#assign contentBody>
 <div class="row bg-title">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<h4 class="page-title">物流信息编辑</h4>
+		<h4 class="page-title">分类信息编辑</h4>
 	</div>
 	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 		<ol class="breadcrumb">
 			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
-			<li><a href="${request.getContextPath()}/newcategories/index">物流管理</a></li>
-			<li class="active">物流信息编辑</li>
+			<li><a href="${request.getContextPath()}/newcategories/index">分类管理</a></li>
+			<li class="active">分类信息编辑</li>
 		</ol>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
 <div class="white-box">
-	<form class="form-horizontal" id="expressForm">
+	<form class="form-horizontal" id="newcategoriesForm">
 		<input type="hidden" name="id" value="${(model.id)!'0'}">
 		<input type="hidden" name="version" value="${(model.version)!'1'}">
+
 		<div class="form-group">
-			<label class="col-md-12">物流名称</label>
+			<label class="col-md-12">分类名称</label>
 			<div class="col-md-12">
 				<input type="text" class="form-control" required autocomplete="off"
-					maxlength="100" data-toggle="validator" data-required-error="物流名称不能为空"
+					maxlength="100" data-toggle="validator" data-required-error="服务名称不能为空"
 					name="name" value="${(model.name)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-12">物流编码</label>
+			<label class="col-md-12">分类编码</label>
 			<div class="col-md-12">
-				<input type="text" class="form-control" required autocomplete="off"  data-required-error="物流编码不能为空"
-					   maxlength="100" name="code" value="${(model.code)!''}" />
+				<input type="text" class="form-control" autocomplete="off"
+					   maxlength="50" data-toggle="validator" name="code" value="${(model.code)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-12">泡重比</label>
+			<label class="col-md-12">分类图标</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" autocomplete="off"
+					   maxlength="100" data-toggle="validator" name="icon" value="${(model.icon)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">排序</label>
 			<div class="col-md-12">
 
 				<input class="vertical-spin" type="text"
-					data-bts-button-down-class="btn btn-default btn-outline"
-					data-bts-button-up-class="btn btn-default btn-outline" required
-					data-required-error="泡重比不能为空" autocomplete="off" name="coefficient"
-					value="${((model.coefficient)!6000)?string('#')}" />
-			</div>
-			<div class="col-md-12 help-block with-errors"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-12">结算类型</label>
-			<div class="col-md-12">
-				<select class="form-control" id="selType" name="type">
-					<#if (((model.type)!0)== 10)>
-						<option value="10" selected="selected">最低收费</option>
-					<#else>
-						<option value="10">最低收费</option>
-					</#if>
-					<#if (((model.type)!0)== 20)>
-						<option value="20" selected="selected">首重+续重</option>
-					<#else>
-						<option value="20">首重+续重</option>
-					</#if>
-				</select>
+					   data-bts-button-down-class="btn btn-default btn-outline"
+					   data-bts-button-up-class="btn btn-default btn-outline" required
+					   data-required-error="排序不能为空" autocomplete="off" name="sort"
+					   value="${((model.sort)!99)?string('#')}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
@@ -72,14 +63,14 @@
 		</div>
 		<div class="form-group m-b-0">
 			<div class="col-md-12">
-				<@shiro.hasAnyPermissions name="express.add,express.edit">
+				<@shiro.hasAnyPermissions name="newcategories.add,newcategories.edit">
 				<button type="submit"
 					class="btn btn-success waves-effect waves-light m-r-10">保
 					存</button>
 				</@shiro.hasAnyPermissions>
 				<button type="button"
 					class="btn btn-inverse waves-effect waves-light m-r-10"
-					onclick="window.location.href=basePath+'/express/index'">返
+					onclick="window.location.href=basePath+'/newcategories/index'">返
 					回</button>
 			</div>
 		</div>
@@ -90,7 +81,7 @@
 
 <#assign body>
 <script type="text/javascript"
-	src="${request.getContextPath()}/views/express/index.js"></script>
+	src="${request.getContextPath()}/views/newcategories/index.js"></script>
 </#assign>
 
 <#include "/layout.html" encoding="utf-8">

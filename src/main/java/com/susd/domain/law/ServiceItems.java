@@ -12,11 +12,14 @@ public class ServiceItems implements Entity<ServiceItems> {
 
     private int tenantId;
 
-    @NotNull(message = "服务内容不能为空")
-    @Size(max = 100,message = "服务内容最大长度不能超过100个字符")
+    @NotNull(message = "服务名称不能为空")
+    @Size(max = 100,message = "服务名称最大长度不能超过100个字符")
     private String name;
 
-    @Size(max = 255,message = "服务内容最大长度不能超过100个字符")
+    @Size(max=50,message = "服务编码最大长度不能超过50个字符")
+    private String code;
+
+    @Size(max = 255,message = "备注最大长度不能超过100个字符")
     private String remark;
 
     private Date addTime;
@@ -47,6 +50,14 @@ public class ServiceItems implements Entity<ServiceItems> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getRemark() {

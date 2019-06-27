@@ -40,8 +40,8 @@
     </select>
 
     <update id="update" parameterType="com.susd.domain.identity.Tenant">
-        update tenant set `name`=#{name},company=#{name},contact=#{name},cell=#{name},
-        `domain`=#{name},ip=#{name},account,password,port,os
+        update tenant set `name`=#{name},company=#{company},contact=#{contact},cell=#{cell},
+        `domain`=#{domain},ip=#{ip},account=#{account},password=#{password},port=#{port},os=#{os}
         where id=#{id}
     </update>
 

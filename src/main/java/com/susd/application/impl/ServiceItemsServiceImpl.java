@@ -26,6 +26,9 @@ public class ServiceItemsServiceImpl implements ServiceItemsService {
     public OptResult save(ServiceItems item) {
         if (Validate.isValid(item)) {
 
+            if(serviceItemsRepository.existsName(item.getName(),SessionManager.getTenantId(),item.getId()))
+                return OptResult.Failed("服务名称已存在，请重新输入");
+
             int res;
             if (item.getId() > 0) {
                 ServiceItems old = serviceItemsRepository.findById(item.getId());
@@ -44,7 +47,7 @@ public class ServiceItemsServiceImpl implements ServiceItemsService {
             }
 
             if(res>0)
-                OptResult.Successed();
+                return OptResult.Successed();
             return OptResult.Failed("数据保存失败");
         }
         return Validate.verify(item);

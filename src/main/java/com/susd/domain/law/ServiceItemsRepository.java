@@ -10,7 +10,7 @@ public interface ServiceItemsRepository {
      * @param id
      * @return
      */
-    ServiceItems findById(int id);
+    ServiceItems findById(@Param("id")int id);
 
     /**
      * 根据关键字查询服务项目
@@ -19,6 +19,13 @@ public interface ServiceItemsRepository {
      * @return
      */
     List<ServiceItems> findByKeyword(@Param("keyword") String keyword, @Param("tenantId") int tenantId);
+
+    /**
+     * 判断名称是否判断
+     * @param name
+     * @return
+     */
+    boolean existsName(@Param("name") String name,@Param("tenantId")int tenantId,@Param("id") int id);
 
     /**
      * 添加服务项目信息

@@ -1,8 +1,8 @@
 package com.susd.controllers;
 
-import com.susd.application.ServiceItemsService;
-import com.susd.domain.law.ServiceItems;
-import com.susd.domain.law.ServiceItemsRepository;
+import com.susd.application.NewCategoriesService;
+import com.susd.domain.site.NewCategories;
+import com.susd.domain.site.NewCategoriesRepository;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -17,39 +17,40 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/serviceitems", method = RequestMethod.GET)
-public class ServiceItemsController {
-    @Autowired
-    private ServiceItemsService serviceItemsService;
+@RequestMapping(value = "/newcategories",method= RequestMethod.GET)
+public class NewCategoriesController {
 
     @Autowired
-    private ServiceItemsRepository serviceItemsRepository;
+    private NewCategoriesService newCategoriesService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @Autowired
+    private NewCategoriesRepository newCategoriesRepository;
+
+    @RequestMapping(value = "/index",method= RequestMethod.GET)
     public String index(){
-        return "serviceitems/index";
+        return  "newcategories/index";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
-    public DatatableResult<ServiceItems> query(HttpServletRequest request, DatatableParam param, String keyword) {
+    public DatatableResult<NewCategories> query(HttpServletRequest request, DatatableParam param, String keyword) {
 
-        DatatableResult<ServiceItems> result = serviceItemsService.queryByKeyword(keyword, param);
+        DatatableResult<NewCategories> result = newCategoriesService.queryByKeyword(keyword, param);
 
         return result;
     }
     @RequestMapping(value = { "/edit/{id}", "/edit" }, method = RequestMethod.GET)
     public String edit(Map<String, Object> map, @PathVariable(name = "id", required = false) Integer id) {
         if (id!=null&& id > 0) {
-            ServiceItems items=serviceItemsRepository.findById(id);
+            NewCategories items=newCategoriesRepository.findById(id);
             map.put("model",items);
         }
-        return "serviceitems/edit";
+        return "newcategories/edit";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public OptResult save(ServiceItems items) {
-        return serviceItemsService.save(items);
+    public OptResult save(NewCategories category) {
+        return newCategoriesService.save(category);
     }
 }
