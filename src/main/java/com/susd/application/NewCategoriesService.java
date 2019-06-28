@@ -1,9 +1,12 @@
 package com.susd.application;
 
 import com.susd.domain.site.NewCategories;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
+
+import java.util.List;
 
 public interface NewCategoriesService {
 
@@ -22,4 +25,9 @@ public interface NewCategoriesService {
      */
     DatatableResult<NewCategories> queryByKeyword(String keyword, DatatableParam param);
 
+    /**
+     * 分类列表
+     * @return
+     */
+    List<TreeDto> queryToDropDataSrource();
 }

@@ -9,3 +9,7 @@ ul.ztree {
 	overflow-y: scroll;
 	overflow-x: auto;
 }
+
+.input-group .form-control{
+	z-index: unset;
+}

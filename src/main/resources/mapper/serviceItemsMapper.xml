@@ -14,11 +14,11 @@
     </select>
 
     <select id="existsName" resultType="boolean">
-        select 1 from service_items where tenant_id=#{tenantId} and `name`=#{name}
+        select exists (select 1 from service_items where tenant_id=#{tenantId} and `name`=#{name}
         <if test="id>0">
             and id!=${id}
         </if>
-        limit 1
+        limit 1)
     </select>
 
     <insert id="add" parameterType="com.susd.domain.law.ServiceItems" keyProperty="id" useGeneratedKeys="true">

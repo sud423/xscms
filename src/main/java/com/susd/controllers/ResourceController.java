@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.susd.domainservice.identity.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.susd.application.ResourceService;
 import com.susd.domain.identity.Resource;
 import com.susd.domain.identity.ResourceRepository;
-import com.susd.dto.ResourceItem;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -41,8 +42,6 @@ public class ResourceController {
 	 * 
 	 * @param request 当前HTTP请求
 	 * @param keyword 关键字
-	 * @param page    索引页，下标从1开始
-	 * @param size    当前显示几条记录
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -55,14 +54,13 @@ public class ResourceController {
 	}
 
 	@RequestMapping(value = { "/edit/{id}", "/edit" }, method = RequestMethod.GET)
-	public String edit(Map<String, Object> map,
-			@PathVariable(name = "id", required = false) Integer id) {
+	public String edit(Map<String, Object> map,@PathVariable(name = "id", required = false) Integer id) {
 		if (id!=null && id > 0) {
 			Resource user = resourceRepository.findResourceById(id);
 			map.put("model", user);
 		}
 		
-		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource(0);
+		List<TreeDto> dataSource=resourceService.queryToDropDataSrource();
 		
 		String json=JSONObject.toJSONString(dataSource);
 		

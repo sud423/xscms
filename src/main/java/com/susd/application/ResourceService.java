@@ -3,7 +3,7 @@ package com.susd.application;
 import java.util.List;
 
 import com.susd.domain.identity.Resource;
-import com.susd.dto.ResourceItem;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -13,5 +13,5 @@ public interface ResourceService {
 	
 	OptResult save(Resource resource);
 	
-	List<ResourceItem> queryToDropDataSrource(int tenantId);
+	List<TreeDto> queryToDropDataSrource();
 }

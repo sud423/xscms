@@ -6,10 +6,14 @@ import com.susd.application.NewCategoriesService;
 import com.susd.domain.site.NewCategories;
 import com.susd.domain.site.NewCategoriesRepository;
 import com.susd.domainservice.identity.SessionManager;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 import com.susd.infrastructure.Validate;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +65,24 @@ public class NewCategoryiesServiceImpl implements NewCategoriesService {
         PageInfo<NewCategories> pagedInfo = new PageInfo(users);
 
         return new DatatableResult(pagedInfo, param.getDraw());
+    }
+
+    @Override
+    public List<TreeDto> queryToDropDataSrource() {
+        List<NewCategories> resources = newCategoriesRepository.findByKeyword(null,SessionManager.getTenantId());
+        PropertyMap<NewCategories, TreeDto> resourceMap = new PropertyMap<NewCategories, TreeDto>() {
+            @Override
+            protected void configure() {
+//				map().setCreated(source.getAddTime());
+                map().setpId(source.getParentId());
+            }
+        };
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(resourceMap);
+
+
+        List<TreeDto> items = modelMapper.map(resources, new TypeToken<List<TreeDto>>() {}.getType());
+
+        return items;
     }
 }

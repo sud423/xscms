@@ -1,6 +1,6 @@
 package com.susd.dto;
 
-public class ResourceItem {
+public class TreeDto {
 
 	public int id;
 	

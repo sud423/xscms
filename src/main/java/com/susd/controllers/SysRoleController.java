@@ -18,7 +18,7 @@ import com.susd.application.ResourceService;
 import com.susd.application.SysRoleService;
 import com.susd.domain.identity.SysRole;
 import com.susd.domain.identity.SysRoleRepository;
-import com.susd.dto.ResourceItem;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -39,7 +39,7 @@ public class SysRoleController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Map<String, Object> map,HttpServletRequest request) {
 
-		List<ResourceItem> dataSource=resourceService.queryToDropDataSrource(SessionManager.getTenantId());
+		List<TreeDto> dataSource=resourceService.queryToDropDataSrource();
 		
 		String json=JSONObject.toJSONString(dataSource);
 		

@@ -1,8 +1,10 @@
 package com.susd.controllers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.susd.application.NewCategoriesService;
 import com.susd.domain.site.NewCategories;
 import com.susd.domain.site.NewCategoriesRepository;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -41,10 +44,17 @@ public class NewCategoriesController {
     }
     @RequestMapping(value = { "/edit/{id}", "/edit" }, method = RequestMethod.GET)
     public String edit(Map<String, Object> map, @PathVariable(name = "id", required = false) Integer id) {
-        if (id!=null&& id > 0) {
-            NewCategories items=newCategoriesRepository.findById(id);
-            map.put("model",items);
+
+        if (id != null && id > 0) {
+            NewCategories items = newCategoriesRepository.findById(id);
+            map.put("model", items);
         }
+
+        List<TreeDto> dataSource = newCategoriesService.queryToDropDataSrource();
+        String json = JSONObject.toJSONString(dataSource);
+
+        map.put("datasource", json);
+
         return "newcategories/edit";
     }
 

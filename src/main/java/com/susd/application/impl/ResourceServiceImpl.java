@@ -16,7 +16,7 @@ import com.susd.application.ResourceService;
 import com.susd.domain.identity.Resource;
 import com.susd.domain.identity.ResourceRepository;
 import com.susd.domainservice.identity.SessionManager;
-import com.susd.dto.ResourceItem;
+import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
@@ -79,9 +79,9 @@ public class ResourceServiceImpl implements ResourceService {
 
 	
 	@Override
-	public List<ResourceItem> queryToDropDataSrource(int tenantId) {
-		List<Resource> resources = resourceRepository.queryToDropDataSrource(tenantId);
-		PropertyMap<Resource, ResourceItem> resourceMap = new PropertyMap<Resource, ResourceItem>() {
+	public List<TreeDto> queryToDropDataSrource() {
+		List<Resource> resources = resourceRepository.queryToDropDataSrource(SessionManager.getTenantId());
+		PropertyMap<Resource, TreeDto> resourceMap = new PropertyMap<Resource, TreeDto>() {
 			@Override
 			protected void configure() {
 //				map().setCreated(source.getAddTime());
@@ -92,7 +92,7 @@ public class ResourceServiceImpl implements ResourceService {
 		modelMapper.addMappings(resourceMap);
 		
 
-		List<ResourceItem> items = modelMapper.map(resources, new TypeToken<List<ResourceItem>>() {}.getType());
+		List<TreeDto> items = modelMapper.map(resources, new TypeToken<List<TreeDto>>() {}.getType());
 		
 		return items;
 	}

@@ -16,20 +16,20 @@
     </select>
 
     <select id="existsName" resultType="boolean">
-        select 1 from new_categories where tenant_id=#{tenantId} and `name`=#{name}
+        select exists (select 1 from new_categories where tenant_id=#{tenantId} and `name`=#{name}
         <if test="id>0">
             and id!=#{id}
         </if>
-        limit 1
+        limit 1)
     </select>
 
     <insert id="add" parameterType="com.susd.domain.site.NewCategories" useGeneratedKeys="true" keyProperty="id">
-        insert into new_categoires (tenant_id,`name`,code,sort,icon,user_id,add_time,remark) values
-        (#{tenantId},#{name},#{code},#{sort},#{icon},#{userId},#{addTime},#{remark})
+        insert into new_categories (tenant_id,`name`,parent_id,code,sort,icon,user_id,add_time,remark) values
+        (#{tenantId},#{name},#{parentId},#{code},#{sort},#{icon},#{userId},#{addTime},#{remark})
     </insert>
 
     <update id="update" parameterType="com.susd.domain.site.NewCategories">
-        update new_categoires set `name`=#{name},`code`=#{code},`sort`=#{sort},`icon`=#{icon},`remark`=#{remark},version=version+1
+        update new_categories set `name`=#{name},parent_id=#{parentId},`code`=#{code},`sort`=#{sort},`icon`=#{icon},`remark`=#{remark},version=version+1
         where id=${id}
     </update>
 </mapper>

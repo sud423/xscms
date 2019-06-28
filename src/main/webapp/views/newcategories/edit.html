@@ -1,3 +1,8 @@
+<#assign head>
+<link
+		href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css"
+		rel="stylesheet"></link>
+</#assign>
 <#assign contentBody>
 <div class="row bg-title">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -16,7 +21,14 @@
 	<form class="form-horizontal" id="newcategoriesForm">
 		<input type="hidden" name="id" value="${(model.id)!'0'}">
 		<input type="hidden" name="version" value="${(model.version)!'1'}">
-
+		<input type="hidden" id="pId" name="parentId" value="${(model.parentId)!'0'}">
+		<div class="form-group">
+			<label class="col-md-12">所属父节点</label>
+			<div class="col-md-12">
+				<input type="text" id="txtTree" class="form-control" autocomplete="off" onclick="showMenu(); return false;" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
 		<div class="form-group">
 			<label class="col-md-12">分类名称</label>
 			<div class="col-md-12">
@@ -77,11 +89,33 @@
 	</form>
 
 </div>
+<div id="menuContent" class="menuContent"
+	 style="display: none; position: absolute;">
+	<ul id="treeDemo" class="ztree" style="margin-top: 0;"></ul>
+</div>
 </#assign>
 
 <#assign body>
+
 <script type="text/javascript"
-	src="${request.getContextPath()}/views/newcategories/index.js"></script>
+		src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript">
+	var json = '${datasource}';
+	var zNodes = eval(json);
+</script>
+
+<script type="text/javascript" src="${request.getContextPath()}/views/newcategories/index.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+		var node = zTree.getNodeByParam("id", "${(model.parentId)!'0'}");
+		if (node) {
+			zTree.selectNode(node, true);//将指定ID的节点选中
+
+			$("#txtTree").val(node.name);
+		}
+	});
+</script>
 </#assign>
 
 <#include "/layout.html" encoding="utf-8">

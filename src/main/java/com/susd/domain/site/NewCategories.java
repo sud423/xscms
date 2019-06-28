@@ -16,6 +16,8 @@ public class NewCategories implements Entity<NewCategories> {
     @Size(max = 100,message = "分类名称最大长度为100字符")
     private String name;
 
+    private int parentId;
+
     @Size(max = 50,message = "分类编码最大长度为50字符")
     private String code;
 
@@ -55,6 +57,14 @@ public class NewCategories implements Entity<NewCategories> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getCode() {
