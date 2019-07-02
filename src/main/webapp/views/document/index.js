@@ -24,9 +24,9 @@ $(function() {
 					return seqNo;
 				}
 			}, {
-				"data" : "title"
+				"data" : "newCategories.name"
 			}, {
-				"data" : "category_id"
+				"data" : "title"
 			}],
 			"columnDefs" : [ {
 				"render" : opt,
@@ -63,6 +63,10 @@ $(function() {
 		});
 
 		$("#documentForm").validator().on('submit', function(e) {
+			if($("#cId").val()!=""){
+				swal("信息", "请选择分类", "error");
+				return false;
+			}
 			if (e.isDefaultPrevented()) {
 				return false;
 			} else {
@@ -151,7 +155,7 @@ function onClick(e, treeId, treeNode) {
 		ids = ids.substring(0, ids.length - 1);
 	}
 	$("#txtTree").val(v);
-	$("#pId").val(ids);
+	$("#cId").val(ids);
 	hideMenu();
 }
 

@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * =============================================================
  * dropify v0.2.2 - Override your input files with style.
  * https://github.com/JeremyFagis/dropify
@@ -46,19 +46,19 @@ function Dropify(element, options) {
         allowedFormats: ['portrait', 'square', 'landscape'],
         allowedFileExtensions: ['*'],
         messages: {
-            'default': '在此处拖放文件或单击',
-            'replace': '拖放或单击以替换',
-            'remove':  '移除',
-            'error': '糟糕，发生了一些错误。'
+            'default': 'Drag and drop a file here or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove':  'Remove',
+            'error':   'Ooops, something wrong happended.'
         },
         error: {
-            'fileSize': '文件太大(最大不能超过{{value}})。',
-            'minWidth': '图像宽度太小(最小为{{ value }}}px)。',
-            'maxWidth': '图像宽度太大(最大不能超过{{ value }}}px)。',
-            'minHeight': '图像高度太小(最小为{{ value }}}px).',
-            'maxHeight': '图像高度太大(最大不能超过{{ value }}px).',
-            'imageFormat': '图像格式不允许上传(只允许上传{{ value }}).',
-            'fileExtension': '该文件不允许上传(只允许上传{{ value }}).'
+            'fileSize': 'The file size is too big ({{ value }} max).',
+            'minWidth': 'The image width is too small ({{ value }}}px min).',
+            'maxWidth': 'The image width is too big ({{ value }}}px max).',
+            'minHeight': 'The image height is too small ({{ value }}}px min).',
+            'maxHeight': 'The image height is too big ({{ value }}px max).',
+            'imageFormat': 'The image format is not allowed ({{ value }} only).',
+            'fileExtension': 'The file is not allowed ({{ value }} only).'
         },
         tpl: {
             wrap:            '<div class="dropify-wrapper"></div>',
@@ -329,16 +329,12 @@ Dropify.prototype.resetPreview = function()
  */
 Dropify.prototype.cleanFilename = function(src)
 {
-    var path = src.replace("!", ".");
-    var arr = path.split('_');
-    var filePath = arr[0];
-
-    var filename = filePath.split('\\').pop();
-    if (filename == filePath) {
-        filename = filePath.split('/').pop();
+    var filename = src.split('\\').pop();
+    if (filename == src) {
+        filename = src.split('/').pop();
     }
 
-    return filePath !== "" ? filename : '';
+    return src !== "" ? filename : '';
 };
 
 /**

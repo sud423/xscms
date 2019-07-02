@@ -30,6 +30,7 @@ public class DocumentController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
     private NewsRepository newsRepository;
 
     @RequestMapping(value = "/index",method= RequestMethod.GET)

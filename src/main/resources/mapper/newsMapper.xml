@@ -4,7 +4,10 @@
 	<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->    
     <resultMap id="newsMap" type="com.susd.domain.site.News">
         <id column="id" property="id" />
-        <!-- <result column="title" property="title" />
+		<result column="tenant_id" property="tenantId" />
+		<result column="target" property="target" />
+		<result column="category_id" property="categoryId" />
+        <result column="title" property="title" />
         <result column="cover" property="cover" />
         <result column="lead" property="lead" />
         <result column="content" property="content" />
@@ -19,21 +22,29 @@
         <result column="is_slide" property="isSlide" />
         <result column="sort" property="sort" />
         <result column="user_id" property="userId" />
-        <result column="version" property="version" /> -->
+        <result column="version" property="version" />
+		<association property="newCategories"
+					 javaType="com.susd.domain.site.NewCategories" resultMap="categoryMap" />
     </resultMap>
+
+	<resultMap id="categoryMap" type="com.susd.domain.site.NewCategories">
+		<result column="name" property="name" />
+	</resultMap>
+
     <!-- 查询单条记录 -->
-    <select id="findNewsById" parameterType="int" resultMap="newsMap">
+    <select id="findNewsById" parameterType="int" resultType="com.susd.domain.site.News">
         SELECT * FROM news WHERE Id = #{newsId}
     </select>
     <select id="findByKeyword" resultMap="newsMap">
-		select * from news
+		select n.*,c.`name` from news n
+		left join new_categories c on c.id=n.category_id
 		where
-		tenant_id=#{tenantId} and `status`!=20
+		n.tenant_id=#{tenantId} and n.`status`!=20
 		<if test="keyword != null and keyword != ''">
 			<bind name="keyinfo" value="'%' + keyword + '%'" />
-			and title like #{keyinfo}
+			and (n.title like #{keyinfo} or c.`name` like #{keyinfo})
 		</if>
-		order by sort asc,add_time desc
+		order by n.sort asc,n.add_time desc
 	</select>
 	<update id="update"
 		parameterType="com.susd.domain.site.News">

@@ -54,7 +54,9 @@ public class News implements Entity<News> {
 	private int userId;
 	
 	private int version;
-	
+
+	private NewCategories newCategories;
+
 	public int getId() {
 		return id;
 	}
@@ -341,6 +343,14 @@ public class News implements Entity<News> {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public NewCategories getNewCategories() {
+		return newCategories;
+	}
+
+	public void setNewCategories(NewCategories newCategories) {
+		this.newCategories = newCategories;
 	}
 
 	@Override

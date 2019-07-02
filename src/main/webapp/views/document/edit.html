@@ -1,8 +1,7 @@
 <#include "/common/droplist.html" />
 <#assign head>
-<link
-		href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css"
-		rel="stylesheet"></link>
+<link rel="stylesheet" href="${request.getContextPath()}/assets/plugins/dropify/css/dropify.min.css" />
+<link href="${request.getContextPath()}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
 </#assign>
 <#assign contentBody>
 <div class="row bg-title">
@@ -27,7 +26,7 @@
 		<div class="form-group">
 			<label class="col-md-12">所属分类</label>
 			<div class="col-md-12">
-				<input type="text" class="form-control" required autocomplete="off" data-required-error="请选择文件分类"  id="txtTree" onclick="showMenu(); return false;">
+				<input type="text" class="form-control" required readonly autocomplete="off" data-required-error="请选择文件分类"  id="txtTree" onclick="showMenu(); return false;">
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
@@ -36,7 +35,7 @@
 			<div class="col-md-12">
 				<input type="text" class="form-control" required autocomplete="off"
 					maxlength="60" data-toggle="validator" data-required-error="标题不能为空"
-					name="name" value="${(model.name)!''}" />
+					name="title" value="${(model.title)!''}" />
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
 		</div>
@@ -47,6 +46,13 @@
 					data-toggle="validator" rows="5">${(model.content)!''}</textarea>
 			</div>
 			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 ol-md-3 col-xs-6">
+				<label for="input-file-now">请选择文件</label>
+				<input type="file" name="docFile" id="input-file-now" class="dropify" />
+			</div>
+
 		</div>
 		<div class="form-group">
 			<label class="col-md-12">排序</label>
@@ -79,6 +85,7 @@
 </#assign>
 
 <#assign body>
+<script type="text/javascript" src="${request.getContextPath()}/assets/plugins/dropify/js/dropify.min.js" ></script>
 <script type="text/javascript"
 		src="${request.getContextPath()}/assets/plugins/zTree/js/jquery.ztree.core.min.js"></script>
 <script type="text/javascript">
@@ -89,13 +96,26 @@
 <script type="text/javascript">
 	$(function() {
 		var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-		var node = zTree.getNodeByParam("id", "${(model.parentId)!'0'}");
+		var node = zTree.getNodeByParam("id", "${(model.categoryId)!'0'}");
 		if (node) {
 			zTree.selectNode(node, true);//将指定ID的节点选中
 
 			$("#txtTree").val(node.name);
 		}
+
+
+		$("#input-file-now").dropify({
+			maxFileSize:"1M",
+			messages: {
+				'default': '点击或拖拽文件到这里',
+				'replace': '点击或拖拽文件到这里来替换文件',
+				'remove':  '移除',
+				'error':   '对不起，你上传的文件太大了'
+			}
+		});
 	});
+
+
 </script>
 </#assign>
 
