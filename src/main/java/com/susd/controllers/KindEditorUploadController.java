@@ -136,9 +136,9 @@ public class KindEditorUploadController {
 			return execute;
 		}
 		// 生成新的文件名,并按日期分类
-		newSavePath();
+		savePath=Utils.createSavePath(relPath,fileExt,fileDir);
 		// 拷贝上传文件至指定存放目录
-		copy(imgFile.getInputStream(), savePath);
+		Utils.copy(imgFile.getInputStream(), savePath);
 		// 计算出文件输出路径
 		int point = savePath.lastIndexOf("/") - 6;
 		StringBuilder url = new StringBuilder("/Upload/");
@@ -171,59 +171,6 @@ public class KindEditorUploadController {
 		return true;
 	}
 
-	/**
-	 * @category 生成新的文件名,且按日期分类管理
-	 */
-	private void newSavePath() {
-		StringBuilder tempPath = new StringBuilder(relPath);
-		tempPath.append("/").append(fileDir).append("/");
-		SimpleDateFormat folderNameFormat = new SimpleDateFormat("yyyyMM");
-		tempPath.append(folderNameFormat.format(new Date()));
-		File temp = new File(tempPath.toString());
-		if (!temp.exists())
-			temp.mkdirs();
-//		SimpleDateFormat fileNameFormat = new SimpleDateFormat("yyyyMMddkkmmss_S");
-		tempPath.append("/").append(Utils.generateCode());
-		tempPath.append(".").append(fileExt);
-		savePath = tempPath.toString().replaceAll("\\\\", "/");
-	}
-
-	/**
-	 * @category 拷贝文件
-	 * @param src 源文件
-	 * @param tar 目标路径
-	 */
-	private void copy(InputStream src, String tar) {
-		// 判断源文件或目标路径是否为空
-		if (null == src || null == tar || tar.isEmpty()) {
-			return;
-		}
-		// InputStream srcIs = null;
-		OutputStream tarOs = null;
-		try {
-			// srcIs = new FileInputStream(src);
-			File tarFile = new File(tar);
-			tarOs = new FileOutputStream(tarFile);
-			byte[] buffer = new byte[4096];
-			int n = 0;
-			while (-1 != (n = src.read(buffer))) {
-				tarOs.write(buffer, 0, n);
-			}
-		} catch (IOException e) {
-			log.error("Copy File is Fali, Because " + e);
-		} finally {
-			try {
-				if (null != src) {
-					src.close();
-				}
-				if (null != tarOs) {
-					tarOs.close();
-				}
-			} catch (IOException e) {
-				log.error("Close Stream is Fail, Because " + e);
-			}
-		}
-	}
 
 	/**
 	 * @category 管理文件上传的请求以及目录管理

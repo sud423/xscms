@@ -5,6 +5,8 @@ import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
 
+import java.io.InputStream;
+
 public interface NewsService {
 	/**
 	 * 根据关键字查询活动
@@ -22,8 +24,8 @@ public interface NewsService {
 	
 	/**
 	 * 保存数据
-	 * @param ann
+	 * @param news
 	 * @return
 	 */
-	OptResult save(News news);
+	OptResult save(News news, String fileName, String fileExt, String savePath,InputStream src);
 }

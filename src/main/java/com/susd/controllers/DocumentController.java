@@ -9,14 +9,19 @@ import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
 import com.susd.infrastructure.OptResult;
+import com.susd.infrastructure.Utils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,19 @@ public class DocumentController {
 
     @Autowired
     private NewsRepository newsRepository;
+
+    // 文件目录名称
+    private String fileDir;
+
+    // 文件后缀名称
+    private String fileExt;
+
+    // 站点真实路径
+    @Value("${relPath}")
+    private String relPath;
+
+    // 上传文件保存路径
+    private String savePath;
 
     @RequestMapping(value = "/index",method= RequestMethod.GET)
     public String index(){
@@ -64,7 +82,17 @@ public class DocumentController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public OptResult save(News news) {
-        return newsService.save(news);
+    public OptResult save(@RequestParam(value = "docFile", required = false) MultipartFile file, News news)  throws IOException {
+        if (file.isEmpty()) {
+            return OptResult.Failed("请选择要上传的文件");
+        }
+        fileExt = FilenameUtils.getExtension(file.getOriginalFilename());
+        savePath=Utils.createSavePath(relPath,fileExt,"doc");
+
+        //Utils.copy(file.getInputStream(),savePath);
+
+
+        return newsService.save(news,file.getName(),fileExt,savePath,file.getInputStream());
     }
+
 }

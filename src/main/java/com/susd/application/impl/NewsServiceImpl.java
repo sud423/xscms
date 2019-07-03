@@ -1,8 +1,12 @@
 package com.susd.application.impl;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import com.susd.application.AttachService;
+import com.susd.domain.complex.Attach;
+import com.susd.infrastructure.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +16,15 @@ import com.susd.application.NewsService;
 import com.susd.domain.site.News;
 import com.susd.domain.site.NewsRepository;
 import com.susd.domainservice.identity.SessionManager;
-import com.susd.infrastructure.DatatableParam;
-import com.susd.infrastructure.DatatableResult;
-import com.susd.infrastructure.OptResult;
-import com.susd.infrastructure.Validate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class NewsServiceImpl implements NewsService {
 	@Autowired
 	private NewsRepository newsRepository;
+
+	@Autowired
+	private AttachService attachService;
 	
 	@Override
 	public DatatableResult<News> findByKeyword(String keyword, DatatableParam param) {
@@ -50,8 +54,10 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public OptResult save(News news) {
+	@Transactional
+	public OptResult save(News news, String fileName, String fileExt,String savePath, InputStream str) {
 		if (Validate.isValid(news)) {
+
 
 			int res = 0;
 			news.setStatus((byte)1);
@@ -60,7 +66,28 @@ public class NewsServiceImpl implements NewsService {
 				news.setAddTime(new Date());
 				news.setTenantId(SessionManager.getTenantId());
 				news.setVersion(1);
+
 				res=newsRepository.add(news);
+				if(fileName!=null && fileName!=""){
+					Attach attach=new Attach();
+					attach.setAddTime(new Date());
+					attach.setExt(fileExt);
+					attach.setFileName(fileName);
+					attach.setSort(0);
+					attach.setSourceId(news.getId());
+					attach.setSourceName("news");
+					int point = savePath.lastIndexOf("/") - 6;
+					StringBuilder url = new StringBuilder("/Upload/");
+					url.append("doc").append("/");
+					url.append(savePath.substring(point));
+					attach.setPath(url.toString());
+					attach.setTenantId(SessionManager.getTenantId());
+					attach.setUploadId(SessionManager.getUserId());
+					Utils.copy(str,savePath);
+					attachService.save(attach);
+				}
+
+
 			} else {
 				News old=newsRepository.findNewsById(news.getId());
 				if(old.getVersion()!=news.getVersion())
