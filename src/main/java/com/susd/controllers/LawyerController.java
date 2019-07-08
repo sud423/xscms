@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/lawyer")
+@RequestMapping(value = "/lawyer", method = RequestMethod.GET)
 public class LawyerController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class LawyerController {
             Lawyer lawyer=lawyerRepository.findById(id);
             map.put("model",lawyer);
         }
-        return "news/edit";
+        return "lawyer/edit";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)

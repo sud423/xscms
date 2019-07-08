@@ -1,0 +1,157 @@
+
+<#assign contentBody>
+<div class="row bg-title">
+	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+		<h4 class="page-title">律师信息编辑</h4>
+	</div>
+	<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="${request.getContextPath()}/dashboard">控制台</a></li>
+			<li><a href="${request.getContextPath()}/news/index">律师管理</a></li>
+			<li class="active">律师信息编辑</li>
+		</ol>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="white-box">
+	<form class="form-horizontal" id="lawyerForm">
+		<input type="hidden" name="id" value="${(model.id)!'0'}">
+		<input type="hidden" name="version" value="${(model.version)!'1'}">
+		<div class="form-group">
+			<label class="col-md-12">姓</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					   maxlength="10" data-toggle="validator" data-required-error="姓不能为空"
+					   name="surname" value="${(model.surname)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">名字</label>
+			<div class="col-md-12">
+				<input type="text" class="form-control" required autocomplete="off"
+					maxlength="20" data-toggle="validator" data-required-error="标题不能为空"
+					name="name" value="${(model.name)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">性别</label>
+			<div class="col-md-12">
+
+				<div class="radio radio-custom" style="float: left;">
+					<input type="radio" name="sex" id="radio2" value="先生">
+					<label for="radio2"> 先生 </label>
+				</div>
+				<div class="radio radio-primary" style="float: left;margin-left: 20px;">
+					<input type="radio" name="sex" id="radio3" value="女士">
+					<label for="radio3"> 女士 </label>
+				</div>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">手机号</label>
+			<div class="col-md-12">
+				<input class="form-control" maxlength="15" required name="cell"
+					   data-toggle="validator" data-required-error="手机号不能为空" pattern="^0?1[3|4|5|7|8|6|9][0-9]\d{8}$"
+					   data-pattern-error="手机号格式不正确" value="${(model.cell)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">固定电话</label>
+			<div class="col-md-12">
+				<input class="form-control" maxlength="20" type="text" autocomplete="off"
+					name="fixed" value="${(model.fixed)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">所在律所</label>
+			<div class="col-md-12">
+				<input class="form-control" maxlength="20" type="text" autocomplete="off" required
+					   data-required-error="所在律所不能为空"   name="firm" value="${(model.firm)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">职务</label>
+			<div class="col-md-12">
+				<input class="form-control" type="text"  maxlength="100" autocomplete="off"
+					name="position" value="${(model.position)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">执业执号</label>
+			<div class="col-md-12">
+				<input class="form-control" type="text"  maxlength="100" autocomplete="off" required
+					   data-required-error="执业执号不能为空"
+					   name="practiceNo" value="${(model.practiceNo)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">联系地址</label>
+			<div class="col-md-12">
+				<input class="form-control" type="text"  maxlength="225" autocomplete="off"
+					   name="address" value="${(model.address)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">微信号</label>
+			<div class="col-md-12">
+				<input class="form-control" type="text"  maxlength="100" autocomplete="off"
+					   name="wechat" value="${(model.wechat)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">qq号</label>
+			<div class="col-md-12">
+				<input class="form-control" type="text"  maxlength="20" autocomplete="off"
+					   name="qq" value="${(model.qq)!''}" />
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-12">备注</label>
+			<div class="col-md-12">
+				<textarea class="form-control" rows="5"  maxlength="20" autocomplete="off"
+						  name="remark" >${(model.remark)!''}</textarea>
+			</div>
+			<div class="col-md-12 help-block with-errors"></div>
+		</div>
+		<div class="form-group m-b-0">
+			<div class="col-md-12">
+				<@shiro.hasAnyPermissions name="lawyer.add,lawyer.edit">
+				<button type="submit"
+					class="btn btn-success waves-effect waves-light m-r-10">保
+					存</button>
+				</@shiro.hasAnyPermissions>
+				<button type="button"
+					class="btn btn-inverse waves-effect waves-light m-r-10"
+					onclick="window.location.href=basePath+'/lawyer/index'">返
+					回</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+</#assign>
+
+<#assign body>
+<script type="text/javascript"
+	src="${request.getContextPath()}/views/lawyer/index.js"></script>
+
+<script type="text/javascript">
+	$(function () {
+		$(".radio input[value=\"${(model.sex)!''}\"]").attr("checked", "checked");
+	});
+</script>
+
+</#assign>
+
+<#include "/layout.html" encoding="utf-8">

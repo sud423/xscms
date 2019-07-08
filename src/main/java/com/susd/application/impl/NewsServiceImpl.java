@@ -54,6 +54,32 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
+	public OptResult save(News news){
+		if (Validate.isValid(news)) {
+			int res = 0;
+			news.setStatus((byte)1);
+			if (news.getId() == 0) {
+				news.setUserId(SessionManager.getUserId());
+				news.setAddTime(new Date());
+				news.setTenantId(SessionManager.getTenantId());
+				news.setVersion(1);
+
+				res=newsRepository.add(news);
+
+			} else {
+				News old=newsRepository.findNewsById(news.getId());
+				if(old.getVersion()!=news.getVersion())
+					return OptResult.Failed("信息已修改过，请刷新后重新修改");
+				res=newsRepository.update(news);
+			}
+			if (res > 0)
+				return OptResult.Successed();
+			return OptResult.Failed("信息保存失败，请稍候重试");
+		}
+		return Validate.verify(news);
+	}
+
+	@Override
 	@Transactional
 	public OptResult save(News news, String fileName, String fileExt,String savePath, InputStream str) {
 		if (Validate.isValid(news)) {

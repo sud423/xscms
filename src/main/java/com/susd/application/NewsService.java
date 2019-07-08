@@ -21,7 +21,14 @@ public interface NewsService {
 	 * @return
 	 */
 	OptResult delete(int id);
-	
+
+	/**
+	 * 保存数据
+	 * @param news
+	 * @return
+	 */
+	OptResult save(News news);
+
 	/**
 	 * 保存数据
 	 * @param news

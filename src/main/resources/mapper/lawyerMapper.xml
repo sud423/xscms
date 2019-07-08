@@ -8,7 +8,7 @@
         select * from lawyer where tenant_id=${tenantId}
         <if test="keyword != null and keyword != ''">
             <bind name="keyinfo" value="'%' + keyword + '%'" />
-            and (surname like #{keyinfo} or `name` like #{keyinfo} or cell like #{keyinfo} or firm like #{keyinfo} or address like #{address} or wechat like #{keyinfo})
+            and (surname like #{keyinfo} or `name` like #{keyinfo} or cell like #{keyinfo} or firm like #{keyinfo} or practice_no like #{keyinfo})
         </if>
         order by add_time desc
     </select>

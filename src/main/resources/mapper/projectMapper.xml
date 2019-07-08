@@ -4,10 +4,10 @@
 	
     <!-- 查询单条记录 -->
     <select id="findProjectById" parameterType="int" resultType="com.susd.domain.training.Project">
-        SELECT * FROM classies WHERE Id = #{projectId}
+        SELECT * FROM classes WHERE Id = #{projectId}
     </select>
     <select id="findByKeyword" resultType="com.susd.domain.training.Project">
-		select * from classies
+		select * from classes
 		where
 		tenant_id=#{tenantId} and `status`!=2 and parent_id=0 
 		<if test="keyword != null and keyword != ''">
@@ -18,13 +18,13 @@
 	</select>
 	<update id="update"
 		parameterType="com.susd.domain.training.Project">
-		update classies set
+		update classes set
 		`name`=#{name},`status`=#{status},summary=#{summary},version=version+1
 		where id=${id}
 	</update>
 	<insert id="add" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.susd.domain.training.Project">
-		insert into classies
+		insert into classes
 		(tenant_id,`name`,`status`,summary,user_id,version,add_time,channel)
 		values(#{tenantId},#{name},#{status},#{summary},#{userId},#{version},#{addTime},#{channel})
 	</insert>
