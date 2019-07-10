@@ -14,7 +14,7 @@ public class Bill implements Entity<Bill> {
 	
 	private int tenantId;
 
-
+	private byte type;
 	/**账单流水号*/
 	private String billNumber;
 	
@@ -78,6 +78,14 @@ public class Bill implements Entity<Bill> {
 
 	public void setTenantId(int tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
 	}
 
 	public String getBillNumber() {
@@ -214,12 +222,12 @@ public class Bill implements Entity<Bill> {
 	 * @param totalPrice 总价格
 	 * @return
 	 */
-	public static Bill create(int clientId,float totalPrice) {
+	public static Bill create(int clientId,float totalPrice,byte type) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 		Bill bill = new Bill();
 		bill.setTenantId(SessionManager.getTenantId());
-
+		bill.setType(type);
 		bill.setBillNumber(Utils.generateCode());
 		Date now = new Date();
 		bill.setPeriod(dateFormat.format(now));

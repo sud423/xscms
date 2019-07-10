@@ -123,7 +123,7 @@ public class BillServiceImpl implements BillService {
 
 			float firstW=input.getWeight()-config.getFirstWeight();
 			if(firstW>0){
-				float firstTotalPrice=config.getFirstPrice()*config.getFirstWeight();
+				float firstTotalPrice=config.getFirstPrice()*firstW/config.getFirstWeight();
 				float continuedTotalPrice=firstW/config.getContinuedWeight()* config.getContinuedPrice();
 				float totalPrice=firstTotalPrice+continuedTotalPrice;
 				BigDecimal p = new BigDecimal(totalPrice+input.getCost()+config.getAddFees());
@@ -229,7 +229,7 @@ public class BillServiceImpl implements BillService {
 
 		int result = 0;
 		if (bill == null || bill.getId() == 0) {
-			bill = Bill.create(clientId, totalPrice);
+			bill = Bill.create(clientId, totalPrice,type);
 
 			result = billRepository.save(bill);
 		} else {
