@@ -123,11 +123,13 @@ public class BillServiceImpl implements BillService {
 
 			float firstW=input.getWeight()-config.getFirstWeight();
 			if(firstW>0){
-				float firstTotalPrice=config.getFirstPrice()*firstW/config.getFirstWeight();
+
 				float continuedTotalPrice=firstW/config.getContinuedWeight()* config.getContinuedPrice();
-				float totalPrice=firstTotalPrice+continuedTotalPrice;
-				BigDecimal p = new BigDecimal(totalPrice+input.getCost()+config.getAddFees());
-				input.setTotalPrice(p.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue());// 加上其它费用和额外费用
+
+				float totalPrice=config.getFirstPrice()+continuedTotalPrice+input.getCost()+config.getAddFees();
+
+				input.setTotalPrice((float)(Math.round(totalPrice*100))/100);// 加上其它费用和额外费用
+				System.out.println(input.getTotalPrice());
 			}
 			else{
 				BigDecimal m = new BigDecimal(config.getFirstPrice()+input.getCost()+config.getAddFees());

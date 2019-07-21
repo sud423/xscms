@@ -99,7 +99,7 @@ public class BillItemInputDto {
 	}
 
 	public float getCost() {
-		return cost;
+		return (float)(Math.round(cost*100))/100;
 	}
 
 	public void setCost(float cost) {
@@ -139,7 +139,7 @@ public class BillItemInputDto {
 	}
 
 	public float getActualWeight() {
-		return actualWeight;
+		return (float)(Math.round(actualWeight*100))/100;
 	}
 
 	public void setActualWeight(float actualWeight) {
@@ -147,7 +147,7 @@ public class BillItemInputDto {
 	}
 
 	public float getWeight() {
-		return weight;
+		return (float)(Math.round(weight*100))/100;
 	}
 
 	public void setWeight(float weight) {
@@ -155,7 +155,7 @@ public class BillItemInputDto {
 	}
 
 	public float getTotalPrice() {
-		return totalPrice;
+		return (float)(Math.round(totalPrice*100))/100;
 	}
 
 	public void setTotalPrice(float totalPrice) {
@@ -195,7 +195,7 @@ public class BillItemInputDto {
 			totalCount += dto.getCount();
 		}
 
-		return totalVolume;
+		return (float)(Math.round(totalVolume*100))/100;
 	}
 
 }

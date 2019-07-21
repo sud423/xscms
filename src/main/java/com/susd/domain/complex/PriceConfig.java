@@ -98,7 +98,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	
 	
 	public float getStandardPrice() {
-		return standardPrice;
+		return (float)(Math.round(standardPrice*100))/100;
 	}
 
 	public void setStandardPrice(float standardPrice) {
@@ -114,7 +114,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	}
 
 	public float getFirstPrice() {
-		return firstPrice;
+		return (float)(Math.round(firstPrice*100))/100;
 	}
 
 	public void setFirstPrice(float firstPrice) {
@@ -122,7 +122,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	}
 
 	public float getFirstWeight() {
-		return firstWeight;
+		return (float)(Math.round(firstWeight*100))/100;
 	}
 
 	public void setFirstWeight(float firstWeight) {
@@ -130,7 +130,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	}
 
 	public float getContinuedPrice() {
-		return continuedPrice;
+		return (float)(Math.round(continuedPrice*100))/100;
 	}
 
 	public void setContinuedPrice(float continuedPrice) {
@@ -138,7 +138,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	}
 
 	public float getContinuedWeight() {
-		return continuedWeight;
+		return (float)(Math.round(continuedWeight*100))/100;
 	}
 
 	public void setContinuedWeight(float continuedWeight) {
@@ -146,7 +146,7 @@ public class PriceConfig implements Entity<PriceConfig> {
 	}
 
 	public float getAddFees() {
-		return addFees;
+		return (float)(Math.round(addFees*100))/100;
 	}
 
 	public void setAddFees(float addFees) {
