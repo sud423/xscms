@@ -79,8 +79,8 @@ public class ResourceServiceImpl implements ResourceService {
 
 	
 	@Override
-	public List<TreeDto> queryToDropDataSrource() {
-		List<Resource> resources = resourceRepository.queryToDropDataSrource(SessionManager.getTenantId());
+	public List<TreeDto> queryToDropDataSource(int tenantId) {
+		List<Resource> resources = resourceRepository.queryToDropDataSrource(tenantId);
 		PropertyMap<Resource, TreeDto> resourceMap = new PropertyMap<Resource, TreeDto>() {
 			@Override
 			protected void configure() {
@@ -96,6 +96,7 @@ public class ResourceServiceImpl implements ResourceService {
 		
 		return items;
 	}
+
 
 	
 }

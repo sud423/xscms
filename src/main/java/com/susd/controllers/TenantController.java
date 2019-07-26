@@ -5,6 +5,7 @@ import com.susd.application.ResourceService;
 import com.susd.application.TenantService;
 import com.susd.domain.identity.Tenant;
 import com.susd.domain.identity.TenantRepository;
+import com.susd.domainservice.identity.SessionManager;
 import com.susd.dto.TreeDto;
 import com.susd.infrastructure.DatatableParam;
 import com.susd.infrastructure.DatatableResult;
@@ -38,7 +39,7 @@ public class TenantController {
      */
     @RequestMapping(value="/index", method = RequestMethod.GET)
     public String index(Map<String, Object> map) {
-        List<TreeDto> dataSource=resourceService.queryToDropDataSrource();
+        List<TreeDto> dataSource=resourceService.queryToDropDataSource(0);
 
         String json= JSONObject.toJSONString(dataSource);
 

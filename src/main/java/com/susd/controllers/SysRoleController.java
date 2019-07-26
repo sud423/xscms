@@ -39,7 +39,7 @@ public class SysRoleController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Map<String, Object> map,HttpServletRequest request) {
 
-		List<TreeDto> dataSource=resourceService.queryToDropDataSrource();
+		List<TreeDto> dataSource=resourceService.queryToDropDataSource(SessionManager.getTenantId());
 		
 		String json=JSONObject.toJSONString(dataSource);
 		

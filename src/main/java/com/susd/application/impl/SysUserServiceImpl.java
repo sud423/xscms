@@ -39,7 +39,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private UserRealm userRealm;
 
-	@Value("rest_pwd")
+	@Value("${rest_pwd}")
 	private String pwd;
 
 	@Override
