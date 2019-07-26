@@ -27,12 +27,14 @@ $(function() {
 				"data" : "target",
 				"render" : function(data, type, row, meta) {
 					switch (data) {
-					case 1:
-						return "我爱上课";
-					case 2:
-						return "学校";
-					case 3:
-						return "全部";
+						case 1:
+							return "我爱上课";
+						case 2:
+							return "学校";
+						case 3:
+							return "全部";
+						default:
+							return "";
 					}
 				}
 			}, {
