@@ -25,7 +25,7 @@
         <mybatis.version>3.4.6</mybatis.version>
         <!-- tiles 版本号 -->
         <tiles.version>3.0.8</tiles.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.10.3</jackson.version>
     </properties>
 
     <dependencies>
